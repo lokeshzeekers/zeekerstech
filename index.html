@@ -95,6 +95,8 @@
 
                     <li><a href="contact.html">Contact</a></li>
 
+                    <li><a href="helpdesk.html">Helpdesk</a></li>
+
                 </ul>
             </div>
             <div class="menu-toggle" id="menuToggle">
@@ -252,12 +254,13 @@
                     </div>
 
                     <script> const dashboardData = { rnd: { title: "Live Dashboard", status: "Research Active", metric: "97.9%", sub: "Advanced Product Development Efficiency", labels: ["Prototype Design", "Hardware Testing", "AI Research"], values: [95, 92, 98], badge: "+32% innovation growth" }, embedded: { title: "Live Dashboard", status: "Firmware Stable", metric: "96.8%", sub: "MCU & Firmware Performance Monitoring", labels: ["RTOS Tasks", "Peripheral Drivers", "Power Optimization"], values: [94, 91, 97], badge: "+27% firmware speed" }, iot: { title: "Live Dashboard", status: "IoT Connected", metric: "98.3%", sub: "Industrial IoT Device Connectivity", labels: ["Smart Sensors", "Cloud Sync", "Edge Devices"], values: [97, 93, 99], badge: "+41% device coverage" }, safety: { title: "Live Dashboard", status: "Protection Enabled", metric: "99.4%", sub: "AI Powered Industrial Safety Monitoring", labels: ["Vision AI", "Safety Alerts", "Hazard Detection"], values: [98, 97, 100], badge: "+36% workplace safety" } }; function showDashboard(type, element) {
-                            const data = dashboardData[type]; 
+                            const data = dashboardData[type];
                             document.getElementById("dashboardTitle").innerText = data.title; document.getElementById("dashboardStatus").innerText = data.status;
                             document.getElementById("dashboardMetric").innerText = data.metric; document.getElementById("dashboardSub").innerText = data.sub;
                             document.getElementById("badgeText").innerText = data.badge;
                             for (let i = 1; i <= 3; i++) { document.getElementById("label" + i).innerText = data.labels[i - 1]; document.getElementById("pct" + i).innerText = data.values[i - 1] + "%"; document.getElementById("fill" + i).style.width = data.values[i - 1] + "%"; }
-                            document.querySelectorAll(".chip").forEach(chip => { chip.style.background = ""; chip.style.color = ""; }); element.style.background = "var(--accent-light)"; element.style.color = "var(--accent)"; } </script>
+                            document.querySelectorAll(".chip").forEach(chip => { chip.style.background = ""; chip.style.color = ""; }); element.style.background = "var(--accent-light)"; element.style.color = "var(--accent)";
+                        } </script>
 
                 </div>
             </div>
@@ -826,7 +829,7 @@
                     <p><i class="fas fa-phone-alt"></i> +91 80981 41600</p>
                 </div>
             </div>
-            <div class="copyright">© 2025 Zeekers Technology Solutions Private Limited — Safety-first Engineering & AI
+            <div class="copyright">© 2026 Zeekers Technology Solutions Private Limited — Safety-first Engineering & AI
                 Innovation.</div>
         </div>
 
@@ -843,189 +846,189 @@
 
         <script>
 
-                                 // top bar hide on scroll (desktop)
-                                 const topBar = document.getElementById('topBar');
-                                 const navbar = document.getElementById('navbar');
-                                 let lastScrollY = 0;
-                                 window.addEventListener('scroll', () => {
-                                     if (window.innerWidth <= 992) return;
-                                     const currentY = window.scrollY;
-                                     if (currentY <= 20) {
-                                         topBar.classList.remove('hide-top');
-                                         navbar.style.top = '44px';
-                                     } else if (currentY > lastScrollY && currentY > 60) {
-                                         topBar.classList.add('hide-top');
-                                         navbar.style.top = '0px';
-                                     } else if (currentY < lastScrollY) {
-                                         topBar.classList.remove('hide-top');
-                                         navbar.style.top = '44px';
-                                     }
-                                     lastScrollY = currentY;
-                                 });
-                                 // animate progress bars
-                                 document.querySelectorAll('.prog-fill').forEach(el => {
-                                     const target = getComputedStyle(el).getPropertyValue('--target-width').trim();
-                                     if (target) setTimeout(() => { el.style.width = target; }, 100);
-                                     else el.style.width = '92%';
-                                 });
-                                 // service card stagger
-                                 const cards = document.querySelectorAll('.service-card');
-                                 const obs = new IntersectionObserver(entries => {
-                                     entries.forEach((entry, idx) => {
-                                         if (entry.isIntersecting) {
-                                             setTimeout(() => { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }, idx * 80);
-                                             obs.unobserve(entry.target);
-                                         }
-                                     });
-                                 }, { threshold: 0.1 });
-                                 cards.forEach((c, i) => { c.style.opacity = '0'; c.style.transform = 'translateY(24px)'; c.style.transition = 'all 0.5s'; obs.observe(c); });
-                                 // active nav highlight
-                                 const sections = document.querySelectorAll('section[id]');
-                                 window.addEventListener('scroll', () => {
-                                     let current = '';
-                                     const scrollPos = window.scrollY + 150;
-                                     sections.forEach(section => { if (scrollPos >= section.offsetTop) current = section.getAttribute('id'); });
-                                     document.querySelectorAll('.desktop-nav a').forEach(link => {
-                                         link.classList.remove('active');
-                                         if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
-                                     });
-                                 });
+            // top bar hide on scroll (desktop)
+            const topBar = document.getElementById('topBar');
+            const navbar = document.getElementById('navbar');
+            let lastScrollY = 0;
+            window.addEventListener('scroll', () => {
+                if (window.innerWidth <= 992) return;
+                const currentY = window.scrollY;
+                if (currentY <= 20) {
+                    topBar.classList.remove('hide-top');
+                    navbar.style.top = '44px';
+                } else if (currentY > lastScrollY && currentY > 60) {
+                    topBar.classList.add('hide-top');
+                    navbar.style.top = '0px';
+                } else if (currentY < lastScrollY) {
+                    topBar.classList.remove('hide-top');
+                    navbar.style.top = '44px';
+                }
+                lastScrollY = currentY;
+            });
+            // animate progress bars
+            document.querySelectorAll('.prog-fill').forEach(el => {
+                const target = getComputedStyle(el).getPropertyValue('--target-width').trim();
+                if (target) setTimeout(() => { el.style.width = target; }, 100);
+                else el.style.width = '92%';
+            });
+            // service card stagger
+            const cards = document.querySelectorAll('.service-card');
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach((entry, idx) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }, idx * 80);
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            cards.forEach((c, i) => { c.style.opacity = '0'; c.style.transform = 'translateY(24px)'; c.style.transition = 'all 0.5s'; obs.observe(c); });
+            // active nav highlight
+            const sections = document.querySelectorAll('section[id]');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                const scrollPos = window.scrollY + 150;
+                sections.forEach(section => { if (scrollPos >= section.offsetTop) current = section.getAttribute('id'); });
+                document.querySelectorAll('.desktop-nav a').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+                });
+            });
         </script>
 
         <script>
-                // FULL REVIEWS DATA (12 entries)
-                const reviews = [
-                    {
-                        name: "Arun Kumar",
-                        role: "Factory Operations Head",
-                        stars: 5,
-                        quote: "Zeekers’ asset tracking system gave us complete visibility of tools and critical equipment across the plant. Asset loss and search time were reduced drastically.",
-                        tag: "Asset Tracking",
-                        bg: "#fff0ea",
-                        color: "#ff6b2b"
-                    },
-                    {
-                        name: "Priyadharshini",
-                        role: "Industrial Safety Manager",
-                        stars: 5,
-                        quote: "The Zeevior worker safety watch improved workforce monitoring and emergency response efficiency inside hazardous production zones.",
-                        tag: "Worker Safety",
-                        bg: "#ffe8d6",
-                        color: "#d94f10"
-                    },
-                    {
-                        name: "Karthikeyan",
-                        role: "Embedded Systems Lead",
-                        stars: 4,
-                        quote: "Their PCB design and embedded hardware development support helped us move from prototype to production much faster than expected.",
-                        tag: "PCB Design",
-                        bg: "#fff3ec",
-                        color: "#ff8c50"
-                    },
-                    {
-                        name: "Divya",
-                        role: "Training Coordinator",
-                        stars: 5,
-                        quote: "The industrial training sessions conducted by Zeekers gave our students real exposure to IoT, embedded systems, and industrial automation.",
-                        tag: "Industrial Training",
-                        bg: "#fff0ea",
-                        color: "#ff6b2b"
-                    },
-                    {
-                        name: "Rahul",
-                        role: "Welding Production Manager",
-                        stars: 5,
-                        quote: "The welding parameter monitoring system provided real-time insights into voltage, current, and gas flow, helping us maintain consistent weld quality.",
-                        tag: "Welding IoT",
-                        bg: "#ffe8d6",
-                        color: "#d94f10"
-                    },
-                    {
-                        name: "Sneha",
-                        role: "Plant Safety Officer",
-                        stars: 4,
-                        quote: "Real-time worker tracking and alert notifications from the Zeevior safety watch significantly improved worker accountability in restricted areas.",
-                        tag: "Safety Watch",
-                        bg: "#fff3ec",
-                        color: "#ff8c50"
-                    },
-                    {
-                        name: "Vikram",
-                        role: "Maintenance Supervisor",
-                        stars: 4,
-                        quote: "The asset tracking dashboard made inventory management and equipment utilization far more efficient across multiple departments.",
-                        tag: "Smart Assets",
-                        bg: "#fff0ea",
-                        color: "#ff6b2b"
-                    },
-                    {
-                        name: "Ananya",
-                        role: "Hardware Design Engineer",
-                        stars: 5,
-                        quote: "Zeekers delivered compact and production-ready PCB designs with exceptional attention to signal integrity and reliability.",
-                        tag: "Embedded Hardware",
-                        bg: "#ffe8d6",
-                        color: "#d94f10"
-                    },
-                    {
-                        name: "Suresh",
-                        role: "Technical Training Head",
-                        stars: 5,
-                        quote: "Their hands-on workshops on embedded systems and industrial IoT were practical, engaging, and aligned with real industry requirements.",
-                        tag: "Skill Development",
-                        bg: "#fff3ec",
-                        color: "#ff8c50"
-                    },
-                    {
-                        name: "Nithya",
-                        role: "Manufacturing Excellence Lead",
-                        stars: 5,
-                        quote: "The welding analytics platform helped us identify process deviations instantly and improve welding consistency across shifts.",
-                        tag: "Weld Analytics",
-                        bg: "#fff0ea",
-                        color: "#ff6b2b"
-                    },
-                    {
-                        name: "Rohit",
-                        role: "Industrial Automation Consultant",
-                        stars: 4,
-                        quote: "Zeekers combines practical engineering expertise with innovative industrial IoT solutions that genuinely solve operational challenges.",
-                        tag: "Industrial IoT",
-                        bg: "#ffe8d6",
-                        color: "#d94f10"
-                    },
-                    {
-                        name: "Meera",
-                        role: "R&D Program Director",
-                        stars: 5,
-                        quote: "From PCB development to smart safety systems, the Zeekers team consistently delivered high-quality engineering support and fast execution.",
-                        tag: "R&D Solutions",
-                        bg: "#fff3ec",
-                        color: "#ff8c50"
-                    }
-                ];
-
-                function initials(name) {
-                    return name.split(' ').map(word => word[0]).join('').substring(0, 2);
+            // FULL REVIEWS DATA (12 entries)
+            const reviews = [
+                {
+                    name: "Arun Kumar",
+                    role: "Factory Operations Head",
+                    stars: 5,
+                    quote: "Zeekers’ asset tracking system gave us complete visibility of tools and critical equipment across the plant. Asset loss and search time were reduced drastically.",
+                    tag: "Asset Tracking",
+                    bg: "#fff0ea",
+                    color: "#ff6b2b"
+                },
+                {
+                    name: "Priyadharshini",
+                    role: "Industrial Safety Manager",
+                    stars: 5,
+                    quote: "The Zeevior worker safety watch improved workforce monitoring and emergency response efficiency inside hazardous production zones.",
+                    tag: "Worker Safety",
+                    bg: "#ffe8d6",
+                    color: "#d94f10"
+                },
+                {
+                    name: "Karthikeyan",
+                    role: "Embedded Systems Lead",
+                    stars: 4,
+                    quote: "Their PCB design and embedded hardware development support helped us move from prototype to production much faster than expected.",
+                    tag: "PCB Design",
+                    bg: "#fff3ec",
+                    color: "#ff8c50"
+                },
+                {
+                    name: "Divya",
+                    role: "Training Coordinator",
+                    stars: 5,
+                    quote: "The industrial training sessions conducted by Zeekers gave our students real exposure to IoT, embedded systems, and industrial automation.",
+                    tag: "Industrial Training",
+                    bg: "#fff0ea",
+                    color: "#ff6b2b"
+                },
+                {
+                    name: "Rahul",
+                    role: "Welding Production Manager",
+                    stars: 5,
+                    quote: "The welding parameter monitoring system provided real-time insights into voltage, current, and gas flow, helping us maintain consistent weld quality.",
+                    tag: "Welding IoT",
+                    bg: "#ffe8d6",
+                    color: "#d94f10"
+                },
+                {
+                    name: "Sneha",
+                    role: "Plant Safety Officer",
+                    stars: 4,
+                    quote: "Real-time worker tracking and alert notifications from the Zeevior safety watch significantly improved worker accountability in restricted areas.",
+                    tag: "Safety Watch",
+                    bg: "#fff3ec",
+                    color: "#ff8c50"
+                },
+                {
+                    name: "Vikram",
+                    role: "Maintenance Supervisor",
+                    stars: 4,
+                    quote: "The asset tracking dashboard made inventory management and equipment utilization far more efficient across multiple departments.",
+                    tag: "Smart Assets",
+                    bg: "#fff0ea",
+                    color: "#ff6b2b"
+                },
+                {
+                    name: "Ananya",
+                    role: "Hardware Design Engineer",
+                    stars: 5,
+                    quote: "Zeekers delivered compact and production-ready PCB designs with exceptional attention to signal integrity and reliability.",
+                    tag: "Embedded Hardware",
+                    bg: "#ffe8d6",
+                    color: "#d94f10"
+                },
+                {
+                    name: "Suresh",
+                    role: "Technical Training Head",
+                    stars: 5,
+                    quote: "Their hands-on workshops on embedded systems and industrial IoT were practical, engaging, and aligned with real industry requirements.",
+                    tag: "Skill Development",
+                    bg: "#fff3ec",
+                    color: "#ff8c50"
+                },
+                {
+                    name: "Nithya",
+                    role: "Manufacturing Excellence Lead",
+                    stars: 5,
+                    quote: "The welding analytics platform helped us identify process deviations instantly and improve welding consistency across shifts.",
+                    tag: "Weld Analytics",
+                    bg: "#fff0ea",
+                    color: "#ff6b2b"
+                },
+                {
+                    name: "Rohit",
+                    role: "Industrial Automation Consultant",
+                    stars: 4,
+                    quote: "Zeekers combines practical engineering expertise with innovative industrial IoT solutions that genuinely solve operational challenges.",
+                    tag: "Industrial IoT",
+                    bg: "#ffe8d6",
+                    color: "#d94f10"
+                },
+                {
+                    name: "Meera",
+                    role: "R&D Program Director",
+                    stars: 5,
+                    quote: "From PCB development to smart safety systems, the Zeekers team consistently delivered high-quality engineering support and fast execution.",
+                    tag: "R&D Solutions",
+                    bg: "#fff3ec",
+                    color: "#ff8c50"
                 }
+            ];
 
-                function starsHTML(count, size = 12) {
-                    const fullStars = Math.floor(count);
-                    const hasHalfStar = count % 1 !== 0;
-                    let stars = '';
-                    for (let i = 0; i < fullStars; i++) {
-                        stars += `<div class="tw-star" style="width:${size}px;height:${size}px"></div>`;
-                    }
-                    if (hasHalfStar) {
-                        stars += `<div class="tw-star" style="width:${size}px;height:${size}px;opacity:0.5"></div>`;
-                    }
-                    return stars;
+            function initials(name) {
+                return name.split(' ').map(word => word[0]).join('').substring(0, 2);
+            }
+
+            function starsHTML(count, size = 12) {
+                const fullStars = Math.floor(count);
+                const hasHalfStar = count % 1 !== 0;
+                let stars = '';
+                for (let i = 0; i < fullStars; i++) {
+                    stars += `<div class="tw-star" style="width:${size}px;height:${size}px"></div>`;
                 }
+                if (hasHalfStar) {
+                    stars += `<div class="tw-star" style="width:${size}px;height:${size}px;opacity:0.5"></div>`;
+                }
+                return stars;
+            }
 
-                function makeCard(review) {
-                    const card = document.createElement('div');
-                    card.className = 'tw-card';
-                    card.innerHTML = `
+            function makeCard(review) {
+                const card = document.createElement('div');
+                card.className = 'tw-card';
+                card.innerHTML = `
       <div class="tw-card-top">
         <div class="tw-avatar" style="background:${review.bg};color:${review.color}">${initials(review.name)}</div>
         <div>
@@ -1037,56 +1040,56 @@
       <div class="tw-quote-text">${review.quote}</div>
       <span class="tw-tag">${review.tag}</span>
     `;
-                    return card;
-                }
+                return card;
+            }
 
-                function fillTrackWithAllReviews(trackId, reviewsArray, copies = 4) {
-                    const track = document.getElementById(trackId);
-                    if (!track) return;
-                    track.innerHTML = '';
-                    for (let i = 0; i < copies; i++) {
-                        reviewsArray.forEach(review => {
-                            track.appendChild(makeCard(review));
-                        });
-                    }
+            function fillTrackWithAllReviews(trackId, reviewsArray, copies = 4) {
+                const track = document.getElementById(trackId);
+                if (!track) return;
+                track.innerHTML = '';
+                for (let i = 0; i < copies; i++) {
+                    reviewsArray.forEach(review => {
+                        track.appendChild(makeCard(review));
+                    });
                 }
-                fillTrackWithAllReviews('track-all-reviews', reviews, 4);
+            }
+            fillTrackWithAllReviews('track-all-reviews', reviews, 4);
 
-                let featuredIndex = 0;
-                function showFeatured(review) {
-                    document.getElementById('featured-stars').innerHTML = starsHTML(review.stars, 16);
-                    document.getElementById('featured-quote').textContent = review.quote;
-                    document.getElementById('featured-avatar').textContent = initials(review.name);
-                    document.getElementById('featured-name').textContent = review.name;
-                    document.getElementById('featured-role').textContent = review.role;
-                    const featuredCard = document.getElementById('featured-card');
-                    if (featuredCard) featuredCard.style.borderColor = review.color + '44';
-                }
-                function rotateFeatured() {
-                    const card = document.getElementById('featured-card');
-                    if (!card) return;
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(8px)';
-                    setTimeout(() => {
-                        featuredIndex = (featuredIndex + 1) % reviews.length;
-                        showFeatured(reviews[featuredIndex]);
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 400);
-                }
-                showFeatured(reviews[0]);
-                setInterval(rotateFeatured, 5000);
+            let featuredIndex = 0;
+            function showFeatured(review) {
+                document.getElementById('featured-stars').innerHTML = starsHTML(review.stars, 16);
+                document.getElementById('featured-quote').textContent = review.quote;
+                document.getElementById('featured-avatar').textContent = initials(review.name);
+                document.getElementById('featured-name').textContent = review.name;
+                document.getElementById('featured-role').textContent = review.role;
+                const featuredCard = document.getElementById('featured-card');
+                if (featuredCard) featuredCard.style.borderColor = review.color + '44';
+            }
+            function rotateFeatured() {
+                const card = document.getElementById('featured-card');
+                if (!card) return;
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(8px)';
+                setTimeout(() => {
+                    featuredIndex = (featuredIndex + 1) % reviews.length;
+                    showFeatured(reviews[featuredIndex]);
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 400);
+            }
+            showFeatured(reviews[0]);
+            setInterval(rotateFeatured, 5000);
 
-                // pause ticker on hover/touch
-                document.querySelectorAll('.ticker-wrap').forEach(row => {
-                    const pause = () => row.classList.add('paused');
-                    const resume = () => row.classList.remove('paused');
-                    row.addEventListener('mouseenter', pause);
-                    row.addEventListener('mouseleave', resume);
-                    row.addEventListener('touchstart', pause, { passive: true });
-                    row.addEventListener('touchend', resume, { passive: true });
-                    row.addEventListener('touchcancel', resume, { passive: true });
-                });
+            // pause ticker on hover/touch
+            document.querySelectorAll('.ticker-wrap').forEach(row => {
+                const pause = () => row.classList.add('paused');
+                const resume = () => row.classList.remove('paused');
+                row.addEventListener('mouseenter', pause);
+                row.addEventListener('mouseleave', resume);
+                row.addEventListener('touchstart', pause, { passive: true });
+                row.addEventListener('touchend', resume, { passive: true });
+                row.addEventListener('touchcancel', resume, { passive: true });
+            });
         </script>
 
 </body>
