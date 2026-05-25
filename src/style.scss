@@ -4655,7 +4655,117 @@
    flex-shrink: 0;
  }
 
- /* ════════════════════════════════════════ COMING SOON CATEGORY DIVIDER ════════════════════════════════════════ */
+ /* ════════════════════════════════════════
+       COMING SOON CATEGORY DIVIDER
+    ════════════════════════════════════════ */
+ .cs-divider {
+   background: #12100e;
+   padding: 56px 80px 48px;
+   position: relative;
+   overflow: hidden;
+   transform: translateY(20px);
+   transition: opacity 0.65s ease, transform 0.65s ease;
+ }
+
+ .cs-divider.vis {
+   opacity: 1;
+   transform: translateY(0);
+ }
+
+ /* decorative orbs */
+ .cs-divider::before {
+   content: '';
+   position: absolute;
+   top: -80px;
+   right: -80px;
+   width: 320px;
+   height: 320px;
+   border-radius: 50%;
+   background: radial-gradient(circle, rgba(255, 107, 43, 0.14), transparent 70%);
+   pointer-events: none;
+ }
+
+ .cs-divider::after {
+   content: '';
+   position: absolute;
+   bottom: -50px;
+   left: 100px;
+   width: 180px;
+   height: 180px;
+   border-radius: 50%;
+   background: radial-gradient(circle, rgba(255, 154, 92, 0.07), transparent 70%);
+   pointer-events: none;
+ }
+
+ .cs-div-inner {
+   max-width: 1200px;
+   margin: 0 auto;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 32px;
+   flex-wrap: wrap;
+   position: relative;
+   z-index: 1;
+ }
+
+ .cs-div-label {
+   font-family: 'DM Sans', sans-serif;
+   font-size: 10px;
+   font-weight: 500;
+   letter-spacing: 2.5px;
+   text-transform: uppercase;
+   color: #ff6b2b;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin-bottom: 12px;
+ }
+
+ .cs-div-label::before {
+   content: '';
+   display: inline-block;
+   width: 16px;
+   height: 1px;
+   background: #ff6b2b;
+   flex-shrink: 0;
+ }
+
+ .cs-div-title {
+   font-family: 'Syne', sans-serif;
+   font-size: clamp(24px, 3.2vw, 36px);
+   font-weight: 800;
+   color: #fff;
+   letter-spacing: 1px;
+   line-height: 1.1;
+ }
+
+ .cs-div-title span {
+   background: linear-gradient(100deg, #ff6b2b, #ff9a5c);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
+ }
+
+ .cs-div-desc {
+   font-size: 14.5px;
+   color: rgba(255, 255, 255, 0.45);
+   font-weight: 300;
+   max-width: 600px;
+   line-height: 1.75;
+   margin-top: 12px;
+ }
+
+ .cs-div-count {
+   font-family: 'Syne', sans-serif;
+   font-size: 56px;
+   font-weight: 800;
+   color: rgb(255, 255, 255);
+   letter-spacing: -3px;
+   flex-shrink: 0;
+   line-height: 1;
+ }
+
  /* ════════════════════════════════════════
    COMING SOON CUSTOM STYLES
 ════════════════════════════════════════ */
@@ -4911,8 +5021,8 @@
 
    .cs-divider,
    .cs-section {
-     padding-left: 20px;
-     padding-right: 20px;
+     padding-left: 30px;
+     padding-right: 30px;
    }
 
    .cs-grid {
