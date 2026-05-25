@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zeekers Technology Solutions Private Limited</title>
+
+    <!-- PRECONNECT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <style>
+        body {
+            display: none;
+        }
+    </style>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- GOOGLE FONTS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<script>
+
+    window.addEventListener("load", () => {
+        document.body.style.display = "block";
+    });
+
+</script>
+
+<body>
+
+    <!-- TOP BAR (white, hides on scroll) - only visible desktop/tablet large -->
+    <div class="top-bar" id="topBar">
+        <div class="container-align">
+            <div class="top-left">
+                <a href="tel:+918098141600"><i class="fas fa-phone-alt"></i> +91 80981 41600</a>
+                <a href="mailto:director@zeekerstech.com"><i class="fas fa-envelope"></i> director@zeekerstech.com </a>
+            </div>
+            <div class="top-right">
+                <a href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/" target="_blank"
+                    rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                    href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                        class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                    rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                    href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank" rel="noopener noreferrer"><i
+                        class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR (gradient, aligned centrally) -->
+    <header class="navbar" id="navbar">
+        <div class="container-align">
+            <div class="logo">
+                <img src="/assets/images/logo.svg" alt="Zeekers Logo"
+                    onerror="this.src='https://placehold.co/140x40?text=Zeekers'">
+            </div>
+            <div class="desktop-nav">
+                <ul>
+
+                    <li><a href="index.html">Home</a></li>
+
+                    <!-- ABOUT -->
+                    <li><a href="about.html">About</a></li>
+
+                    <!-- PRODUCTS -->
+                    <li><a href="products.html">Products</a></li>
+
+                    <!-- AICTE -->
+                    <li><a href="lab.html">AICTE Lab</a></li>
+
+                    <li><a href="blog.html">Blog</a></li>
+
+                    <!-- CAREERS -->
+                    <li><a href="career.html">Careers</a></li>
+
+                    <li><a href="#" class="active">Contact</a></li>
+
+                </ul>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- OVERLAY + SIDE MENU (mobile + phone/mail inside) -->
+    <div class="overlay" id="overlay"></div>
+    <nav class="side-menu" id="sideMenu">
+        <ul class="menu">
+
+            <li><a href="index.html">Home</a></li>
+
+            <li><a href="about.html">About</a></li>
+
+            <li><a href="products.html">Products</a></li>
+
+            <!-- AICTE -->
+            <li><a href="lab.html">AICTE Lab</a></li>
+
+            <li><a href="blog.html">Blog</a></li>
+
+            <!-- CAREERS -->
+            <li><a href="career.html">Careers</a></li>
+
+            <li><a href="#" class="active">Contact</a></li>
+
+        </ul>
+        <div class="side-contact">
+
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <a href="tel:+918098141600">+91 80981 41600</a>
+            </div>
+
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:director@zeekerstech.com">director@zeekerstech.com</a>
+            </div>
+
+        </div>
+
+        <div class="side-divider">
+        </div>
+
+        <div class="social-row">
+            <a href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/" target="_blank"
+                rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                    class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank" rel="noopener noreferrer"><i
+                    class="fab fa-youtube"></i></a>
+        </div>
+    </nav>
+
+
+    <!-- ══ CONTACT HERO ══════════════════════════════════════ -->
+    <section class="blog-hero-section">
+
+        <div class="blog-hero-orb-1"></div>
+        <div class="blog-hero-orb-2"></div>
+
+        <div class="blog-hero-inner">
+
+            <!-- LEFT -->
+            <div class="blog-hero-left">
+
+                <div class="blog-hero-kicker">
+                    Get in Touch
+                </div>
+
+                <h1 class="blog-hero-h1">
+                    Let's Build<br>
+                    <span class="highlight">
+                        Something Together
+                    </span>
+                </h1>
+
+                <p class="blog-hero-desc">
+                    Whether you're exploring a product demo,
+                    setting up an AICTE-IDEA Lab,
+                    partnering on R&D,
+                    or joining our team —
+                    we'd love to hear from you.
+                    We respond within 24 hours.
+                </p>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="blog-hero-right">
+
+                <div class="blog-hero-stat-row">
+
+                    <div class="blog-hero-stat">
+                        <div class="blog-hero-stat-n">
+                            24<span>H</span>
+                        </div>
+                        <div class="blog-hero-stat-l">
+                            Average Response Time
+                        </div>
+                    </div>
+
+                    <div class="blog-hero-stat">
+                        <div class="blog-hero-stat-n">
+                            AI<span>.</span>
+                        </div>
+                        <div class="blog-hero-stat-l">
+                            Industrial Innovation
+                        </div>
+                    </div>
+
+                    <div class="blog-hero-stat">
+                        <div class="blog-hero-stat-n">
+                            R&D<span>.</span>
+                        </div>
+                        <div class="blog-hero-stat-l">
+                            Engineering Collaboration
+                        </div>
+                    </div>
+
+                    <div class="blog-hero-stat">
+                        <div class="blog-hero-stat-n">
+                            OEM<span>.</span>
+                        </div>
+                        <div class="blog-hero-stat-l">
+                            Custom Solution Support
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ══ CONTACT MARQUEE ════════════════════════════════════ -->
+    <div class="blog-marquee-strip">
+
+        <div class="blog-marquee-track">
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                Product Demos
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                IDEA Lab Setup
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                R&D Partnerships
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                Technical Enquiries
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                Career Queries
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                OEM Solutions
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                Investment Enquiries
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                Media & Press
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                Support Requests
+            </div>
+
+            <div class="blog-m-item">
+                <div class="blog-m-dot"></div>
+                Collaborations
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ══ MAIN CONTACT SECTION ═══════════════════════ -->
+    <div class="contact-section">
+        <div class="contact-inner">
+
+            <!-- LEFT — Info -->
+            <div class="contact-info sr-l">
+                <div class="s-label">Contact Details</div>
+                <div class="s-title">We Are Right<br><span class="highlight">Here for You</span></div>
+                <div class="contact-sub">Reach us through any channel below. Our team in Coimbatore responds to every
+                    message — no bots, no automated replies, just real engineers who understand your problem.</div>
+
+                <div class="detail-cards" id="detailCards">
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <div class="detail-label">General Enquiries</div>
+                            <div class="detail-value">sales@zeekerstech.com</div>
+                            <div class="detail-sub">Product demos, partnerships, and general questions</div>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fas fa-headset"></i></div>
+                        <div>
+                            <div class="detail-label">Technical Support</div>
+                            <div class="detail-value">helpdesk@zeekerstech.com</div>
+                            <div class="detail-sub">Product support, integration help, and troubleshooting</div>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <div class="detail-label">Phone</div>
+                            <div class="detail-value">+91 80981 41600</div>
+                            <div class="detail-sub">Available Mon – Sat · 9 AM – 6 PM IST</div>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <div class="detail-label">Registered Office</div>
+                            <div class="detail-value">Coimbatore, Tamil Nadu</div>
+                            <div class="detail-sub">641035, India — Visits by appointment only</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social -->
+                <div class="s-label" style="margin-bottom:14px">Follow Us</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/"
+                        target="_blank" rel="noopener noreferrer" class="social-link"><i
+                            class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"
+                        class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/918098141600" target="_blank" rel="noopener noreferrer"
+                        class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank" rel="noopener noreferrer"
+                        class="social-link"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- RIGHT — Contact Form -->
+            <div class="contact-form-wrap sr-r">
+
+                <!-- Tabs -->
+                <div class="form-tabs">
+                    <button class="form-tab active" data-tab="general">
+                        <i class="fas fa-comment-alt" style="margin-right:6px;font-size:12px"></i>General
+                    </button>
+                    <button class="form-tab" data-tab="demo">
+                        <i class="fas fa-laptop-code" style="margin-right:6px;font-size:12px"></i>Request Demo
+                    </button>
+                    <button class="form-tab" data-tab="support">
+                        <i class="fas fa-life-ring" style="margin-right:6px;font-size:12px"></i>Support
+                    </button>
+                </div>
+
+                <!-- SUCCESS STATE -->
+                <div class="form-success" id="formSuccess">
+                    <div class="success-ring"><i class="fas fa-check"></i></div>
+                    <h3>Message Received!</h3>
+                    <p>Thank you for reaching out. A member of our team will get back to you within <strong>24
+                            hours</strong> on business days.</p>
+                    <button class="btn-send-another" onclick="resetForm()">
+                        <i class="fas fa-redo" style="font-size:11px"></i> Send Another Message
+                    </button>
+                </div>
+
+                <!-- GENERAL TAB -->
+                <div class="form-panel active" id="tab-general">
+                    <div style="margin-bottom:20px">
+                        <div
+                            style="font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">
+                            What can we help you with?</div>
+                        <div class="inquiry-grid">
+                            <button class="inquiry-btn selected" onclick="selectInquiry(this)"><i
+                                    class="fas fa-info-circle"></i> General Enquiry</button>
+                            <button class="inquiry-btn" onclick="selectInquiry(this)"><i class="fas fa-handshake"></i>
+                                Partnership</button>
+                            <button class="inquiry-btn" onclick="selectInquiry(this)"><i class="fas fa-flask"></i> IDEA
+                                Lab Setup</button>
+                            <button class="inquiry-btn" onclick="selectInquiry(this)"><i class="fas fa-newspaper"></i>
+                                Media / Press</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group mb0">
+                            <label class="form-label">Full Name <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-user input-icon"></i>
+                                <input class="form-input" type="text" placeholder="Your full name">
+                            </div>
+                        </div>
+                        <div class="form-group mb0">
+                            <label class="form-label">Email Address <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input class="form-input" type="email" placeholder="you@company.com">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top:14px">
+                        <div class="form-group mb0">
+                            <label class="form-label">Phone Number</label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-phone input-icon"></i>
+                                <input class="form-input" type="tel" placeholder="+91 XXXXX XXXXX">
+                            </div>
+                        </div>
+                        <div class="form-group mb0">
+                            <label class="form-label">Organisation</label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-building input-icon"></i>
+                                <input class="form-input" type="text" placeholder="Company / College name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:14px">
+                        <label class="form-label">Message <span class="req">*</span></label>
+                        <textarea class="form-textarea" id="generalMsg"
+                            placeholder="Tell us about your project, requirement, or question..." maxlength="600"
+                            oninput="updateCounter('generalMsg','generalCounter')"></textarea>
+                        <div class="char-counter"><span id="generalCounter">0</span> / 600</div>
+                    </div>
+                    <button class="btn-submit-form" onclick="submitForm()">
+                        Send Message <i class="fas fa-paper-plane" style="font-size:13px"></i>
+                    </button>
+                </div>
+
+                <!-- DEMO TAB -->
+                <div class="form-panel" id="tab-demo">
+                    <div class="form-row">
+                        <div class="form-group mb0">
+                            <label class="form-label">Full Name <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-user input-icon"></i>
+                                <input class="form-input" type="text" placeholder="Your full name">
+                            </div>
+                        </div>
+                        <div class="form-group mb0">
+                            <label class="form-label">Work Email <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input class="form-input" type="email" placeholder="you@company.com">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top:14px">
+                        <div class="form-group mb0">
+                            <label class="form-label">Company / Institution <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-building input-icon"></i>
+                                <input class="form-input" type="text" placeholder="Your organisation">
+                            </div>
+                        </div>
+                        <div class="form-group mb0">
+                            <label class="form-label">Phone Number</label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-phone input-icon"></i>
+                                <input class="form-input" type="tel" placeholder="+91 XXXXX XXXXX">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:14px">
+                        <label class="form-label">Which product are you interested in? <span
+                                class="req">*</span></label>
+                        <select class="form-select">
+                            <option value="">Select a product</option>
+                            <option>ZTS AI Smart Welding Helmet</option>
+                            <option>WeldSense Analytics Platform</option>
+                            <option>ZeeIoT Industrial Gateway</option>
+                            <option>SmartArc Weld Controller</option>
+                            <option>ZTS Predictive QA Module</option>
+                            <option>AICTE-IDEA Lab Setup</option>
+                            <option>Multiple Products / Full Suite</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Preferred Demo Format</label>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px">
+                            <button class="inquiry-btn selected" style="flex:1;min-width:120px"
+                                onclick="selectInquiry(this)"><i class="fas fa-video"></i> Online Demo</button>
+                            <button class="inquiry-btn" style="flex:1;min-width:120px" onclick="selectInquiry(this)"><i
+                                    class="fas fa-industry"></i> On-site Demo</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Additional Context</label>
+                        <textarea class="form-textarea" id="demoMsg"
+                            placeholder="Tell us about your use case, team size, and any specific requirements..."
+                            maxlength="400" oninput="updateCounter('demoMsg','demoCounter')"
+                            style="min-height:88px"></textarea>
+                        <div class="char-counter"><span id="demoCounter">0</span> / 400</div>
+                    </div>
+                    <button class="btn-submit-form" onclick="submitForm()">
+                        Request Demo <i class="fas fa-arrow-right" style="font-size:13px"></i>
+                    </button>
+                </div>
+
+                <!-- SUPPORT TAB -->
+                <div class="form-panel" id="tab-support">
+                    <div class="form-row">
+                        <div class="form-group mb0">
+                            <label class="form-label">Full Name <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-user input-icon"></i>
+                                <input class="form-input" type="text" placeholder="Your full name">
+                            </div>
+                        </div>
+                        <div class="form-group mb0">
+                            <label class="form-label">Email Address <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input class="form-input" type="email" placeholder="you@company.com">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top:14px">
+                        <div class="form-group mb0">
+                            <label class="form-label">Product / System <span class="req">*</span></label>
+                            <select class="form-select">
+                                <option value="">Select product</option>
+                                <option>ZTS AI Smart Welding Helmet</option>
+                                <option>WeldSense Analytics Platform</option>
+                                <option>ZeeIoT Industrial Gateway</option>
+                                <option>SmartArc Weld Controller</option>
+                                <option>ZTS Predictive QA Module</option>
+                                <option>AICTE-IDEA Lab Equipment</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb0">
+                            <label class="form-label">Priority Level</label>
+                            <select class="form-select">
+                                <option value="">Select priority</option>
+                                <option>🔴 Critical — Production Down</option>
+                                <option>🟠 High — Functionality Affected</option>
+                                <option>🟡 Medium — Minor Issue</option>
+                                <option>🟢 Low — Question / Guidance</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:14px">
+                        <label class="form-label">Describe the Issue <span class="req">*</span></label>
+                        <textarea class="form-textarea" id="supportMsg"
+                            placeholder="Please describe the issue in detail — what you expected, what happened, and any error messages you received..."
+                            maxlength="800" oninput="updateCounter('supportMsg','supportCounter')"></textarea>
+                        <div class="char-counter"><span id="supportCounter">0</span> / 800</div>
+                    </div>
+                    <button class="btn-submit-form" onclick="submitForm()">
+                        Submit Support Ticket <i class="fas fa-life-ring" style="font-size:13px"></i>
+                    </button>
+                </div>
+
+            </div><!-- end form-wrap -->
+        </div>
+    </div>
+
+    <!-- ══ CONTACT CHANNELS ════════════════════════════ -->
+    <div class="channels-section">
+        <div class="channels-inner">
+            <div class="channel-card sr">
+                <div class="channel-icon"><i class="fas fa-envelope-open-text"></i></div>
+                <h3>Email</h3>
+                <p>Send us a detailed message any time. We read and respond to every email — usually within a few hours
+                    during business days.</p>
+                <a href="mailto:info@zeekerstech.com" class="channel-link">info@zeekerstech.com <i
+                        class="fas fa-arrow-right"></i></a>
+                <div>
+                    <div class="response-badge"><i class="fas fa-clock"></i> Typical response: &lt; 24 hours</div>
+                </div>
+            </div>
+            <div class="channel-card sr">
+                <div class="channel-icon"><i class="fab fa-linkedin-in"></i></div>
+                <h3>LinkedIn</h3>
+                <p>Follow our company updates, R&D insights, and product launches. Direct message us on LinkedIn for
+                    quick professional enquiries.</p>
+                <a href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/" target="_blank"
+                    rel="noopener noreferrer" class="channel-link">
+                    Zeekers Technology Solutions Pvt Ltd.
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <div>
+                    <div class="response-badge"><i class="fas fa-clock"></i> Typical response: 1–2 business days</div>
+                </div>
+            </div>
+            <div class="channel-card sr">
+                <div class="channel-icon"><i class="fas fa-phone-alt"></i></div>
+                <h3>Phone</h3>
+                <p>For urgent enquiries or to speak directly with our team, call us during office hours. We're based in
+                    Coimbatore, Tamil Nadu.</p>
+                <a href="tel:+918098141600" class="channel-link">+91 80981 41600 <i class="fas fa-arrow-right"></i></a>
+                <div>
+                    <div class="response-badge"><i class="fas fa-clock"></i> Mon – Sat · 9 AM – 6 PM IST</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ MAP + OFFICE ═══════════════════════════════ -->
+    <div class="map-section">
+        <div class="map-grid">
+            <div class="sr-l location-block">
+                <div class="s-label">Location</div>
+
+                <div class="s-title">
+                    Head Office in<br>
+                    <span class="highlight">Coimbatore, India</span>
+                </div>
+
+                <div class="contact-sub">
+                    Our head office is located in Coimbatore, the industrial hub of South India,
+                    serving as the core center for engineering, R&D, and product innovation.
+                </div>
+            </div>
+            <div class="map-embed sr-r">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7830.803819869125!2d77.00653300000002!3d11.083394!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba8f71ab0a8d55b%3A0xa3ec0acd4840793!2sZeekers%20Technology%20Solutions%20Private%20Limited!5e0!3m2!1sen!2sin!4v1779171451318!5m2!1sen!2sin"
+                    width="100%" height="100%" style="border:0;min-height:500px" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Zeekers Technology Solutions — Coimbatore, Tamil Nadu">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ FAQ ════════════════════════════════════════ -->
+    <section class="faq-section">
+        <div class="faq-inner">
+            <div class="sr-l">
+                <div class="s-label">FAQ</div>
+                <div class="s-title">Common<br><span class="highlight">Questions</span></div>
+                <div class="contact-sub" style="margin-top:12px;margin-bottom:0;max-width:320px">Answers to the
+                    questions we get asked most often. Still have one? Use the form above.</div>
+            </div>
+            <div class="faq-items sr-r" id="faqList">
+
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">
+                        <span class="faq-q-text">How quickly do you respond to enquiries?</span>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">We aim to respond to all email enquiries within 24 hours on business
+                            days (Mon–Sat). For urgent technical support or critical production issues, we recommend
+                            calling us directly during office hours for the fastest response.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">
+                        <span class="faq-q-text">Can I visit the Zeekers R&D lab?</span>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Yes, visits to our Coimbatore R&D facility are welcome — but they must
+                            be scheduled in advance. Please email us at info@zeekerstechnology.com with your name,
+                            organisation, and the purpose of your visit, and we'll arrange a convenient time.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">
+                        <span class="faq-q-text">Do you offer on-site product demonstrations?</span>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Yes. For enterprise clients and institutions, we can arrange on-site
+                            demonstrations at your facility. Use the "Request Demo" tab in the contact form above and
+                            select "On-site Demo" as your preferred format. We will follow up to schedule at your
+                            convenience.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">
+                        <span class="faq-q-text">How do I set up an AICTE-IDEA Lab at my institution?</span>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Contact us via the "General Enquiry" form and select "IDEA Lab Setup"
+                            as your inquiry type. Our education partnerships team will reach out to discuss your
+                            institution's requirements, funding eligibility under AICTE, equipment selection, and the
+                            complete setup process.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">
+                        <span class="faq-q-text">Can I request a product brochure or technical specification
+                            sheet?</span>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Yes — product brochures and technical datasheets for all ZTS products
+                            are available on our Products page via the "Download Brochure" button on each product
+                            listing. For detailed specifications, integration guides, or API documentation, please
+                            contact our technical team at support@zeekerstechnology.com.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">
+                        <span class="faq-q-text">Are you open to research collaborations or academic
+                            partnerships?</span>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Absolutely. Research collaboration is central to how ZTS operates —
+                            it's what led to our IDEX-backed partnership with GRSE Ltd. If your institution or research
+                            group is working on AI, IoT, welding technology, or industrial automation, we'd love to
+                            explore how we can work together. Reach out via the form above.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">
+                        <span class="faq-q-text">How do I apply for an internship or job at Zeekers?</span>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Visit our Careers page to see all open positions and apply directly
+                            through the application form. For internship enquiries not listed on the Careers page, you
+                            can also send your CV and a brief note about your interest to careers@zeekerstechnology.com.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- PROFESSIONAL FOOTER -->
+    <footer class="footer-pro">
+        <div class="container-align">
+            <div class="footer-grid">
+                <div class="footer-logo">
+                    <h3>Zeekers<span style="color:#ff6b2b;">Tech</span></h3>
+                    <p>AI-driven Safety & Industrial IoT solutions. R&D, Embedded, and next-gen automation for
+                        mission critical environments.</p>
+                    <div class="footer-social"><a
+                            href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/"
+                            target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                            href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                                class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                            rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                            href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank"
+                            rel="noopener noreferrer"><i class="fab fa-youtube"></i></a></div>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html#mv-section">Mission & Vision</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="products.html">Products</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html#tab-general">For Enquiry</a></li>
+                        <li><a href="career.html">Careers</a></li>
+                        <li><a href="lab.html#cta-section">Lab Catalogue</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col contact-info">
+                    <h4>Contact & Office</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Coimbatore, Tamilnadu - 641035</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sat: 9:00 AM – 6:00 PM IST</p>
+                    <p><i class="fas fa-envelope"></i> director@zeekerstech.com</p>
+                    <p><i class="fas fa-phone-alt"></i> +91 80981 41600</p>
+                </div>
+            </div>
+            <div class="copyright">© 2025 Zeekers Technology Solutions Private Limited — Safety-first Engineering & AI
+                Innovation.</div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+        </footer>
+
+        <!-- JS (ONLY ONE SET) -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Your JS -->
+        <script type="module" src="/src/js/main.js"></script>
+
+        <script>
+
+            // top bar hide on scroll (desktop)
+            const topBar = document.getElementById('topBar');
+            const navbar = document.getElementById('navbar');
+            let lastScrollY = 0;
+            window.addEventListener('scroll', () => {
+                if (window.innerWidth <= 992) return;
+                const currentY = window.scrollY;
+                if (currentY <= 20) {
+                    topBar.classList.remove('hide-top');
+                    navbar.style.top = '44px';
+                } else if (currentY > lastScrollY && currentY > 60) {
+                    topBar.classList.add('hide-top');
+                    navbar.style.top = '0px';
+                } else if (currentY < lastScrollY) {
+                    topBar.classList.remove('hide-top');
+                    navbar.style.top = '44px';
+                }
+                lastScrollY = currentY;
+            });
+            // animate progress bars
+            document.querySelectorAll('.prog-fill').forEach(el => {
+                const target = getComputedStyle(el).getPropertyValue('--target-width').trim();
+                if (target) setTimeout(() => { el.style.width = target; }, 100);
+                else el.style.width = '92%';
+            });
+        </script>
+
+        <script>
+            /* SCROLL REVEAL */
+            const srIO = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); srIO.unobserve(e.target); } });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.sr,.sr-l,.sr-r').forEach(el => srIO.observe(el));
+
+            /* DETAIL CARDS stagger */
+            const cardIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.querySelectorAll('.detail-card').forEach((c, i) => {
+                            c.style.transitionDelay = `${i * 0.09}s`;
+                            c.classList.add('vis');
+                        });
+                        cardIO.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            const dc = document.getElementById('detailCards');
+            if (dc) cardIO.observe(dc);
+
+            /* CHANNELS stagger */
+            const chanIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.querySelectorAll('.channel-card').forEach((c, i) => {
+                            c.style.opacity = '0'; c.style.transform = 'translateY(24px)';
+                            c.style.transition = `opacity .55s ${i * 0.1}s ease, transform .55s ${i * 0.1}s ease`;
+                            requestAnimationFrame(() => requestAnimationFrame(() => {
+                                c.style.opacity = '1'; c.style.transform = 'translateY(0)';
+                            }));
+                        });
+                        chanIO.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            const ci = document.querySelector('.channels-inner');
+            if (ci) chanIO.observe(ci);
+
+            /* FORM TABS */
+            document.querySelectorAll('.form-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+                    document.getElementById('formSuccess').classList.remove('show');
+                    tab.classList.add('active');
+                    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+                });
+            });
+
+            /* INQUIRY BUTTON SELECTOR */
+            function selectInquiry(btn) {
+                const parent = btn.closest('.inquiry-grid') || btn.parentElement;
+                parent.querySelectorAll('.inquiry-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            }
+
+            /* CHAR COUNTER */
+            function updateCounter(textareaId, counterId) {
+                const ta = document.getElementById(textareaId);
+                const ct = document.getElementById(counterId);
+                if (ta && ct) ct.textContent = ta.value.length;
+            }
+
+            /* FORM SUBMIT */
+            function submitForm() {
+                document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+                const success = document.getElementById('formSuccess');
+                success.classList.add('show');
+                window.scrollTo({ top: document.querySelector('.contact-form-wrap').offsetTop - 100, behavior: 'smooth' });
+            }
+
+            function resetForm() {
+                document.getElementById('formSuccess').classList.remove('show');
+                document.getElementById('tab-general').classList.add('active');
+                document.querySelectorAll('.form-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+            }
+
+            /* FAQ ACCORDION */
+            function toggleFaq(btn) {
+                const item = btn.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            }
+
+            /* OFFICE HOURS STATUS */
+            function updateStatus() {
+                const now = new Date();
+                const day = now.getDay(); // 0=Sun
+                const h = now.getHours() + now.getTimezoneOffset() / -60 + 5.5; // approx IST
+                const badge = document.getElementById('statusBadge');
+                const txt = document.getElementById('statusText');
+                let open = false;
+                if (day >= 1 && day <= 5 && h >= 9 && h < 18) open = true;
+                if (day === 6 && h >= 9 && h < 14) open = true;
+                badge.className = 'status-badge ' + (open ? 'open' : 'closed');
+                txt.textContent = open ? 'Open Now' : 'Currently Closed';
+            }
+            updateStatus();
+
+            /* STATS */
+            const statsIO = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) { statsIO.unobserve(e.target); } });
+            }, { threshold: 0.3 });
+            const sb = document.querySelector('.stats-band');
+            if (sb) statsIO.observe(sb);
+        </script>
+
+
+</body>
+
+</html>

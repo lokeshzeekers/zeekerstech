@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zeekers Technology Solutions Private Limited</title>
+
+    <!-- PRECONNECT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <style>
+        body {
+            display: none;
+        }
+    </style>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- GOOGLE FONTS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<script>
+
+    window.addEventListener("load", () => {
+        document.body.style.display = "block";
+    });
+
+</script>
+
+<body>
+
+    <!-- TOP BAR (white, hides on scroll) - only visible desktop/tablet large -->
+    <div class="top-bar" id="topBar">
+        <div class="container-align">
+            <div class="top-left">
+                <a href="tel:+918098141600"><i class="fas fa-phone-alt"></i> +91 80981 41600</a>
+                <a href="mailto:director@zeekerstech.com"><i class="fas fa-envelope"></i> director@zeekerstech.com </a>
+            </div>
+            <div class="top-right">
+                <a href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/" target="_blank"
+                    rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                    href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                        class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                    rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                    href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank" rel="noopener noreferrer"><i
+                        class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR (gradient, aligned centrally) -->
+    <header class="navbar" id="navbar">
+        <div class="container-align">
+            <div class="logo">
+                <img src="/assets/images/logo.svg" alt="Zeekers Logo"
+                    onerror="this.src='https://placehold.co/140x40?text=Zeekers'">
+            </div>
+            <div class="desktop-nav">
+                <ul>
+
+                    <li><a href="index.html">Home</a></li>
+
+                    <!-- ABOUT -->
+                    <li><a href="#" class="active">About</a></li>
+
+                    <!-- PRODUCTS -->
+                    <li><a href="products.html">Products</a></li>
+
+                    <!-- AICTE -->
+                    <li><a href="lab.html">AICTE Lab</a></li>
+
+                    <li><a href="blog.html">Blog</a></li>
+
+                    <!-- CAREERS -->
+                    <li><a href="career.html">Careers</a></li>
+
+                    <li><a href="contact.html">Contact</a></li>
+
+                </ul>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- OVERLAY + SIDE MENU (mobile + phone/mail inside) -->
+    <div class="overlay" id="overlay"></div>
+    <nav class="side-menu" id="sideMenu">
+        <ul class="menu">
+
+            <li><a href="index.html">Home</a></li>
+
+            <li><a href="#" class="active">About</a></li>
+
+            <li><a href="products.html">Products</a></li>
+
+            <!-- AICTE -->
+            <li><a href="lab.html">AICTE Lab</a></li>
+
+            <li><a href="blog.html">Blog</a></li>
+
+            <!-- CAREERS -->
+            <li><a href="career.html">Careers</a></li>
+
+            <li><a href="contact.html">Contact</a></li>
+
+        </ul>
+        <div class="side-contact">
+
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <a href="tel:+918098141600">+91 80981 41600</a>
+            </div>
+
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:director@zeekerstech.com">director@zeekerstech.com</a>
+            </div>
+
+        </div>
+
+        <div class="side-divider">
+        </div>
+
+        <div class="social-row">
+            <a href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/" target="_blank"
+                rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                    class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank" rel="noopener noreferrer"><i
+                    class="fab fa-youtube"></i></a>
+        </div>
+    </nav>
+
+    <!-- ══ HERO ══════════════════════════════════════ -->
+    <section class="hero-section">
+
+        <div class="container-align">
+
+            <div class="hero-abt">
+
+                <!-- LEFT — dark -->
+                <div class="hero-panel-l">
+                    <div class="hero-orb-1"></div>
+                    <div class="hero-orb-2"></div>
+
+                    <div class="hero-kicker">About Zeekers</div>
+
+                    <h1 class="hero-h1">
+                        Smart R&D &<br>
+                        <span class="highlight">Quality Engg.</span>
+                    </h1>
+
+                    <p class="hero-desc">
+                        An R&D-driven company founded in 2023, focused on innovative solutions in welding,
+                        industrial automation, and smart mobility. IDEX-backed. Government-partnered. Future-built.
+                    </p>
+
+                    <div class="hero-chips">
+                        <div class="hero-chip active">Safety Products</div>
+                        <div class="hero-chip active">IDEX-Backed</div>
+                        <div class="hero-chip active">AI Welding</div>
+                        <div class="hero-chip active">IoT Devices</div>
+                        <div class="hero-chip active">GRSE Partner</div>
+                        <div class="hero-chip active">Automation</div>
+                    </div>
+                </div>
+
+                <!-- RIGHT — light -->
+                <div class="hero-panel-r">
+
+                    <div class="profile-card">
+                        <div class="pc-label">Company Profile</div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Founded</span>
+                            <span class="pc-val orange">2023</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Entity Type</span>
+                            <span class="pc-val">Private Limited</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Backed By</span>
+                            <span class="pc-val orange">iDEX India</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Partner</span>
+                            <span class="pc-val">GRSE Ltd., Kolkata</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Focus</span>
+                            <span class="pc-val">AI · IoT · Automation</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">HQ</span>
+                            <span class="pc-val">Coimbatore, Tamil Nadu</span>
+                        </div>
+                    </div>
+
+                    <div class="mini-stat-row">
+                        <div class="mini-stat">
+                            <div class="mini-stat-n">2023<span>.</span></div>
+                            <div class="mini-stat-l">Incorporated</div>
+                        </div>
+
+                        <div class="mini-stat">
+                            <div class="mini-stat-n">AI<span>+</span>IoT</div>
+                            <div class="mini-stat-l">Core Stack</div>
+                        </div>
+
+                        <div class="mini-stat">
+                            <div class="mini-stat-n">In<span>-house</span></div>
+                            <div class="mini-stat-l">R&D Lab</div>
+                        </div>
+
+                        <div class="mini-stat">
+                            <div class="mini-stat-n">100<span>%</span></div>
+                            <div class="mini-stat-l">R&D Led</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ══ MARQUEE ════════════════════════════════════ -->
+    <div class="marquee-strip">
+        <div class="marquee-track">
+            <!-- doubled for seamless loop -->
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>AI-Enabled Welding
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>IoT Devices
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Industrial Automation
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>IDEX-Backed
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Smart Helmets
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>R&D Lab
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>GRSE Partnership
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Predictive Quality
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Smart Mobility
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Embedded Systems
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>AI-Enabled Welding
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>IoT Devices
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Industrial Automation
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>IDEX-Backed
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Smart Helmets
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>R&D Lab
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>GRSE Partnership
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Predictive Quality
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Smart Mobility
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-dot"></div>Embedded Systems
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ INTRO / FOUNDING STORY ════════════════════ -->
+    <section class="section intro-section">
+        <div class="section-inner">
+            <div class="intro-grid">
+                <div class="intro-text-side sr">
+                    <div class="section-label">Our Story</div>
+                    <div class="section-title">Pioneering the<br><span class="highlight">Intelligent</span>
+                        Manufacturing Era
+                    </div>
+                    <p style="text-align: justify;">We began with an IDEX-backed AI welding helmet project with GRSE
+                        Ltd., Kolkata — and that first
+                        breakthrough defined everything we stand for. Today, Zeekers develops IoT devices, AI-powered
+                        tools, and advanced welding analytics, shaping the future of intelligent manufacturing.</p>
+                    <p style="margin-top:0;">From industrial innovation to product development — our in-house research
+                        lab is equipped for AI, IoT, and automation prototyping at every stage of the process.</p>
+                </div>
+                <div class="intro-visual" id="introCards">
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-flask"></i></div>
+                        <div>
+                            <div class="info-card-label">Certified Experts & R&D Team</div>
+                            <div class="info-card-sub">In-house lab equipped for AI, IoT, and automation</div>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-bolt"></i></div>
+                        <div>
+                            <div class="info-card-label">Fast & Reliable Services</div>
+                            <div class="info-card-sub">Rapid deployment with enterprise-grade reliability</div>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-hard-hat"></i></div>
+                        <div>
+                            <div class="info-card-label">AI-Enabled Helmets & Analytics</div>
+                            <div class="info-card-sub">Real-time weld data, safety monitoring, traceability</div>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-industry"></i></div>
+                        <div>
+                            <div class="info-card-label">From Industrial to Product Innovation</div>
+                            <div class="info-card-sub">End-to-end R&D from concept to commercialisation</div>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-award"></i></div>
+                        <div>
+                            <div class="info-card-label">IDEX-Backed — India Defence Innovation</div>
+                            <div class="info-card-sub">Government-validated precision technology</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ MISSION / VISION ═══════════════════════════ -->
+    <section class="section mv-section">
+        <div class="section-inner">
+            <div class="sr">
+                <div class="section-label">Purpose</div>
+                <div class="section-title">Our Mission <span class="highlight">&</span> Vision</div>
+                <p style="text-align: justify;">Fueling the future of industry through visionary research and
+                    development, we build cutting-edge
+                    technologies that redefine manufacturing, automation, and intelligent systems. Our focus is on
+                    creating scalable, real-world solutions that bridge innovation with industrial impact.</p>
+            </div>
+            <div class="mv-grid">
+                <div class="mv-card light sr">
+                    <div class="mv-deco">M</div>
+                    <div class="mv-icon"><i class="fas fa-crosshairs"></i></div>
+                    <div class="mv-tag">Our Mission</div>
+                    <h3>To Pioneer Smart Industrial Systems</h3>
+                    <p>To pioneer research and development in smart industrial and welding systems, delivering
+                        intelligent, safe, and transformative solutions through the power of AI and IoT. We build for
+                        precision, safety, and real-world impact — every single time.</p>
+                </div>
+                <div class="mv-card dark sr">
+                    <div class="mv-deco">V</div>
+                    <div class="mv-icon"><i class="fas fa-eye"></i></div>
+                    <div class="mv-tag">Our Vision</div>
+                    <h3>A Global R&D Hub for AI Industry</h3>
+                    <p>To emerge as a global innovation hub for R&D in AI-powered industrial automation, empowering the
+                        future of manufacturing with sustainable and intelligent solutions that redefine what's possible
+                        in every factory on Earth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ TIMELINE ═══════════════════════════════════ -->
+    <section class="section tl-section">
+        <div class="section-inner">
+            <div class="sr">
+                <div class="section-label">Growth Journey</div>
+                <div class="section-title">Milestones That<br>Mark <span class="highlight">Our Path</span></div>
+            </div>
+            <div class="tl-wrapper">
+                <div class="tl-line"></div>
+                <div class="tl-grid" id="tlGrid">
+                    <div class="tl-item">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot">
+                                <span class="tl-dot-yr">2023</span>
+                            </div>
+                        </div>
+                        <div class="tl-phase">Foundation</div>
+                        <h4>ZTS Established</h4>
+                        <p>ZTS established with a vision for R&D-led industrial innovation — incorporated as a Private
+                            Limited company with an in-house research lab from day one.</p>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot">
+                                <span class="tl-dot-yr">2024</span>
+                            </div>
+                        </div>
+                        <div class="tl-phase">Breakthrough</div>
+                        <h4>AI Welding Systems</h4>
+                        <p>Introduced smart welding systems powered by AI and IoT, including the IDEX-backed AI helmet
+                            with GRSE Ltd., Kolkata — a national first in intelligent welding safety.</p>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot">
+                                <span class="tl-dot-yr">2025</span>
+                            </div>
+                        </div>
+                        <div class="tl-phase">Expansion</div>
+                        <h4>Autonomous Systems</h4>
+                        <p>Expanded R&D into predictive quality assurance and autonomous industrial systems. Scaled the
+                            team and lab capabilities significantly.</p>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot">
+                                <span class="tl-dot-yr">→</span>
+                            </div>
+                        </div>
+                        <div class="tl-phase">Future</div>
+                        <h4>Global R&D Labs</h4>
+                        <p>Global R&D labs and smart factory ecosystem integration — bringing ZTS innovations into the
+                            world's most advanced manufacturing environments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ CAPABILITIES ═══════════════════════════════ -->
+    <section class="section cap-section">
+        <div class="section-inner">
+            <div class="sr">
+                <div class="cap-header sr">
+                    <div>
+                        <div class="section-label">What We Build</div>
+                        <div class="section-title">Empowering the<br><span class="highlight">Future of Industry</span>
+                        </div>
+                    </div>
+                    <div class="cap-right-text">Driven by R&D, committed to quality, and built for tomorrow — ZTS is
+                        engineering the intelligent manufacturing era, one breakthrough at a time.</div>
+                </div>
+                <div class="cap-grid" id="capGrid">
+                    <div class="cap-card">
+                        <div class="cap-num">01</div><i class="fas fa-hard-hat cap-icon"></i>
+                        <h4>AI-Enabled Helmets</h4>
+                        <p>Smart helmets with real-time data analytics and worker safety monitoring for precision
+                            welding
+                            operations.</p>
+                    </div>
+                    <div class="cap-card">
+                        <div class="cap-num">02</div><i class="fas fa-fire cap-icon"></i>
+                        <h4>Quality Welding</h4>
+                        <p>Advanced AI and IoT solutions ensure precision, safety, and full traceability in every weld.
+                        </p>
+                    </div>
+                    <div class="cap-card">
+                        <div class="cap-num">03</div><i class="fas fa-network-wired cap-icon"></i>
+                        <h4>IoT Devices</h4>
+                        <p>Connected IoT devices for smarter monitoring and control in manufacturing, built and tested
+                            in-house.</p>
+                    </div>
+                    <div class="cap-card">
+                        <div class="cap-num">04</div><i class="fas fa-robot cap-icon"></i>
+                        <h4>Automation Experts</h4>
+                        <p>Specialists in industrial automation, robotics integration, and process optimisation for
+                            modern
+                            factories.</p>
+                    </div>
+                    <div class="cap-card">
+                        <div class="cap-num">05</div><i class="fas fa-microscope cap-icon"></i>
+                        <h4>In-house R&D Lab</h4>
+                        <p>Our facility is equipped for full prototyping and testing of AI, IoT, and automation
+                            innovations.
+                        </p>
+                    </div>
+                    <div class="cap-card">
+                        <div class="cap-num">06</div><i class="fas fa-brain cap-icon"></i>
+                        <h4>Smart Systems</h4>
+                        <p>Intelligent tools that bring scalability and efficiency to industrial operations through
+                            embedded
+                            tech.</p>
+                    </div>
+                    <div class="cap-card">
+                        <div class="cap-num">07</div><i class="fas fa-chart-bar cap-icon"></i>
+                        <h4>Welding Analytics</h4>
+                        <p>Advanced analytics that turn raw welding data into actionable quality intelligence in real
+                            time.
+                        </p>
+                    </div>
+                    <div class="cap-card">
+                        <div class="cap-num">08</div><i class="fas fa-rocket cap-icon"></i>
+                        <h4>Future-Ready Vision</h4>
+                        <p>Continuously evolving with technology trends to lead the next chapter of intelligent
+                            manufacturing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ STATS ══════════════════════════════════════ -->
+    <div class="stats-band">
+        <div class="stats-row">
+            <div class="stat-col">
+                <div class="stat-num">2023</div>
+                <div class="stat-label">Year Founded</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-num">IDEX</div>
+                <div class="stat-label">Government Backed</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">R&D Led Innovation</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-num">∞</div>
+                <div class="stat-label">Innovation Mindset</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ WHY ZTS ════════════════════════════════════ -->
+    <section class="section why-section">
+        <div class="section-inner">
+            <div class="why-layout">
+                <div>
+                    <div class="sr">
+                        <div class="section-label">Why Zeekers</div>
+                        <div class="section-title">Research-Driven<br><span class="hl">Excellence</span></div>
+                    </div>
+                    <div class="why-list sr">
+                        <div class="why-row">
+                            <div class="why-n">01</div>
+                            <div>
+                                <h4>Research-Driven Expertise</h4>
+                                <p>Our innovations stem from rigorous in-house R&D in welding, automation, and smart
+                                    systems — not adapted off-the-shelf solutions.</p>
+                            </div>
+                        </div>
+                        <div class="why-row">
+                            <div class="why-n">02</div>
+                            <div>
+                                <h4>IDEX-Backed Credibility</h4>
+                                <p>Selected by India's Defence Innovation Organisation, validating our technology's
+                                    precision and strategic importance.</p>
+                            </div>
+                        </div>
+                        <div class="why-row">
+                            <div class="why-n">03</div>
+                            <div>
+                                <h4>Affordable & Accessible Innovation</h4>
+                                <p>Cutting-edge devices like smart helmets and sensors at competitive rates — without
+                                    any compromise on performance or quality.</p>
+                            </div>
+                        </div>
+                        <div class="why-row">
+                            <div class="why-n">04</div>
+                            <div>
+                                <h4>Certified & Experienced Team</h4>
+                                <p>Our certified engineers blend deep domain experience with a relentless drive for
+                                    innovation to deliver trusted industrial solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cred-stack" id="credStack">
+                    <div class="cred-card">
+                        <div class="cred-icon"><i class="fas fa-award"></i></div>
+                        <div>
+                            <div class="cred-label">iDEX-Backed Startup</div>
+                            <div class="cred-sub">Defence Innovation Organisation, India</div>
+                        </div>
+                    </div>
+                    <div class="cred-card">
+                        <div class="cred-icon"><i class="fas fa-anchor"></i></div>
+                        <div>
+                            <div class="cred-label">GRSE Ltd. Partner</div>
+                            <div class="cred-sub">Garden Reach Shipbuilders & Engineers, Kolkata</div>
+                        </div>
+                    </div>
+                    <div class="cred-card">
+                        <div class="cred-icon"><i class="fas fa-flask"></i></div>
+                        <div>
+                            <div class="cred-label">In-House R&D Laboratory</div>
+                            <div class="cred-sub">Full prototyping & testing — AI, IoT, automation</div>
+                        </div>
+                    </div>
+                    <div class="cred-card">
+                        <div class="cred-icon"><i class="fas fa-hard-hat"></i></div>
+                        <div>
+                            <div class="cred-label">AI Welding Helmet — India First</div>
+                            <div class="cred-sub">Real-time analytics & worker safety monitoring</div>
+                        </div>
+                    </div>
+                    <div class="cred-card">
+                        <div class="cred-icon"><i class="fas fa-bolt"></i></div>
+                        <div>
+                            <div class="cred-label">Fast & Reliable Deployment</div>
+                            <div class="cred-sub">Quick go-live with dependable support across all projects</div>
+                        </div>
+                    </div>
+                    <div class="cred-card">
+                        <div class="cred-icon"><i class="fas fa-globe-asia"></i></div>
+                        <div>
+                            <div class="cred-label">Future-Ready Vision</div>
+                            <div class="cred-sub">Continuously evolving toward global R&D leadership</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFESSIONAL FOOTER -->
+    <footer class="footer-pro">
+        <div class="container-align">
+            <div class="footer-grid">
+                <div class="footer-logo">
+                    <h3>Zeekers<span style="color:#ff6b2b;">Tech</span></h3>
+                    <p>AI-driven Safety & Industrial IoT solutions. R&D, Embedded, and next-gen automation for
+                        mission critical environments.</p>
+                    <div class="footer-social"><a
+                            href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/"
+                            target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                            href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                                class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                            rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                            href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank"
+                            rel="noopener noreferrer"><i class="fab fa-youtube"></i></a></div>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html#mv-section">Mission & Vision</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="products.html">Products</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html#tab-general">For Enquiry</a></li>
+                        <li><a href="career.html">Careers</a></li>
+                        <li><a href="lab.html#cta-section">Lab Catalogue</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col contact-info">
+                    <h4>Contact & Office</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Coimbatore, Tamilnadu - 641035</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sat: 9:00 AM – 6:00 PM IST</p>
+                    <p><i class="fas fa-envelope"></i> director@zeekerstech.com</p>
+                    <p><i class="fas fa-phone-alt"></i> +91 80981 41600</p>
+                </div>
+            </div>
+            <div class="copyright">© 2025 Zeekers Technology Solutions Private Limited — Safety-first Engineering & AI
+                Innovation.</div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+        </footer>
+
+        <!-- JS (ONLY ONE SET) -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Your JS -->
+        <script type="module" src="/src/js/main.js"></script>
+
+        <script>
+
+            // top bar hide on scroll (desktop)
+            const topBar = document.getElementById('topBar');
+            const navbar = document.getElementById('navbar');
+            let lastScrollY = 0;
+            window.addEventListener('scroll', () => {
+                if (window.innerWidth <= 992) return;
+                const currentY = window.scrollY;
+                if (currentY <= 20) {
+                    topBar.classList.remove('hide-top');
+                    navbar.style.top = '44px';
+                } else if (currentY > lastScrollY && currentY > 60) {
+                    topBar.classList.add('hide-top');
+                    navbar.style.top = '0px';
+                } else if (currentY < lastScrollY) {
+                    topBar.classList.remove('hide-top');
+                    navbar.style.top = '44px';
+                }
+                lastScrollY = currentY;
+            });
+            // animate progress bars
+            document.querySelectorAll('.prog-fill').forEach(el => {
+                const target = getComputedStyle(el).getPropertyValue('--target-width').trim();
+                if (target) setTimeout(() => { el.style.width = target; }, 100);
+                else el.style.width = '92%';
+            });
+            // service card stagger
+            const cards = document.querySelectorAll('.service-card');
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach((entry, idx) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }, idx * 80);
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            cards.forEach((c, i) => { c.style.opacity = '0'; c.style.transform = 'translateY(24px)'; c.style.transition = 'all 0.5s'; obs.observe(c); });
+        </script>
+
+        <script>
+            /* ── INTERSECTION OBSERVER FACTORY ───── */
+            function makeIO(threshold = 0.13) {
+                return new IntersectionObserver(entries => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) { e.target.classList.add('visible'); makeIO().unobserve(e.target); }
+                    });
+                }, { threshold });
+            }
+
+            /* ── SCROLL REVEAL ────────────────────── */
+            const srIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('visible'); srIO.unobserve(e.target); }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.sr').forEach(el => srIO.observe(el));
+
+            /* ── TIMELINE stagger ─────────────────── */
+            const tlIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('visible'); tlIO.unobserve(e.target); }
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.tl-item').forEach((el, i) => {
+                el.style.transitionDelay = `${i * 0.13}s`;
+                tlIO.observe(el);
+            });
+
+            /* ── INTRO CARDS stagger (slide from right) */
+            const icIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        const cards = e.target.querySelectorAll('.info-card');
+                        cards.forEach((c, i) => {
+                            c.style.transition = `opacity 0.5s ${i * 0.1}s ease, transform 0.5s ${i * 0.1}s ease`;
+                            c.classList.add('visible');
+                        });
+                        icIO.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            const introCards = document.getElementById('introCards');
+            if (introCards) icIO.observe(introCards);
+
+            /* ── CAP CARDS stagger ────────────────── */
+            const capIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        const cards = e.target.querySelectorAll('.cap-card');
+                        cards.forEach((c, i) => {
+                            c.style.opacity = '0';
+                            c.style.transform = 'translateY(20px)';
+                            c.style.transition = `opacity 0.5s ${i * 0.07}s, transform 0.5s ${i * 0.07}s`;
+                            requestAnimationFrame(() => requestAnimationFrame(() => {
+                                c.style.opacity = '1';
+                                c.style.transform = 'translateY(0)';
+                            }));
+                        });
+                        capIO.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            const capGrid = document.getElementById('capGrid');
+            if (capGrid) capIO.observe(capGrid);
+
+            /* ── CRED CARDS stagger (slide from right) */
+            const credIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        const cards = e.target.querySelectorAll('.cred-card');
+                        cards.forEach((c, i) => {
+                            c.style.transition = `opacity 0.5s ${i * 0.09}s ease, transform 0.5s ${i * 0.09}s ease`;
+                            c.classList.add('visible');
+                        });
+                        credIO.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            const credStack = document.getElementById('credStack');
+            if (credStack) credIO.observe(credStack);
+
+            /* ── COUNTER ANIMATION for stats ─────── */
+            const statsIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.querySelectorAll('.stat-num').forEach(el => {
+                            const text = el.textContent;
+                            if (!isNaN(parseInt(text))) {
+                                const target = parseInt(text);
+                                let current = 0;
+                                const step = Math.ceil(target / 40);
+                                const timer = setInterval(() => {
+                                    current = Math.min(current + step, target);
+                                    el.textContent = current + (text.includes('%') ? '%' : '');
+                                    if (current >= target) clearInterval(timer);
+                                }, 30);
+                            }
+                        });
+                        statsIO.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            document.querySelector('.stats-band') && statsIO.observe(document.querySelector('.stats-band'));
+        </script>
+
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "zts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass src/scss/style.scss dist/css/style.css --watch",
+    "build-css": "sass src/scss/style.scss dist/css/style.min.css --style=compressed",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "jquery": "^4.0.0"
+  },
+  "devDependencies": {
+    "sass": "^1.99.0",
+    "vite": "^8.0.9"
+  }
+}
+

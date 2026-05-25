@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zeekers Technology Solutions Private Limited</title>
+
+    <!-- PRECONNECT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <style>
+        body {
+            display: none;
+        }
+    </style>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- GOOGLE FONTS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<script>
+
+    window.addEventListener("load", () => {
+        document.body.style.display = "block";
+    });
+
+</script>
+
+<body>
+
+    <!-- TOP BAR (white, hides on scroll) - only visible desktop/tablet large -->
+    <div class="top-bar" id="topBar">
+        <div class="container-align">
+            <div class="top-left">
+                <a href="tel:+918098141600"><i class="fas fa-phone-alt"></i> +91 80981 41600</a>
+                <a href="mailto:director@zeekerstech.com"><i class="fas fa-envelope"></i> director@zeekerstech.com </a>
+            </div>
+            <div class="top-right">
+                <a href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/" target="_blank"
+                    rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                    href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                        class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                    rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                    href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank" rel="noopener noreferrer"><i
+                        class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR (gradient, aligned centrally) -->
+    <header class="navbar" id="navbar">
+        <div class="container-align">
+            <div class="logo">
+                <img src="/assets/images/logo.svg" alt="Zeekers Logo"
+                    onerror="this.src='https://placehold.co/140x40?text=Zeekers'">
+            </div>
+            <div class="desktop-nav">
+                <ul>
+
+                    <li><a href="index.html">Home</a></li>
+
+                    <!-- ABOUT -->
+                    <li><a href="about.html">About</a></li>
+
+                    <!-- PRODUCTS -->
+                    <li><a href="products.html">Products</a></li>
+
+                    <!-- AICTE -->
+                    <li><a href="lab.html">AICTE Lab</a></li>
+
+                    <li><a href="blog.html">Blog</a></li>
+
+                    <!-- CAREERS -->
+                    <li><a href="#" class="active">Careers</a></li>
+
+                    <li><a href="contact.html">Contact</a></li>
+
+                </ul>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- OVERLAY + SIDE MENU (mobile + phone/mail inside) -->
+    <div class="overlay" id="overlay"></div>
+    <nav class="side-menu" id="sideMenu">
+        <ul class="menu">
+
+            <li><a href="index.html">Home</a></li>
+
+            <li><a href="about.html">About</a></li>
+
+            <li><a href="products.html">Products</a></li>
+
+            <!-- AICTE -->
+            <li><a href="lab.html">AICTE Lab</a></li>
+
+            <li><a href="blog.html">Blog</a></li>
+
+            <!-- CAREERS -->
+            <li><a href="#" class="active">Careers</a></li>
+
+            <li><a href="contact.html">Contact</a></li>
+
+        </ul>
+        <div class="side-contact">
+
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <a href="tel:+918098141600">+91 80981 41600</a>
+            </div>
+
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:director@zeekerstech.com">director@zeekerstech.com</a>
+            </div>
+
+        </div>
+
+        <div class="side-divider">
+        </div>
+
+        <div class="social-row">
+            <a href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/" target="_blank"
+                rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                    class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank" rel="noopener noreferrer"><i
+                    class="fab fa-youtube"></i></a>
+        </div>
+    </nav>
+
+    <!-- APPLICATION MODAL -->
+    <div class="modal-overlay" id="applyModal">
+        <div class="modal-box">
+            <div class="modal-header" id="modalHeader">
+                <button class="modal-close-btn" id="modalClose"><i class="fas fa-times"></i></button>
+                <div class="modal-header-kicker">Apply Now</div>
+                <h3 id="modalJobTitle">Position Title</h3>
+                <div class="modal-header-meta">
+                    <div class="mhm-item"><i class="fas fa-map-marker-alt"></i><span id="modalJobLocation"></span></div>
+                    <div class="mhm-item"><i class="fas fa-briefcase"></i><span id="modalJobType"></span></div>
+                    <div class="mhm-item"><i class="fas fa-layer-group"></i><span id="modalJobDept"></span></div>
+                </div>
+            </div>
+
+            <div id="modalForm">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Full Name *</label>
+                            <input class="form-input" type="text" placeholder="Your full name" id="fname">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address *</label>
+                            <input class="form-input" type="email" placeholder="you@email.com" id="femail">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input class="form-input" type="tel" placeholder="+91 98765 43210" id="fphone">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Years of Experience</label>
+                            <select class="form-select" id="fexp">
+                                <option value="">Select experience</option>
+                                <option>0 – 1 year (Fresher)</option>
+                                <option>1 – 3 years</option>
+                                <option>3 – 5 years</option>
+                                <option>5 – 8 years</option>
+                                <option>8+ years</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">LinkedIn / Portfolio URL</label>
+                        <input class="form-input" type="url" placeholder="https://linkedin.com/in/yourprofile"
+                            id="flink">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Why do you want to join Zeekers? *</label>
+                        <textarea class="form-textarea"
+                            placeholder="Tell us about yourself, your motivation, and what you'll bring to the team..."
+                            id="fmsg"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Resume (PDF or DOCX)</label>
+                        <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()">
+                            <input type="file" id="fileInput" style="display:none" accept=".pdf,.doc,.docx">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop or <span>browse file</span></p>
+                            <div class="file-name" id="fileName"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-cancel" id="cancelBtn">Cancel</button>
+                    <button class="btn-submit" onclick="submitApplication()">
+                        Submit Application <i class="fas fa-arrow-right" style="font-size:12px"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-success" id="modalSuccess">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h3>Application Submitted!</h3>
+                <p>Thank you for applying to Zeekers Technology Solutions. Our HR team will review your application and
+                    reach out within 5–7 business days.</p>
+                <button class="btn-apply" style="margin-top:24px;display:inline-flex" onclick="closeModal()">
+                    Back to Careers <i class="fas fa-arrow-left" style="font-size:11px"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ HERO ══════════════════════════════════════ -->
+    <section class="hero-section">
+
+        <div class="container-align">
+
+            <div class="hero-abt">
+
+                <!-- LEFT — dark -->
+                <div class="hero-panel-l">
+
+                    <div class="hero-orb-1"></div>
+                    <div class="hero-orb-2"></div>
+
+                    <div class="hero-kicker">Join the Team</div>
+
+                    <h1 class="hero-h1">
+                        Engg. future <br>
+                        <span class="highlight">starts here</span>
+                    </h1>
+
+                    <p class="hero-desc">
+                        At Zeekers, you don't just write code or design circuits — you engineer
+                        solutions that change how India's industries operate. We are a team of
+                        builders, researchers, and problem-solvers working on technology that matters.
+                    </p>
+
+                    <div class="hero-chips">
+                        <div class="hero-chip active">R&D Focused</div>
+                        <div class="hero-chip active">IDEX-Backed</div>
+                        <div class="hero-chip active">High-Impact Work</div>
+                        <div class="hero-chip active">Coimbatore HQ</div>
+                        <div class="hero-chip active">Fast-Growing</div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT — light -->
+                <div class="hero-panel-r">
+
+                    <div class="profile-card">
+
+                        <div class="pc-label">Why Zeekers</div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Company Stage</span>
+                            <span class="pc-val orange">High-Growth Startup</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Work Type</span>
+                            <span class="pc-val">On-site · Hybrid Options</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Location</span>
+                            <span class="pc-val">Coimbatore, Tamil Nadu</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Team Size</span>
+                            <span class="pc-val orange">50+ and Growing</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Open Roles</span>
+                            <span class="pc-val orange">8 Positions</span>
+                        </div>
+
+                        <div class="pc-row">
+                            <span class="pc-key">Focus Areas</span>
+                            <span class="pc-val">AI · IoT · Embedded · Automation</span>
+                        </div>
+
+                    </div>
+
+                    <div class="mini-stat-row">
+
+                        <div class="mini-stat">
+                            <div class="mini-stat-n">8<span>+</span></div>
+                            <div class="mini-stat-l">Open Roles</div>
+                        </div>
+
+                        <div class="mini-stat">
+                            <div class="mini-stat-n">R&amp;D<span>.</span></div>
+                            <div class="mini-stat-l">Led Culture</div>
+                        </div>
+
+                        <div class="mini-stat">
+                            <div class="mini-stat-n">2023<span>.</span></div>
+                            <div class="mini-stat-l">Founded</div>
+                        </div>
+
+                        <div class="mini-stat">
+                            <div class="mini-stat-n">100<span>%</span></div>
+                            <div class="mini-stat-l">Impact Work</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ══ MARQUEE ════════════════════════════════════ -->
+    <div class="marquee-strip">
+        <div class="marquee-track">
+            <div class="m-item">
+                <div class="m-dot"></div>Embedded Systems
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>AI Engineering
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>IoT Development
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Industrial Automation
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Mechanical Design
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Data Science
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Product Management
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Quality Engineering
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Sales & Partnerships
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Research Internships
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Embedded Systems
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>AI Engineering
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>IoT Development
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Industrial Automation
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Mechanical Design
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Data Science
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Product Management
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Quality Engineering
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Sales & Partnerships
+            </div>
+            <div class="m-item">
+                <div class="m-dot"></div>Research Internships
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ WHY ZTS ════════════════════════════════════ -->
+    <section class="section why-section">
+        <div class="s-inner">
+            <div class="sr">
+                <div class="s-label">Why Join Us</div>
+                <div class="s-title">Work That <span class="highlight">Actually Matters</span></div>
+                <p style="margin-bottom: 40px; text-align: justify;">We build technology that is deployed in real
+                    factories, real shipyards,
+                    and real classrooms, where it directly powers critical operations and learning environments. At
+                    Zeekers, every contribution you make translates into a tangible real-world impact, shaping how
+                    industries operate, how systems perform, and how the next generation learns and builds in the
+                    physical world.
+                </p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card sr">
+                    <div class="why-number">01</div>
+                    <div class="why-icon"><i class="fas fa-flask"></i></div>
+                    <h3>In-House R&D Culture</h3>
+                    <p>Work alongside engineers who invent products from scratch. Our Coimbatore lab is where you
+                        prototype, test, destroy, and rebuild — with real budgets and real timelines, not academic
+                        simulations.</p>
+                </div>
+                <div class="why-card sr">
+                    <div class="why-number">02</div>
+                    <div class="why-icon"><i class="fas fa-rocket"></i></div>
+                    <h3>Fast Growth, Real Ownership</h3>
+                    <p>We are a high-growth startup backed by India's Defence Innovation Organisation. Join early, take
+                        ownership of significant challenges, and grow your career faster than you would anywhere else.
+                    </p>
+                </div>
+                <div class="why-card sr">
+                    <div class="why-number">03</div>
+                    <div class="why-icon"><i class="fas fa-award"></i></div>
+                    <h3>IDEX-Validated Impact</h3>
+                    <p>The products you help build are validated by AICTE, deployed with GRSE, and used by engineers in
+                        some of India's most demanding industrial environments. Your work ships to production.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ PERKS ══════════════════════════════════════ -->
+    <section class="section cap-section perks-section">
+        <div class="section-inner">
+            <div class="sr">
+
+                <div class="cap-header sr">
+                    <div>
+                        <div class="section-label">Benefits & Perks</div>
+                        <div class="section-title">For Technology<br><span class="highlight">Builders</span></div>
+                    </div>
+                    <div class="cap-right-text">
+                        Everything you need to do your best work — and then some. A culture built for engineers,
+                        creators,
+                        and problem-solvers who want real impact.
+                    </div>
+                </div>
+
+                <div class="cap-grid perks-grid" id="perksGrid">
+
+                    <div class="cap-card">
+                        <div class="cap-num">01</div>
+                        <i class="fas fa-money-bill-wave cap-icon"></i>
+                        <h4>Competitive Compensation</h4>
+                        <p>Market-leading salaries benchmarked against top tech companies, reviewed regularly for
+                            fairness and growth.</p>
+                    </div>
+
+                    <div class="cap-card">
+                        <div class="cap-num">02</div>
+                        <i class="fas fa-microscope cap-icon"></i>
+                        <h4>R&D Lab Access</h4>
+                        <p>Full access to our in-house lab with IoT kits, electronics benches, AI systems, and
+                            prototyping tools.</p>
+                    </div>
+
+                    <div class="cap-card">
+                        <div class="cap-num">03</div>
+                        <i class="fas fa-graduation-cap cap-icon"></i>
+                        <h4>Learning Budget</h4>
+                        <p>Annual budget for courses, certifications, conferences, and books to accelerate your
+                            engineering growth.</p>
+                    </div>
+
+                    <div class="cap-card">
+                        <div class="cap-num">04</div>
+                        <i class="fas fa-heartbeat cap-icon"></i>
+                        <h4>Health Insurance</h4>
+                        <p>Comprehensive coverage for you and your family, including medical, dental, and specialist
+                            care support.</p>
+                    </div>
+
+                    <div class="cap-card">
+                        <div class="cap-num">05</div>
+                        <i class="fas fa-clock cap-icon"></i>
+                        <h4>Flexible Hours</h4>
+                        <p>Output-driven culture with flexible timing. We value what you build, not when you log in.</p>
+                    </div>
+
+                    <div class="cap-card">
+                        <div class="cap-num">06</div>
+                        <i class="fas fa-plane cap-icon"></i>
+                        <h4>Field Exposure</h4>
+                        <p>Hands-on experience at factories, shipyards, and client sites to understand real-world
+                            engineering challenges.</p>
+                    </div>
+
+                    <div class="cap-card">
+                        <div class="cap-num">07</div>
+                        <i class="fas fa-users cap-icon"></i>
+                        <h4>Small Expert Team</h4>
+                        <p>Work directly with founders and senior engineers in a fast-moving, no-bureaucracy
+                            environment.</p>
+                    </div>
+
+                    <div class="cap-card">
+                        <div class="cap-num">08</div>
+                        <i class="fas fa-star cap-icon"></i>
+                        <h4>Recognition & Growth</h4>
+                        <p>Fast-track growth, ownership opportunities, and visibility through impactful real-world
+                            projects.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ STATS ══════════════════════════════════════ -->
+    <div class="stats-band">
+        <div class="stats-row">
+            <div class="stat-col">
+                <div class="stat-num">50<span style="font-size:.6em">+</span></div>
+                <div class="stat-label">Team Members</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-num">8</div>
+                <div class="stat-label">Open Positions</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Products Ship to Production</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-num">2023</div>
+                <div class="stat-label">Founded — Growing Fast</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ CULTURE ════════════════════════════════════ -->
+    <section class="section culture-section">
+        <div class="s-inner">
+            <div class="culture-grid">
+                <div class="culture-text sr-l">
+                    <div class="s-label">Our Culture</div>
+                    <h2>A Place Where<br><span style="background-color: #ff6b2b;">Curiosity is a Job Requirement</span>
+                    </h2>
+                    <p>We hire for intellectual curiosity and the drive to build things first. Degrees matter less than
+                        demonstrated ability. Culture at ZTS is built on honesty, direct feedback, and a shared
+                        obsession with making things that work in the real world.</p>
+                    <div class="culture-bullets">
+                        <div class="c-bullet">
+                            <div class="c-check"><i class="fas fa-check"></i></div><span><strong>Flat hierarchy</strong>
+                                — everyone's ideas get heard, from intern to founder.</span>
+                        </div>
+                        <div class="c-bullet">
+                            <div class="c-check"><i class="fas fa-check"></i></div><span><strong>Build first, ask
+                                    second</strong> — we value momentum and shipping over endless planning.</span>
+                        </div>
+                        <div class="c-bullet">
+                            <div class="c-check"><i class="fas fa-check"></i></div><span><strong>Learn publicly</strong>
+                                — we share what works and what doesn't across the whole team.</span>
+                        </div>
+                        <div class="c-bullet">
+                            <div class="c-check"><i class="fas fa-check"></i></div><span><strong>Honest
+                                    feedback</strong> — we tell each other the truth because we respect each other's
+                                growth.</span>
+                        </div>
+                        <div class="c-bullet">
+                            <div class="c-check"><i class="fas fa-check"></i></div><span><strong>Field-first
+                                    mindset</strong> — our best insights come from the factory floor, not the
+                                boardroom.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="culture-mosaic sr-r">
+                    <div class="mosaic-tile"><i class="fas fa-microchip"></i>
+                        <div class="mosaic-label">R&D Lab</div>
+                    </div>
+                    <div class="mosaic-tile"><i class="fas fa-hard-hat"></i>
+                        <div class="mosaic-label">Field Testing</div>
+                    </div>
+                    <div class="mosaic-tile"><i class="fas fa-users"></i>
+                        <div class="mosaic-label">Team Collaboration</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ JOB LISTINGS ═══════════════════════════════ -->
+    <div class="jobs-section" id="openings">
+        <div class="jobs-inner">
+            <div class="sr">
+                <div class="s-label">Open Positions</div>
+                <div class="s-title">Find Your <span class="highlight">Role at ZTS!</span></div>
+            </div>
+
+            <!-- search + filters -->
+            <div style="position:relative;margin-top:36px;margin-bottom:20px">
+                <i class="fas fa-search search-icon"></i>
+                <input class="job-search-input" id="jobSearch" placeholder="Search by title, skill, or keyword…"
+                    style="padding-left:44px">
+            </div>
+            <div class="job-filters">
+                <button class="jf-btn active" data-dept="all">All Departments</button>
+                <button class="jf-btn" data-dept="engineering">Engineering</button>
+                <button class="jf-btn" data-dept="ai">AI & Data</button>
+                <button class="jf-btn" data-dept="design">Product & Design</button>
+                <button class="jf-btn" data-dept="business">Business & Sales</button>
+                <button class="jf-btn" data-dept="internship">Internships</button>
+            </div>
+
+            <div class="jobs-header">
+                <div class="jobs-count"><span id="jobCountDisplay">8</span> open positions</div>
+            </div>
+
+            <div id="jobsList"></div>
+            <div class="no-results" id="noResults" style="display:none">
+                <i class="fas fa-search-minus"></i>
+                No positions match your search. Try a different keyword or filter.
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ OPEN APPLICATION ═══════════════════════════ -->
+    <div class="open-app-section">
+        <div class="open-app-inner sr">
+            <div>
+                <div
+                    style="font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px">
+                    <span style="width:16px;height:1px;background:var(--accent);display:inline-block"></span>Open
+                    Application
+                </div>
+                <h2>Don't see your <span style="background-color: #ff6b2b;">perfect role?</span></h2>
+                <p style="margin-top:10px">We're always looking for exceptional people. Send us your profile and we'll
+                    reach out when the right opportunity opens up.</p>
+            </div>
+            <button class="btn-open-app"
+                onclick="openApply({title:'Open Application',dept:'General',location:'Coimbatore, Tamil Nadu',type:'Full-time'})">
+                Send Your Profile <i class="fas fa-paper-plane" style="font-size:13px"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- PROFESSIONAL FOOTER -->
+    <footer class="footer-pro">
+        <div class="container-align">
+            <div class="footer-grid">
+                <div class="footer-logo">
+                    <h3>Zeekers<span style="color:#ff6b2b;">Tech</span></h3>
+                    <p>AI-driven Safety & Industrial IoT solutions. R&D, Embedded, and next-gen automation for
+                        mission critical environments.</p>
+                    <div class="footer-social"><a
+                            href="https://www.linkedin.com/company/zeekers-technology-solutions-private-limited/"
+                            target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a><a
+                            href="https://www.instagram.com/zeekersgroup/" target="_blank" rel="noopener noreferrer"><i
+                                class="fab fa-instagram"></i></a><a href="https://wa.me/918098141600" target="_blank"
+                            rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
+                            href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank"
+                            rel="noopener noreferrer"><i class="fab fa-youtube"></i></a></div>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html#mv-section">Mission & Vision</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="products.html">Products</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html#tab-general">For Enquiry</a></li>
+                        <li><a href="career.html">Careers</a></li>
+                        <li><a href="lab.html#cta-section">Lab Catalogue</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col contact-info">
+                    <h4>Contact & Office</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Coimbatore, Tamilnadu - 641035</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sat: 9:00 AM – 6:00 PM IST</p>
+                    <p><i class="fas fa-envelope"></i> director@zeekerstech.com</p>
+                    <p><i class="fas fa-phone-alt"></i> +91 80981 41600</p>
+                </div>
+            </div>
+            <div class="copyright">© 2025 Zeekers Technology Solutions Private Limited — Safety-first Engineering & AI
+                Innovation.</div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+        </footer>
+
+        <!-- JS (ONLY ONE SET) -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Your JS -->
+        <script type="module" src="/src/js/main.js"></script>
+
+        <script>
+
+            // TOP BAR + NAVBAR + FILTER STICKY CONTROL
+
+            const topBar = document.getElementById('topBar');
+            const navbar = document.getElementById('navbar');
+
+            let lastScrollY = 0;
+
+            window.addEventListener('scroll', () => {
+
+                if (window.innerWidth <= 992) return;
+
+                const currentY = window.scrollY;
+
+                // SCROLL TOP
+                if (currentY <= 20) {
+
+                    topBar.classList.remove('hide-top');
+
+                    navbar.style.top = '44px';
+
+                    // topbar visible
+                    document.documentElement.style.setProperty(
+                        '--filter-top',
+                        '129px'
+                    );
+
+                }
+
+                // SCROLL DOWN
+                else if (currentY > lastScrollY && currentY > 60) {
+
+                    topBar.classList.add('hide-top');
+
+                    navbar.style.top = '0px';
+
+                    // topbar hidden
+                    document.documentElement.style.setProperty(
+                        '--filter-top',
+                        '85px'
+                    );
+
+                }
+
+                // SCROLL UP
+                else if (currentY < lastScrollY) {
+
+                    topBar.classList.remove('hide-top');
+
+                    navbar.style.top = '44px';
+
+                    // topbar visible again
+                    document.documentElement.style.setProperty(
+                        '--filter-top',
+                        '129px'
+                    );
+
+                }
+
+                lastScrollY = currentY;
+
+            });
+
+            function updateFilterTop() {
+
+                // MOBILE / TABLET
+                if (window.innerWidth <= 992) {
+
+                    document.documentElement.style.setProperty(
+                        '--filter-top',
+                        `${navbar.offsetHeight}px`
+                    );
+
+                    return;
+                }
+
+                // DESKTOP
+                if (topBar.classList.contains('hide-top')) {
+
+                    document.documentElement.style.setProperty(
+                        '--filter-top',
+                        `${navbar.offsetHeight}px`
+                    );
+
+                } else {
+
+                    document.documentElement.style.setProperty(
+                        '--filter-top',
+                        `${topBar.offsetHeight + navbar.offsetHeight}px`
+                    );
+
+                }
+            }
+
+            // INITIAL RUN
+            updateFilterTop();
+
+            // ON RESIZE
+            window.addEventListener('resize', updateFilterTop);
+
+            // ON SCROLL
+            window.addEventListener('scroll', () => {
+
+                if (window.innerWidth <= 992) {
+                    updateFilterTop();
+                    return;
+                }
+
+                const currentY = window.scrollY;
+
+                if (currentY <= 20) {
+
+                    topBar.classList.remove('hide-top');
+                    navbar.style.top = '44px';
+
+                } else if (currentY > lastScrollY && currentY > 60) {
+
+                    topBar.classList.add('hide-top');
+                    navbar.style.top = '0px';
+
+                } else if (currentY < lastScrollY) {
+
+                    topBar.classList.remove('hide-top');
+                    navbar.style.top = '44px';
+
+                }
+
+                updateFilterTop();
+
+                lastScrollY = currentY;
+
+            });
+
+            // animate progress bars
+            document.querySelectorAll('.prog-fill').forEach(el => {
+                const target = getComputedStyle(el).getPropertyValue('--target-width').trim();
+                if (target) setTimeout(() => { el.style.width = target; }, 100);
+                else el.style.width = '92%';
+            });
+        </script>
+
+        <script>
+            /* ═══════════════════════════════════════════
+               JOB DATA
+            ═══════════════════════════════════════════ */
+            const jobs = [
+                {
+                    id: 1, dept: 'engineering', title: 'Senior Embedded Systems Engineer',
+                    location: 'Coimbatore, TN', type: 'Full-time', exp: '3–6 years',
+                    isNew: true,
+                    desc: 'Lead firmware development for AI-integrated weld monitoring hardware. Own the full embedded stack from bare-metal BSP to RTOS application layer on ARM Cortex-M and A-series platforms.',
+                    tags: ['C/C++', 'ARM Cortex', 'FreeRTOS', 'SPI/I²C/UART', 'Keil/IAR', 'PCB Bring-up']
+                },
+                {
+                    id: 2, dept: 'ai', title: 'AI / ML Engineer — Industrial Applications',
+                    location: 'Coimbatore, TN', type: 'Full-time', exp: '2–5 years',
+                    isNew: true,
+                    desc: 'Build and deploy machine learning models for real-time weld quality prediction and anomaly detection. Work at the intersection of edge AI and industrial IoT — models run on-device, not in the cloud.',
+                    tags: ['Python', 'TensorFlow Lite', 'PyTorch', 'ONNX', 'Edge AI', 'Data Pipelines', 'Industrial IoT']
+                },
+                {
+                    id: 3, dept: 'engineering', title: 'IoT Platform Engineer',
+                    location: 'Coimbatore, TN', type: 'Full-time', exp: '2–4 years',
+                    isNew: false,
+                    desc: 'Design and maintain the ZeeIoT cloud platform — device management, data ingestion pipelines, MQTT brokering, and the APIs consumed by the WeldSense dashboard. Ownership from device to dashboard.',
+                    tags: ['Node.js / Python', 'MQTT', 'OPC-UA', 'AWS/GCP', 'TimeSeries DB', 'Docker', 'Protocol Integration']
+                },
+                {
+                    id: 4, dept: 'engineering', title: 'Mechanical Design Engineer',
+                    location: 'Coimbatore, TN', type: 'Full-time', exp: '1–3 years',
+                    isNew: false,
+                    desc: 'Design ruggedised enclosures and mechanical sub-systems for industrial hardware products. Responsible for Fusion 360 modelling, DFM, GD&T, and coordination with the electronics and firmware teams.',
+                    tags: ['Fusion 360', 'SolidWorks', 'GD&T', 'Injection Moulding', 'Sheet Metal', 'IP67/IP54 Design']
+                },
+                {
+                    id: 5, dept: 'ai', title: 'Data Engineer — Weld Analytics',
+                    location: 'Coimbatore, TN · Hybrid', type: 'Full-time', exp: '2–4 years',
+                    isNew: true,
+                    desc: 'Build and maintain the data infrastructure powering ZTS\'s predictive quality products. Design efficient ingestion pipelines for high-frequency sensor data, maintain data quality standards, and own the analytical data warehouse.',
+                    tags: ['Python', 'Apache Kafka', 'PostgreSQL', 'InfluxDB', 'DBT', 'Airflow', 'SQL']
+                },
+                {
+                    id: 6, dept: 'design', title: 'Product Manager — IoT & Industrial Devices',
+                    location: 'Coimbatore, TN', type: 'Full-time', exp: '3–5 years',
+                    isNew: false,
+                    desc: 'Define and execute the product roadmap for ZTS\'s IoT hardware portfolio. Work directly with customers, the engineering team, and ZTS leadership to ship products that solve real industrial problems at scale.',
+                    tags: ['Product Strategy', 'Roadmapping', 'Industrial IoT', 'User Research', 'OKRs', 'Agile/Scrum']
+                },
+                {
+                    id: 7, dept: 'business', title: 'Enterprise Sales Manager — Industry & Defence',
+                    location: 'Coimbatore, TN · Travel Required', type: 'Full-time', exp: '4–7 years',
+                    isNew: false,
+                    desc: 'Own the complete sales cycle for ZTS\'s hardware and software products in manufacturing, defence, and energy verticals. Build relationships with CXO-level stakeholders and close enterprise deals.',
+                    tags: ['B2B Enterprise Sales', 'Industrial / Mfg Sector', 'CRM', 'Proposal Writing', 'Defence Sector a plus']
+                },
+                {
+                    id: 8, dept: 'internship', title: 'R&D Engineering Intern — Embedded / AI',
+                    location: 'Coimbatore, TN', type: 'Internship (3–6 months)', exp: 'Fresher / Final Year',
+                    isNew: true,
+                    desc: 'Work on a real R&D project alongside ZTS engineers. Previous interns have shipped production firmware, built sensor calibration tools, and contributed to our weld quality ML dataset. Expect to build something that matters.',
+                    tags: ['C/C++ or Python', 'Arduino/Raspberry Pi', 'Curiosity Required', 'Portfolio / GitHub', 'Any branch of Engineering']
+                }
+            ];
+
+            let activeDept = 'all';
+            let searchQuery = '';
+
+            function getFiltered() {
+                return jobs.filter(j => {
+                    const matchDept = activeDept === 'all' || j.dept === activeDept;
+                    const q = searchQuery.toLowerCase();
+                    const matchSearch = !q ||
+                        j.title.toLowerCase().includes(q) ||
+                        j.desc.toLowerCase().includes(q) ||
+                        j.tags.some(t => t.toLowerCase().includes(q)) ||
+                        j.dept.toLowerCase().includes(q);
+                    return matchDept && matchSearch;
+                });
+            }
+
+            function renderJobs() {
+                const list = document.getElementById('jobsList');
+                const noRes = document.getElementById('noResults');
+                const countEl = document.getElementById('jobCountDisplay');
+                const filtered = getFiltered();
+                countEl.textContent = filtered.length;
+
+                if (!filtered.length) {
+                    list.innerHTML = '';
+                    noRes.style.display = 'block';
+                    return;
+                }
+                noRes.style.display = 'none';
+                list.innerHTML = '';
+
+                filtered.forEach((job, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'job-card';
+                    card.innerHTML = `
+      <div class="job-left">
+        <div class="job-meta-row">
+          <div class="job-dept">${job.dept.charAt(0).toUpperCase() + job.dept.slice(1)}</div>
+          ${job.isNew ? '<div class="job-badge-new">New</div>' : ''}
+        </div>
+        <div class="job-title">${job.title}</div>
+        <div class="job-desc">${job.desc}</div>
+        <div class="job-tags-row">${job.tags.map(t => `<div class="job-tag">${t}</div>`).join('')}</div>
+      </div>
+      <div class="job-right">
+        <div class="job-info-stack">
+          <div class="job-info-item"><i class="fas fa-map-marker-alt"></i>${job.location}</div>
+          <div class="job-info-item"><i class="fas fa-briefcase"></i>${job.type}</div>
+          <div class="job-info-item"><i class="fas fa-layer-group"></i>${job.exp}</div>
+        </div>
+        <button class="btn-apply" onclick="openApply({title:'${job.title}',dept:'${job.dept}',location:'${job.location}',type:'${job.type}'})">
+          Apply Now <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>`;
+                    list.appendChild(card);
+
+                    // stagger animation
+                    card.style.transitionDelay = `${i * 0.07}s`;
+                    card.style.transition = `opacity .55s ${i * 0.07}s ease, transform .55s ${i * 0.07}s ease, box-shadow .3s, border-color .3s, transform .3s`;
+                    requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('vis')));
+                });
+            }
+
+            /* ── FILTER TABS ──────────────────────────── */
+            document.querySelectorAll('.jf-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.jf-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeDept = btn.dataset.dept;
+                    renderJobs();
+                });
+            });
+
+            /* ── SEARCH ───────────────────────────────── */
+            document.getElementById('jobSearch').addEventListener('input', e => {
+                searchQuery = e.target.value;
+                renderJobs();
+            });
+
+            /* ── MODAL ────────────────────────────────── */
+            function openApply(job) {
+                document.getElementById('modalJobTitle').textContent = job.title;
+                document.getElementById('modalJobLocation').textContent = job.location;
+                document.getElementById('modalJobType').textContent = job.type;
+                document.getElementById('modalJobDept').textContent = job.dept;
+                document.getElementById('modalForm').style.display = '';
+                document.getElementById('modalSuccess').classList.remove('show');
+                const modal = document.getElementById('applyModal');
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                modal.scrollTop = 0;
+            }
+
+            function closeModal() {
+                document.getElementById('applyModal').classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            function submitApplication() {
+                const name = document.getElementById('fname').value.trim();
+                const email = document.getElementById('femail').value.trim();
+                const msg = document.getElementById('fmsg').value.trim();
+                if (!name || !email || !msg) {
+                    alert('Please fill in your name, email, and motivation message.');
+                    return;
+                }
+                document.getElementById('modalForm').style.display = 'none';
+                document.getElementById('modalSuccess').classList.add('show');
+            }
+
+            document.getElementById('modalClose').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            document.getElementById('applyModal').addEventListener('click', e => {
+                if (e.target === e.currentTarget) closeModal();
+            });
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+            /* file drop */
+            const fileInput = document.getElementById('fileInput');
+            const fileDrop = document.getElementById('fileDrop');
+            const fileName = document.getElementById('fileName');
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files[0]) {
+                    fileName.textContent = '✓ ' + fileInput.files[0].name;
+                    fileName.style.display = 'block';
+                }
+            });
+            ['dragover', 'dragleave', 'drop'].forEach(evt => {
+                fileDrop.addEventListener(evt, e => {
+                    e.preventDefault();
+                    if (evt === 'dragover') fileDrop.classList.add('drag-over');
+                    else fileDrop.classList.remove('drag-over');
+                    if (evt === 'drop' && e.dataTransfer.files[0]) {
+                        fileInput.files = e.dataTransfer.files;
+                        fileName.textContent = '✓ ' + e.dataTransfer.files[0].name;
+                        fileName.style.display = 'block';
+                    }
+                });
+            });
+
+            /* SCROLL REVEAL */
+            const srIO = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); srIO.unobserve(e.target); } });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.sr,.sr-l,.sr-r').forEach(el => srIO.observe(el));
+
+            /* PERKS stagger */
+            const perksIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.querySelectorAll('.perk-card').forEach((c, i) => {
+                            c.style.opacity = '0'; c.style.transform = 'translateY(20px)';
+                            c.style.transition = `opacity .5s ${i * .06}s ease,transform .5s ${i * .06}s ease`;
+                            requestAnimationFrame(() => requestAnimationFrame(() => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }));
+                        });
+                        perksIO.unobserve(e.target);
+                    }
+                });
+            }, { threshold: .08 });
+            const pg = document.getElementById('perksGrid');
+            if (pg) perksIO.observe(pg);
+
+            /* WHY stagger */
+            const whyIO = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.querySelectorAll('.why-card').forEach((c, i) => {
+                            c.style.opacity = '0'; c.style.transform = 'translateY(24px)';
+                            c.style.transition = `opacity .55s ${i * .1}s ease,transform .55s ${i * .1}s ease`;
+                            requestAnimationFrame(() => requestAnimationFrame(() => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }));
+                        });
+                        whyIO.unobserve(e.target);
+                    }
+                });
+            }, { threshold: .1 });
+            const wg = document.querySelector('.why-grid');
+            if (wg) whyIO.observe(wg);
+
+            /* INIT */
+            renderJobs();
+        </script>
+
+</body>
+
+</html>
