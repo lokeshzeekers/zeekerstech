@@ -390,13 +390,14 @@
    transition: height 0.25s;
  }
 
- /* Hover */
- .side-menu ul li a:hover {
+ .side-menu ul li a:hover,
+ .side-menu ul li a.active {
    color: #ffffff;
    background: var(--accent);
  }
 
- .side-menu ul li a:hover::before {
+ .side-menu ul li a:hover::before,
+ .side-menu ul li a.active::before {
    height: 22px;
  }
 
@@ -405,6 +406,10 @@
    height: 1px;
    background: var(--border);
    margin: 20px 0;
+ }
+
+ .menu a.active {
+   color: var(--accent);
  }
 
  /* ================= RESPONSIVE FIX ONLY ================= */
@@ -863,6 +868,209 @@
 
    50% {
      transform: translateY(-6px);
+   }
+ }
+
+ /* ═══ AICTE IDEA LAB POPUP ═════════════════════ */
+
+ .aicte-popup-overlay {
+   position: fixed;
+   inset: 0;
+   background: rgba(0, 0, 0, .65);
+   backdrop-filter: blur(8px);
+   z-index: 9999;
+
+   display: none;
+   align-items: center;
+   justify-content: center;
+
+   padding: 20px;
+ }
+
+ .aicte-popup-overlay.show {
+   display: flex;
+ }
+
+ .aicte-popup-card {
+
+   width: 100%;
+   max-width: 520px;
+
+   background: #fff;
+   border-radius: 28px;
+
+   padding: 42px;
+
+   position: relative;
+
+   box-shadow:
+     0 30px 80px rgba(0, 0, 0, .18);
+
+   animation: popupReveal .4s ease forwards;
+ }
+
+ @keyframes popupReveal {
+
+   from {
+     opacity: 0;
+     transform: translateY(30px) scale(.95);
+   }
+
+   to {
+     opacity: 1;
+     transform: translateY(0) scale(1);
+   }
+ }
+
+ .aicte-popup-close {
+
+   position: absolute;
+   top: 18px;
+   right: 18px;
+
+   width: 38px;
+   height: 38px;
+
+   border: none;
+   border-radius: 50%;
+
+   background: #f5f5f5;
+
+   cursor: pointer;
+
+   font-size: 20px;
+   transition: .25s;
+ }
+
+ .aicte-popup-close:hover {
+   background: #ececec;
+ }
+
+ .aicte-popup-tag {
+
+   display: inline-flex;
+   align-items: center;
+   gap: 10px;
+
+   font-size: 11px;
+   font-weight: 600;
+
+   letter-spacing: 2px;
+   text-transform: uppercase;
+
+   color: var(--accent);
+
+   margin-bottom: 18px;
+ }
+
+ .aicte-popup-tag span {
+
+   width: 22px;
+   height: 2px;
+
+   background: var(--accent);
+ }
+
+ .aicte-popup-card h3 {
+
+   font-family: 'Syne', sans-serif;
+
+   font-size: clamp(28px, 4vw, 42px);
+
+   line-height: 1.1;
+   font-weight: 800;
+
+   color: var(--text-primary);
+
+   margin-bottom: 18px;
+ }
+
+ .aicte-popup-card h3 span {
+
+   background: linear-gradient(90deg,
+       var(--accent),
+       var(--accent-dark));
+
+   -webkit-background-clip: text;
+   background-clip: text;
+   -webkit-text-fill-color: transparent;
+ }
+
+ .aicte-popup-card p {
+
+   font-size: 15px;
+   line-height: 1.8;
+
+   color: #666;
+
+   margin-bottom: 28px;
+ }
+
+ .aicte-popup-actions {
+
+   display: flex;
+   gap: 12px;
+   flex-wrap: wrap;
+ }
+
+ .aicte-primary-btn {
+
+   background: var(--accent);
+   color: #fff;
+
+   text-decoration: none;
+
+   padding: 14px 26px;
+
+   border-radius: 100px;
+
+   font-size: 14px;
+   font-weight: 600;
+
+   display: inline-flex;
+   align-items: center;
+   gap: 10px;
+
+   transition: .3s;
+ }
+
+ .aicte-primary-btn:hover {
+
+   transform: translateY(-2px);
+   box-shadow: var(--shadow-or);
+ }
+
+ .aicte-secondary-btn {
+
+   background: #f5f5f5;
+   color: #333;
+
+   border: none;
+
+   padding: 14px 22px;
+
+   border-radius: 100px;
+
+   cursor: pointer;
+
+   font-size: 14px;
+   font-weight: 500;
+ }
+
+ @media (max-width:768px) {
+
+   .aicte-popup-card {
+     padding: 30px 24px;
+   }
+
+   .aicte-popup-actions {
+     flex-direction: column;
+   }
+
+   .aicte-primary-btn,
+   .aicte-secondary-btn {
+     justify-content: center;
+     width: 100%;
    }
  }
 
@@ -4252,73 +4460,111 @@
 
  /* BROCHURE MODAL */
 
+ /* ═════════ MODAL OVERLAY ═════════ */
+
  .brochure-modal-overlay {
    position: fixed;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
-
-   background: rgba(0, 0, 0, 0.65);
+   inset: 0;
 
    display: none;
    justify-content: center;
    align-items: center;
 
-   z-index: 99999;
    padding: 20px;
+
+   background: rgba(0, 0, 0, 0.65);
+   backdrop-filter: blur(6px);
+
+   z-index: 99999;
  }
 
  .brochure-modal-overlay.active {
    display: flex;
  }
 
+ /* ═════════ MODAL BOX ═════════ */
+
  .brochure-modal-box {
-   width: 100%;
-   max-width: 800px;
-   background: #fff;
-   overflow: hidden;
+   width: min(800px, 100%);
    max-height: 90vh;
+
+   background: #fff;
+   border-radius: 18px;
+
    overflow-y: auto;
-   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+   overflow-x: hidden;
+
+   box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
+
+   -webkit-overflow-scrolling: touch;
  }
 
+ /* Custom Scrollbar */
+
+ .brochure-modal-box::-webkit-scrollbar {
+   width: 6px;
+ }
+
+ .brochure-modal-box::-webkit-scrollbar-thumb {
+   background: rgba(0, 0, 0, .15);
+   border-radius: 20px;
+ }
+
+ /* ═════════ PRIMARY BUTTON ═════════ */
+
  .btn-primary {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+
+   padding: 13px 24px;
+
+   border: none;
+   border-radius: 100px;
+
    background: var(--accent);
    color: #fff;
-   border: none;
-   padding: 13px 24px;
-   border-radius: 100px;
+
    font-family: 'DM Sans', sans-serif;
    font-size: 14px;
    font-weight: 500;
+
    cursor: pointer;
-   display: inline-flex;
-   align-items: center;
-   gap: 8px;
-   transition: all 0.25s;
+
+   transition: all .25s ease;
+
    box-shadow: var(--shadow-or);
  }
 
  .btn-primary:hover {
    transform: translateY(-2px);
-   box-shadow: 0 12px 36px rgba(255, 107, 43, 0.35);
+   box-shadow: 0 12px 36px rgba(255, 107, 43, .35);
  }
 
+ /* ═════════ OUTLINE BUTTON ═════════ */
+
  .btn-outline {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+
+   padding: 12px 22px;
+
+   border-radius: 100px;
+   border: 1.5px solid var(--border);
+
    background: transparent;
    color: var(--text-primary);
-   border: 1.5px solid var(--border);
-   padding: 12px 22px;
-   border-radius: 100px;
+
    font-family: 'DM Sans', sans-serif;
    font-size: 14px;
    font-weight: 500;
+
    cursor: pointer;
-   display: inline-flex;
-   align-items: center;
-   gap: 8px;
-   transition: all 0.25s;
+
+   transition: all .25s ease;
  }
 
  .btn-outline:hover {
@@ -4331,6 +4577,67 @@
  .btn-outline i {
    font-size: 13px;
  }
+
+ /* ═════════ TABLET ═════════ */
+
+ @media (max-width: 992px) {
+
+   .brochure-modal-overlay {
+     padding: 16px;
+   }
+
+   .brochure-modal-box {
+     max-height: 88vh;
+   }
+
+ }
+
+ /* ═════════ MOBILE ═════════ */
+
+ @media (max-width: 768px) {
+
+   .brochure-modal-overlay {
+     align-items: flex-start;
+     padding: 10px;
+     overflow-y: auto;
+   }
+
+   .brochure-modal-box {
+     width: 92%;
+     max-height: calc(100vh - 20px);
+     margin-top: 10px;
+     border-radius: 14px;
+   }
+
+   .btn-primary,
+   .btn-outline {
+     width: 100%;
+     min-height: 48px;
+   }
+
+ }
+
+ /* ═════════ SMALL MOBILE ═════════ */
+
+ @media (max-width: 480px) {
+
+   .brochure-modal-overlay {
+     padding: 8px;
+   }
+
+   .brochure-modal-box {
+     border-radius: 12px;
+     max-height: calc(100vh - 16px);
+   }
+
+   .btn-primary,
+   .btn-outline {
+     font-size: 13px;
+     padding: 12px 18px;
+   }
+
+ }
+
 
  /* ═══════════════════════════════════════════
    RESPONSIVE: TABLET (max-width: 1024px)
@@ -6459,7 +6766,8 @@
    background: var(--accent-pale);
    transform: translateY(-1px)
  }
-//newsletter
+
+ //newsletter
  .newsletter-section {
    background: var(--text-primary);
    padding: 90px 20px;
@@ -7728,25 +8036,46 @@
 
  @media (max-width: 768px) {
 
-   /* modal wrapper fix */
+   /* Modal wrapper */
    .modal-box {
-     width: 100%;
-     max-width: 100%;
+     width: 92%;
+     max-width: 500px;
+     margin: 16px auto;
+
      display: block !important;
-     /* ❗ remove flex */
+
+     border-radius: 16px;
+     overflow: hidden;
    }
 
-   /* ensure proper stacking naturally */
+   /* Proper stacking */
    .modal-header,
    .modal-body {
      width: 100%;
      display: block;
+     box-sizing: border-box;
    }
 
-   /* fix padding causing overflow */
+   /* Better spacing */
+   .modal-header {
+     padding: 24px;
+   }
+
+   .modal-body {
+     padding: 24px;
+   }
+ }
+
+ @media (max-width: 480px) {
+
+   .modal-box {
+     width: calc(100% - 24px);
+     border-radius: 14px;
+   }
+
    .modal-header,
    .modal-body {
-     box-sizing: border-box;
+     padding: 20px;
    }
  }
 

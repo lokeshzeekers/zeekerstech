@@ -45,3 +45,45 @@ cards.forEach((c, i) => {
     c.style.transition = 'opacity 0.5s, transform 0.5s';
     io.observe(c);
 });
+
+/*idea lab popup box*/
+function openAictePopup() {
+    const popup = document.getElementById("aicteLabCard");
+    if (popup) {
+        popup.classList.add("show");
+    }
+}
+
+function closeAictePopup() {
+    const popup = document.getElementById("aicteLabCard");
+    if (popup) {
+        popup.classList.remove("show");
+    }
+}
+
+/* Close button (X) */
+const closeBtn = document.querySelector(".aicte-popup-close");
+if (closeBtn) {
+    closeBtn.addEventListener("click", closeAictePopup);
+}
+
+/* Maybe Later button */
+const laterBtn = document.querySelector(".aicte-secondary-btn");
+if (laterBtn) {
+    laterBtn.addEventListener("click", closeAictePopup);
+}
+
+/* Close when clicking outside */
+const popupOverlay = document.getElementById("aicteLabCard");
+if (popupOverlay) {
+    popupOverlay.addEventListener("click", function (e) {
+        if (e.target === popupOverlay) {
+            closeAictePopup();
+        }
+    });
+
+    /* Show popup after 5 seconds */
+    setTimeout(function () {
+        openAictePopup();
+    }, 5000);
+}
