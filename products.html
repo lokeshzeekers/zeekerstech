@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./assets/images/favicon.png">
 
@@ -394,9 +394,17 @@
                                 analytics accessible and portable. </div>
                         </div>
                     </div>
-                    <div class="product-btns"> <button class="btn-primary"> <i class="fas fa-download"
-                                style="font-size:13px;"></i> Download Brochure </button> <button class="btn-outline"> <i
-                                class="fas fa-envelope"></i> Request Demo </button> </div>
+                    <div class="product-btns">
+                        <button class="btn-primary" onclick="openBrochureModal('ZwelDAQ')">
+                            <i class="fas fa-download" style="font-size:13px;"></i>
+                            Download Brochure
+                        </button>
+
+                        <button class="btn-outline" onclick="requestDemo()">
+                            <i class="fab fa-whatsapp"></i>
+                            Request Demo
+                        </button>
+                    </div>
                 </div>
                 <div class="product-image-wrap">
                     <div class="product-img-container">
@@ -538,17 +546,15 @@
                     </div>
 
                     <div class="product-btns">
-
-                        <button class="btn-primary">
+                        <button class="btn-primary" onclick="openBrochureModal('ZweldMET')">
                             <i class="fas fa-download" style="font-size:13px;"></i>
                             Download Brochure
                         </button>
 
-                        <button class="btn-outline">
-                            <i class="fas fa-play-circle"></i>
-                            Watch Demo
+                        <button class="btn-outline" onclick="requestDemo()">
+                            <i class="fab fa-whatsapp"></i>
+                            Request Demo
                         </button>
-
                     </div>
 
                 </div>
@@ -653,9 +659,17 @@
                                 scalable IoT ecosystem development. </div>
                         </div>
                     </div>
-                    <div class="product-btns"> <button class="btn-primary"> <i class="fas fa-download"
-                                style="font-size:13px;"></i> Download Brochure </button> <button class="btn-outline"> <i
-                                class="fas fa-envelope"></i> Get Quote </button> </div>
+                    <div class="product-btns">
+                        <button class="btn-primary" onclick="openBrochureModal('ZeekersIoTKit')">
+                            <i class="fas fa-download" style="font-size:13px;"></i>
+                            Download Brochure
+                        </button>
+
+                        <button class="btn-outline" onclick="requestDemo()">
+                            <i class="fab fa-whatsapp"></i>
+                            Request Demo
+                        </button>
+                    </div>
                 </div>
                 <div class="product-image-wrap">
                     <div class="product-img-container">
@@ -792,17 +806,15 @@
 
                     <!-- BUTTONS -->
                     <div class="product-btns">
-
-                        <button class="btn-primary">
+                        <button class="btn-primary" onclick="openBrochureModal('ZeekWeigh')">
                             <i class="fas fa-download" style="font-size:13px;"></i>
                             Download Brochure
                         </button>
 
-                        <button class="btn-outline">
-                            <i class="fas fa-phone"></i>
-                            Contact Sales
+                        <button class="btn-outline" onclick="requestDemo()">
+                            <i class="fab fa-whatsapp"></i>
+                            Request Demo
                         </button>
-
                     </div>
 
                 </div>
@@ -967,17 +979,15 @@
 
                     <!-- BUTTONS -->
                     <div class="product-btns">
-
-                        <button class="btn-primary">
+                        <button class="btn-primary" onclick="openBrochureModal('Zeevior')">
                             <i class="fas fa-download" style="font-size:13px;"></i>
                             Download Brochure
                         </button>
 
-                        <button class="btn-outline">
-                            <i class="fas fa-phone"></i>
-                            Contact Support
+                        <button class="btn-outline" onclick="requestDemo()">
+                            <i class="fab fa-whatsapp"></i>
+                            Request Demo
                         </button>
-
                     </div>
 
                 </div>
@@ -1154,17 +1164,15 @@
                     </div>
 
                     <div class="product-btns">
-
-                        <button class="btn-primary">
+                        <button class="btn-primary" onclick="openBrochureModal('ASSETTRACKING')">
                             <i class="fas fa-download" style="font-size:13px;"></i>
                             Download Brochure
                         </button>
 
-                        <button class="btn-outline">
-                            <i class="fas fa-play-circle"></i>
-                            Watch Demo
+                        <button class="btn-outline" onclick="requestDemo()">
+                            <i class="fab fa-whatsapp"></i>
+                            Request Demo
                         </button>
-
                     </div>
 
                 </div>
@@ -1359,17 +1367,15 @@
 
                     <!-- BUTTONS -->
                     <div class="product-btns">
-
-                        <button class="btn-primary">
+                        <button class="btn-primary" onclick="openBrochureModal('ZEEBOT')">
                             <i class="fas fa-download" style="font-size:13px;"></i>
                             Download Brochure
                         </button>
 
-                        <button class="btn-outline">
-                            <i class="fas fa-play-circle"></i>
-                            Watch Demo
+                        <button class="btn-outline" onclick="requestDemo()">
+                            <i class="fab fa-whatsapp"></i>
+                            Request Demo
                         </button>
-
                     </div>
 
                 </div>
@@ -1434,6 +1440,200 @@
         </div>
 
     </div><!-- end products-wrapper -->
+
+    <!-- BROCHURE DOWNLOAD MODAL -->
+
+    <div class="brochure-modal-overlay" id="brochureModal">
+
+        <div class="brochure-modal-box">
+
+            <div class="modal-header">
+
+                <button class="modal-close-btn" onclick="closeBrochureModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+
+                <h3>Download Product Brochure</h3>
+
+                <div class="modal-header-meta">
+                    <div class="mhm-item">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Complete the form to access the brochure</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" class="form-input" id="bname" placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number *</label>
+                        <input type="tel" class="form-input" id="bmobile" placeholder="+91 XXXXX XXXXX">
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" class="form-input" id="bemail" placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product *</label>
+
+                        <select class="form-select" id="bproduct">
+
+                            <option value="">Select Product</option>
+
+                            <option value="ZwelDAQ">ZwelDAQ</option>
+
+                            <option value="ZweldMET">ZweldMET</option>
+
+                            <option value="Zeekers IoT Kit">Zeekers IoT Kit</option>
+
+                            <option value="ZeekWeigh">ZeekWeigh</option>
+
+                            <option value="Zeevior">Zeevior</option>
+
+                            <option value="ASSET TRACKING">Asset-Tracking</option>
+
+                            <option value="ZEEBOT">ZEEBOT</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Purpose of Downloading *
+                    </label>
+
+                    <textarea class="form-textarea" id="bpurpose"
+                        placeholder="Please tell us why you need this brochure..."></textarea>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn-cancel" onclick="closeBrochureModal()">
+                    Cancel
+                </button>
+
+                <button class="btn-submit" onclick="downloadBrochure()">
+
+                    Download Brochure
+
+                    <i class="fas fa-download" style="font-size:12px;"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function openBrochureModal(productName) {
+
+            const modal = document.getElementById("brochureModal");
+
+            modal.classList.add("active");
+
+            if (productName) {
+                document.getElementById("bproduct").value = productName;
+            }
+        }
+
+        function closeBrochureModal() {
+
+            document.getElementById("brochureModal").classList.remove("active");
+        }
+
+        const brochureModal = document.getElementById("brochureModal");
+
+        brochureModal.addEventListener("click", function (e) {
+
+            if (e.target.classList.contains("brochure-modal-overlay")) {
+                closeBrochureModal();
+            }
+
+        });
+
+        function requestDemo() {
+
+            const message = encodeURIComponent(
+                "Hello Zeekers Team,\n\nI would like to request a demo of your product.\n\nPlease contact me with more details."
+            );
+
+            window.open(
+                "https://wa.me/919042886590?text=" + message,
+                "_blank"
+            );
+        }
+
+        function downloadBrochure() {
+
+            const name = document.getElementById("bname").value.trim();
+            const mobile = document.getElementById("bmobile").value.trim();
+            const email = document.getElementById("bemail").value.trim();
+            const product = document.getElementById("bproduct").value;
+            const purpose = document.getElementById("bpurpose").value.trim();
+
+            if (!name || !mobile || !email || !product || !purpose) {
+
+                alert("Please fill all mandatory fields.");
+
+                return;
+            }
+
+            const brochureFiles = {
+
+                "ZwelDAQ": "brochures/ZwelDAQ.pdf",
+
+                "ZweldMET": "brochures/ZweldMET.pdf",
+
+                "Zeekers IoT Kit": "brochures/Zeekers-IoT-Kit.pdf",
+
+                "ZeekWeigh": "brochures/ZeekWeigh.pdf",
+
+                "Zeevior": "brochures/Zeevior.pdf",
+
+                "ASSET TRACKING": "brochures/Asset-Tracking.pdf",
+
+                "ZEEBOT": "brochures/ZEEBOT.pdf"
+            };
+
+            if (brochureFiles[product]) {
+
+                window.open(
+                    brochureFiles[product],
+                    "_blank"
+                );
+
+            } else {
+
+                alert("Brochure file not found.");
+            }
+
+            closeBrochureModal();
+        }
+
+    </script>
 
 
     <!-- ══════════════════════════════════════════
@@ -1649,11 +1849,26 @@
                             and
                             product demonstration at your site.</p>
                     </div>
-                    <button class="btn-white">Request a Demo <i class="fas fa-calendar-alt"></i></button>
+                    <button class="btn-white" onclick="contactWhatsApp()">Chat on WhatsApp<i
+                            class="fab fa-whatsapp"></i></button>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+        function contactWhatsApp() {
+
+            const message = encodeURIComponent(
+                "Hello Zeekers Team, I would like to know more about your products and solutions."
+            );
+
+            window.open(
+                "https://wa.me/918098141600?text=" + message,
+                "_blank"
+            );
+        }
+    </script>
 
     <!-- PROFESSIONAL FOOTER -->
     <footer class="footer-pro">

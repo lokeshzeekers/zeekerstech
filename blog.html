@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./assets/images/favicon.png">
 
@@ -359,27 +359,38 @@
         </div>
     </div>
 
-    <!-- ══ NEWSLETTER ═════════════════════════════════ -->
     <section class="newsletter-section">
-        <div class="newsletter-inner sr">
+        <div class="newsletter-inner">
+
             <div class="nl-left">
-                <div class="sr"
-                    style="font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px">
-                    <span
-                        style="width:20px;height:1.5px;background:var(--accent);display:inline-block;flex-shrink:0"></span>Newsletter
+                <div class="nl-tag">
+                    <span></span> WhatsApp Community
                 </div>
-                <h2>Stay ahead of<br><span style="background-color: #ff6b2b;">Industrial Innovation</span></h2>
-                <p style="margin-top:14px">Get the latest ZTS R&D insights, product updates, and AICTE-IDEA Lab news
-                    delivered to your inbox — no noise, just signal.</p>
+
+                <h2>
+                    Stay Ahead of
+                    <span>Industrial Innovation</span>
+                </h2>
+
+                <p>
+                    Join our WhatsApp community and receive the latest blogs, technology insights, industry trends, and
+                    expert perspectives directly on your phone.
+                </p>
             </div>
-            <div class="nl-form-side sr">
-                <div class="nl-form">
-                    <input class="nl-input" type="email" placeholder="Your email address">
-                    <button class="nl-btn">Subscribe <i class="fas fa-paper-plane" style="font-size:12px"></i></button>
+
+            <div class="nl-right">
+
+                <a href="https://wa.me/919042886590" target="_blank" class="wa-btn">
+                    <i class="fab fa-whatsapp"></i>
+                    Join WhatsApp
+                </a>
+
+                <div class="qr-box">
+                    <img src="images/whatsapp-qr.png" alt="WhatsApp QR">
                 </div>
-                <p style="font-size:12px;color:rgba(255,255,255,.3);margin-top:12px">We respect your privacy.
-                    Unsubscribe anytime.</p>
+
             </div>
+
         </div>
     </section>
 
@@ -389,17 +400,169 @@
             <div class="container-align">
                 <div class="cta-inner">
                     <div class="cta-text">
-                        <h2 style="color:white; font-family:'Syne';">Have a story or research to share?</h2>
-                        <p style="color:rgba(255,255,255,0.85);">Collaborate with ZTS — submit your innovation story,
-                            research paper, or industry insight for our
-                            blog.</p>
+                        <h2 style="color:white; font-family:'Syne';">
+                            Have a Story or Research to Share?
+                        </h2>
+                        <p style="color:rgba(255,255,255,0.85);">
+                            Contribute to the ZTS Blog by sharing your innovation story,
+                            research paper, case study, or industry insights.
+                        </p>
                     </div>
-                    <button class="btn-white">Get in Touch <i class="fas fa-arrow-right"
-                            style="font-size:12px"></i></button>
+
+                    <button class="btn-white" onclick="openContributionModal()">
+                        Submit Article <i class="fas fa-pen"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- BLOG CONTRIBUTION MODAL -->
+
+    <div class="brochure-modal-overlay" id="contributionModal">
+
+        <div class="brochure-modal-box">
+
+            <div class="modal-header">
+
+                <button class="modal-close-btn" onclick="closeContributionModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+
+                <h3>Submit Your Article Idea!</h3>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" class="form-input" id="cname" placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number *</label>
+                        <input type="tel" class="form-input" id="cmobile" placeholder="+91 XXXXX XXXXX">
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" class="form-input" id="cemail" placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Article Category *</label>
+
+                        <select class="form-input" id="ccategory">
+                            <option>Industrial Automation</option>
+                            <option>Artificial Intelligence</option>
+                            <option>Robotics</option>
+                            <option>Embedded Systems</option>
+                            <option>Research & Innovation</option>
+                            <option>Industry Insights</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Article Topic / Idea *
+                    </label>
+
+                    <textarea class="form-textarea" id="ctopic"
+                        placeholder="Briefly describe your article, research, innovation, or industry insight..."></textarea>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn-cancel" onclick="closeContributionModal()">
+                    Cancel
+                </button>
+
+                <button class="btn-submit" onclick="submitArticle()">
+
+                    Submit Article
+
+                    <i class="fas fa-paper-plane" style="font-size:12px;"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function openContributionModal() {
+            document.getElementById("contributionModal")
+                .classList.add("active");
+        }
+
+        function closeContributionModal() {
+            document.getElementById("contributionModal")
+                .classList.remove("active");
+        }
+
+        document.getElementById("contributionModal")
+            .addEventListener("click", function (e) {
+
+                if (e.target.classList.contains("brochure-modal-overlay")) {
+                    closeContributionModal();
+                }
+
+            });
+
+        function submitArticle() {
+
+            const name = document.getElementById("cname").value.trim();
+            const mobile = document.getElementById("cmobile").value.trim();
+            const email = document.getElementById("cemail").value.trim();
+            const topic = document.getElementById("ctopic").value.trim();
+            const category = document.getElementById("ccategory").value;
+
+            if (!name || !mobile || !email || !topic) {
+                alert("Please fill all mandatory fields.");
+                return;
+            }
+
+            const message = encodeURIComponent(
+                `Hello ZTS Team,
+
+I would like to contribute an article to the ZTS Blog.
+
+Name: ${name}
+Mobile: ${mobile}
+Email: ${email}
+
+Category: ${category}
+
+Article Idea:
+${topic}`
+            );
+
+            window.open(
+                "https://wa.me/919042886590?text=" + message,
+                "_blank"
+            );
+
+            closeContributionModal();
+        }
+
+    </script>
 
 
     <!-- PROFESSIONAL FOOTER -->

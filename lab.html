@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./assets/images/favicon.png">
 
@@ -96,7 +96,7 @@
                     <li><a href="career.html">Careers</a></li>
 
                     <li><a href="contact.html">Contact</a></li>
-                    
+
                     <li><a href="helpdesk.html">Helpdesk</a></li>
 
                 </ul>
@@ -664,8 +664,6 @@
                         <h3>PCB Milling Machine</h3>
                         <p>High-accuracy PCB prototyping and fabrication for electronics development — perfect for
                             embedded systems coursework and R&D projects.</p>
-                        <div class="oem-arrow">Learn more <i class="fas fa-arrow-right" style="font-size:10px"></i>
-                        </div>
                     </div>
                 </div>
                 <div class="oem-card sr">
@@ -674,8 +672,6 @@
                         <h3>Laser Cutter</h3>
                         <p>Precision cutting and engraving for various materials and design applications — enabling
                             rapid iteration in product design courses.</p>
-                        <div class="oem-arrow">Learn more <i class="fas fa-arrow-right" style="font-size:10px"></i>
-                        </div>
                     </div>
                 </div>
                 <div class="oem-card sr">
@@ -684,8 +680,6 @@
                         <h3>CNC Router</h3>
                         <p>Multi-purpose routing for wood, plastic, metal, and custom fabrication jobs — supporting
                             mechanical engineering and product prototyping labs.</p>
-                        <div class="oem-arrow">Learn more <i class="fas fa-arrow-right" style="font-size:10px"></i>
-                        </div>
                     </div>
                 </div>
                 <div class="oem-card sr">
@@ -694,8 +688,6 @@
                         <h3>IoT Solutions</h3>
                         <p>Smart IoT devices and custom solutions for automation and connectivity — enabling real-world
                             IoT deployments as part of the IDEA Lab curriculum.</p>
-                        <div class="oem-arrow">Learn more <i class="fas fa-arrow-right" style="font-size:10px"></i>
-                        </div>
                     </div>
                 </div>
                 <div class="oem-card sr">
@@ -704,8 +696,6 @@
                         <h3>Robotics</h3>
                         <p>Tailored robotics platforms for research, education, and industry needs — from collaborative
                             arms to autonomous ground vehicles for competitions.</p>
-                        <div class="oem-arrow">Learn more <i class="fas fa-arrow-right" style="font-size:10px"></i>
-                        </div>
                     </div>
                 </div>
                 <div class="oem-card sr">
@@ -714,8 +704,6 @@
                         <h3>Drones &amp; UAVs</h3>
                         <p>Custom-built UAVs for industrial, agricultural, and research applications — enabling aerial
                             data collection and autonomous flight coursework.</p>
-                        <div class="oem-arrow">Learn more <i class="fas fa-arrow-right" style="font-size:10px"></i>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -929,11 +917,157 @@
                         <p style="color:rgba(255,255,255,0.85);">Explore our complete IDEA Lab ecosystem including smart
                             infrastructure & smart advanced equipments.</p>
                     </div>
-                    <button class="btn-white">Download Brochure <i class="fas fa-download"></i></button>
+                    <button class="btn-white" onclick="openBrochureModal('AICTE IDEA Lab')">
+                        Download Brochure <i class="fas fa-download"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- BROCHURE DOWNLOAD MODAL -->
+
+    <div class="brochure-modal-overlay" id="brochureModal">
+
+        <div class="brochure-modal-box">
+
+            <div class="modal-header">
+
+                <button class="modal-close-btn" onclick="closeBrochureModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+
+                <h3>Download <br>AICTE - Idea Lab Brochure</h3>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" class="form-input" id="bname" placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number *</label>
+                        <input type="tel" class="form-input" id="bmobile" placeholder="+91 XXXXX XXXXX">
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" class="form-input" id="bemail" placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Brochure Name *</label>
+
+                        <div class="form-input" style="display:flex;align-items:center;background:#f8f9fa;">
+                            AICTE IDEA Lab
+                        </div>
+
+                        <input type="hidden" id="bproduct" value="AICTE IDEA Lab">
+
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Purpose of Downloading *
+                    </label>
+
+                    <textarea class="form-textarea" id="bpurpose"
+                        placeholder="Please tell us why you need this brochure..."></textarea>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn-cancel" onclick="closeBrochureModal()">
+                    Cancel
+                </button>
+
+                <button class="btn-submit" onclick="downloadBrochure()">
+
+                    Download Brochure
+
+                    <i class="fas fa-download" style="font-size:12px;"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function openBrochureModal(productName) {
+
+            const modal = document.getElementById("brochureModal");
+
+            modal.classList.add("active");
+
+            if (productName) {
+                document.getElementById("bproduct").value = productName;
+            }
+        }
+
+        function closeBrochureModal() {
+
+            document.getElementById("brochureModal").classList.remove("active");
+        }
+
+        const brochureModal = document.getElementById("brochureModal");
+
+        brochureModal.addEventListener("click", function (e) {
+
+            if (e.target.classList.contains("brochure-modal-overlay")) {
+                closeBrochureModal();
+            }
+
+        });
+
+        function requestDemo() {
+
+            const message = encodeURIComponent(
+                "Hello Zeekers Team,\n\nI would like to request a demo of your product.\n\nPlease contact me with more details."
+            );
+
+            window.open(
+                "https://wa.me/919042886590?text=" + message,
+                "_blank"
+            );
+        }
+
+        function downloadBrochure() {
+
+            const name = document.getElementById("bname").value.trim();
+            const mobile = document.getElementById("bmobile").value.trim();
+            const email = document.getElementById("bemail").value.trim();
+            const purpose = document.getElementById("bpurpose").value.trim();
+
+            if (!name || !mobile || !email || !purpose) {
+                alert("Please fill all mandatory fields.");
+                return;
+            }
+
+            window.open("brochures/AICTE-LAB.pdf", "_blank");
+
+            closeBrochureModal();
+        }
+
+    </script>
 
 
     <!-- PROFESSIONAL FOOTER -->
