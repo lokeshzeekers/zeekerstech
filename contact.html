@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./assets/images/favicon.png">
 
@@ -96,7 +96,7 @@
                     <li><a href="career.html">Careers</a></li>
 
                     <li><a href="#" class="active">Contact</a></li>
-                    
+
                     <li><a href="helpdesk.html">Helpdesk</a></li>
 
                 </ul>
@@ -304,7 +304,7 @@
         <div class="contact-inner">
 
             <!-- LEFT — Info -->
-            <div class="contact-info sr-l">
+            <div class="contact-info contact-page-info sr-l">
                 <div class="s-label">Contact Details</div>
                 <div class="s-title">We Are Right<br><span class="highlight">Here for You</span></div>
                 <div class="contact-sub">Reach us through any channel below. Our team in Coimbatore responds to every
@@ -650,8 +650,8 @@
         <div class="faq-inner">
             <div class="sr-l">
                 <div class="s-label">FAQ</div>
-                <div class="s-title">Common<br><span class="highlight">Questions</span></div>
-                <div class="contact-sub" style="margin-top:12px;margin-bottom:0;max-width:320px">Answers to the
+                <div class="s-title">Common <span class="highlight">Questions</span></div>
+                <div class="contact-sub" style="margin-top:12px;margin-bottom:0;">Answers to the
                     questions we get asked most often. Still have one? Use the form above.</div>
             </div>
             <div class="faq-items sr-r" id="faqList">
@@ -926,20 +926,6 @@
                 if (!isOpen) item.classList.add('open');
             }
 
-            /* OFFICE HOURS STATUS */
-            function updateStatus() {
-                const now = new Date();
-                const day = now.getDay(); // 0=Sun
-                const h = now.getHours() + now.getTimezoneOffset() / -60 + 5.5; // approx IST
-                const badge = document.getElementById('statusBadge');
-                const txt = document.getElementById('statusText');
-                let open = false;
-                if (day >= 1 && day <= 5 && h >= 9 && h < 18) open = true;
-                if (day === 6 && h >= 9 && h < 14) open = true;
-                badge.className = 'status-badge ' + (open ? 'open' : 'closed');
-                txt.textContent = open ? 'Open Now' : 'Currently Closed';
-            }
-            updateStatus();
 
             /* STATS */
             const statsIO = new IntersectionObserver(entries => {

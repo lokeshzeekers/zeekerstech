@@ -877,7 +877,7 @@
    position: fixed;
    inset: 0;
    background: rgba(0, 0, 0, .65);
-   backdrop-filter: blur(8px);
+   backdrop-filter: blur(5px);
    z-index: 9999;
 
    display: none;
@@ -1489,6 +1489,52 @@
    .contact-info p {
      overflow-wrap: break-word;
      word-break: break-word;
+   }
+ }
+
+ /* ═══════════════════════════════════════
+   LAPTOP FOOTER OPTIMIZATION
+═══════════════════════════════════════ */
+
+ @media (min-width: 992px) and (max-width: 1366px) {
+
+   .footer-grid {
+     display: grid;
+     grid-template-columns: 1.5fr 1fr 1fr 1.4fr;
+     gap: 40px;
+     align-items: start;
+   }
+
+   /* Give contact column more space */
+   .contact-info {
+     min-width: 260px;
+   }
+
+   .contact-info p {
+     display: flex;
+     align-items: flex-start;
+     gap: 12px;
+
+     margin-bottom: 14px;
+
+     line-height: 1.6;
+
+     font-size: 14px;
+   }
+
+   .contact-info i {
+     width: 18px;
+     flex-shrink: 0;
+     margin-top: 3px;
+   }
+
+   .footer-col ul li a {
+     line-height: 1.8;
+   }
+
+   .footer-logo p {
+     max-width: 320px;
+     line-height: 1.8;
    }
  }
 
@@ -2539,6 +2585,56 @@
    }
  }
 
+ /* ═══════════════════════════════════════
+   LAPTOP HERO OPTIMIZATION
+═══════════════════════════════════════ */
+
+ @media (min-width: 992px) and (max-width: 1366px) {
+
+   .hero-panel-l {
+     padding: 40px 0;
+   }
+
+   .hero-h1 {
+     font-size: 54px;
+     line-height: 1.05;
+     margin-bottom: 20px;
+   }
+
+   .hero-desc {
+     max-width: none !important;
+     width: 100% !important;
+   }
+
+   .hero-chips {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 12px;
+   }
+
+   .hero-chip {
+     padding: 10px 16px;
+     font-size: 13px;
+     white-space: nowrap;
+   }
+ }
+
+ @media (min-width: 992px) and (max-width: 1200px) {
+
+   .hero-h1 {
+     font-size: 48px;
+   }
+
+
+   .hero-chips {
+     gap: 10px;
+   }
+
+   .hero-chip {
+     font-size: 12px;
+     padding: 9px 14px;
+   }
+ }
 
  /* =========================
    MOBILE
@@ -3918,12 +4014,14 @@
    font-size: 13px;
    font-weight: 700;
    color: var(--text-primary);
+   padding-left: 5px;
  }
 
  .hcc-cat {
    font-size: 11px;
    color: var(--text-muted);
    margin-top: 1px;
+   padding-left: 5px;
  }
 
  .hcc-arrow {
@@ -5393,6 +5491,49 @@
    }
  }
 
+ /* Laptop View */
+ @media (min-width: 992px) and (max-width: 1366px) {
+
+   .cs-section {
+     padding: 80px 30px 0;
+   }
+
+   .cs-grid {
+     width: 100%;
+     max-width: 1360px;
+     margin: 0 auto;
+
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+
+     gap: 16px;
+   }
+
+   .cs-card {
+     width: 100%;
+     min-width: 0;
+   }
+
+   .cs-body {
+     padding: 20px;
+   }
+
+   .cs-name {
+     font-size: 22px;
+     line-height: 1.2;
+   }
+
+   .cs-desc {
+     font-size: 13px;
+     line-height: 1.6;
+   }
+
+   .cs-feat {
+     font-size: 12px;
+     line-height: 1.5;
+   }
+ }
+
  /* ═══ HERO ══════════════════════════════ */
  /* hero info card */
  .h-info-card {
@@ -6265,6 +6406,13 @@
    }
  }
 
+ @media (min-width: 992px) and (max-width: 1366px) {
+   .blog-hero-desc {
+     max-width: none !important;
+     width: 100% !important;
+   }
+ }
+
  .blog-m-item {
    display: flex;
    align-items: center;
@@ -6816,6 +6964,15 @@
    color: rgba(255, 255, 255, .55);
    line-height: 1.8;
    max-width: 650px;
+ }
+
+ @media (min-width: 992px) and (max-width: 1366px) {
+
+   .nl-left p {
+     max-width: 100%;
+     width: 100%;
+   }
+
  }
 
  .nl-right {
@@ -7718,6 +7875,15 @@
 
  .btn-apply:hover i {
    transform: translateX(3px)
+ }
+
+ @media (min-width: 992px) and (max-width: 1366px) {
+
+   .btn-apply {
+     margin-left: auto;
+     align-self: center;
+   }
+
  }
 
  /* no-results */
@@ -9367,4 +9533,40 @@
  .contact-form-wrap,
  .contact-info {
    overflow-x: hidden;
+ }
+
+ @media (min-width: 992px) and (max-width: 1366px) {
+
+   .contact-inner {
+     grid-template-columns: 420px 1fr !important;
+     gap: 60px !important;
+     align-items: start;
+   }
+
+   .contact-page-info {
+     min-width: 420px;
+   }
+
+   .contact-sub {
+     max-width: 380px;
+   }
+
+   .contact-form-wrap {
+     width: 100%;
+     max-width: none;
+   }
+ }
+
+ @media (min-width: 992px) and (max-width: 1366px) {
+
+   .s-title {
+     width: 100%;
+     max-width: none;
+   }
+
+   .contact-sub {
+     width: 100%;
+     max-width: none;
+   }
+
  }

@@ -80,7 +80,7 @@
             <div class="desktop-nav">
                 <ul>
 
-                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="index.html" class="active">Home</a></li>
 
                     <!-- ABOUT -->
                     <li><a href="about.html">About</a></li>
@@ -926,16 +926,25 @@
             }, { threshold: 0.1 });
             cards.forEach((c, i) => { c.style.opacity = '0'; c.style.transform = 'translateY(24px)'; c.style.transition = 'all 0.5s'; obs.observe(c); });
             // active nav highlight
-            const sections = document.querySelectorAll('section[id]');
-            window.addEventListener('scroll', () => {
-                let current = '';
-                const scrollPos = window.scrollY + 150;
-                sections.forEach(section => { if (scrollPos >= section.offsetTop) current = section.getAttribute('id'); });
-                document.querySelectorAll('.desktop-nav a').forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+            const sectionLinks = document.querySelectorAll('.desktop-nav a[href^="#"]');
+            if (sectionLinks.length > 0) {
+                const sections = document.querySelectorAll('section[id]');
+                window.addEventListener('scroll', () => {
+                    let current = '';
+                    const scrollPos = window.scrollY + 150;
+                    sections.forEach(section => {
+                        if (scrollPos >= section.offsetTop) {
+                            current = section.id;
+                        }
+                    });
+                    sectionLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${current}`) {
+                            link.classList.add('active');
+                        }
+                    });
                 });
-            });
+            }
         </script>
 
         <script>
