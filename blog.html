@@ -97,7 +97,7 @@
 
                     <li><a href="contact.html">Contact</a></li>
 
-                    <li><a href="helpdesk.html">Helpdesk</a></li>
+                    <li><a href="helpdesk-login.html">Helpdesk</a></li>
 
                 </ul>
             </div>
@@ -183,10 +183,17 @@
                 <div class="modal-article" id="modalArticle"></div>
                 <div class="modal-share">
                     <span>Share this article</span>
-                    <button class="share-btn"><i class="fab fa-linkedin-in"></i></button>
-                    <button class="share-btn"><i class="fab fa-twitter"></i></button>
-                    <button class="share-btn"><i class="fab fa-facebook-f"></i></button>
-                    <button class="share-btn"><i class="fas fa-link"></i></button>
+                    <button class="share-btn" onclick="share('linkedin')">
+                        <i class="fab fa-linkedin-in"></i>
+                    </button>
+
+                    <button class="share-btn" onclick="share('twitter')">
+                        <i class="fab fa-twitter"></i>
+                    </button>
+
+                    <button class="share-btn" onclick="share('facebook')">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -763,27 +770,52 @@ ${topic}`
                 if (target) setTimeout(() => { el.style.width = target; }, 100);
                 else el.style.width = '92%';
             });
+
+            //share button for blog post
+            function share(platform) {
+                const url = encodeURIComponent(window.location.href);
+
+                let shareUrl = '';
+
+                switch (platform) {
+                    case 'linkedin':
+                        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                        break;
+
+                    case 'twitter':
+                        shareUrl = `https://twitter.com/intent/tweet?url=${url}`;
+                        break;
+
+                    case 'facebook':
+                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                        break;
+                }
+
+                window.open(shareUrl, '_blank');
+            }
         </script>
 
         <script>
             /* ═══════════════════════════════════════════
                BLOG DATA
+               All other posts load from admin localStorage.
             ═══════════════════════════════════════════ */
-            const posts = [
-                {
-                    id: 0,
-                    cat: 'ai',
-                    catLabel: 'AI Welding',
-                    title: 'How AI-Powered Welding Helmets Are Redefining Worker Safety in Indian Shipyards',
-                    excerpt: 'When GRSE Ltd. partnered with Zeekers Technology Solutions under the iDEX programme, no one expected a welding helmet to become the centrepiece of a national conversation about AI in industrial safety.',
-                    author: 'Zeekers R&D Team',
-                    authorInit: 'ZK',
-                    date: 'May 2025',
-                    read: '8 min read',
-                    icon: 'fa-hard-hat',
-                    featured: true,
-                    tags: ['AI Welding', 'Safety Systems', 'IDEX', 'GRSE Partnership'],
-                    article: `
+
+            /* ── FEATURED / HARDCODED POST (id:0) ─────── */
+            const FEATURED_POST = {
+                id: 0,
+                cat: 'ai',
+                catLabel: 'AI Welding',
+                title: 'How AI-Powered Welding Helmets Are Redefining Worker Safety in Indian Shipyards',
+                excerpt: 'When GRSE Ltd. partnered with Zeekers Technology Solutions under the iDEX programme, no one expected a welding helmet to become the centrepiece of a national conversation about AI in industrial safety.',
+                author: 'Zeekers R&D Team',
+                authorInit: 'ZK',
+                date: 'May 2025',
+                read: '8 min read',
+                icon: 'fa-hard-hat',
+                featured: true,
+                tags: ['AI Welding', 'Safety Systems', 'IDEX', 'GRSE Partnership'],
+                article: `
       <p>When GRSE Ltd. partnered with Zeekers Technology Solutions under the iDEX programme, the brief was straightforward — develop a smarter welding helmet. What emerged was something far more significant: India's first AI-powered welding safety system capable of real-time arc analysis, worker hazard detection, and live data streaming to quality management platforms.</p>
       <h2>The Problem We Set Out to Solve</h2>
       <p>Traditional welding helmets do one thing: protect the welder's eyes. They say nothing about weld quality, operator technique, or cumulative exposure to harmful fumes and UV radiation. In a shipyard environment — where hundreds of welders operate simultaneously in tight, poorly ventilated spaces — the gaps in safety monitoring are enormous.</p>
@@ -798,294 +830,102 @@ ${topic}`
       </ul>
       <h2>Results from the GRSE Pilot</h2>
       <div class="highlight-box"><p>In the initial 90-day pilot at GRSE Ltd., Kolkata, first-pass weld acceptance rates improved by <strong>31%</strong>, and hazardous exposure incidents were reduced by <strong>58%</strong> compared to the baseline period.</p></div>
-      <p>The improvement came not from changing welders' technique directly, but from giving supervisors live visibility into what was happening at every arc. For the first time, a quality engineer could see — in real time — that welder 14 in bay 3 was running 8% above the prescribed travel speed, and intervene before a non-conforming weld was completed.</p>
+      <p>The improvement came not from changing welders' technique directly, but from giving supervisors live visibility into what was happening at every arc.</p>
       <h2>What This Means for the Industry</h2>
-      <p>The ZTS Smart Helmet is not a standalone product — it is the data-collection endpoint of a complete welding intelligence ecosystem. As more helmets connect to the WeldSense platform, the dataset grows richer, the AI models improve, and defect prediction accuracy increases. This is the compounding value of embedding intelligence at the point of work.</p>
-      <p>We are now in active discussions with three additional shipyards and two pipeline construction firms to extend the programme. The IDEX validation provides a credibility baseline that makes those conversations significantly easier.</p>
+      <p>The ZTS Smart Helmet is not a standalone product — it is the data-collection endpoint of a complete welding intelligence ecosystem. As more helmets connect to the WeldSense platform, the dataset grows richer, the AI models improve, and defect prediction accuracy increases.</p>
       <h2>Looking Ahead</h2>
       <p>Version 2 of the ZTS Smart Helmet — currently in prototype at our Coimbatore R&D lab — adds biometric fatigue detection, voice-activated parameter recall, and a heads-up display that projects weld quality scores directly onto the lens. We expect to begin field trials in Q3 2025.</p>
     `
-                },
-                {
-                    id: 1,
-                    cat: 'iot',
-                    catLabel: 'Industrial IoT',
-                    title: 'ZeeIoT Gateway: Connecting 50-Year-Old Machines to the Cloud Without Ripping Them Out',
-                    excerpt: 'Legacy equipment is the backbone of Indian manufacturing — replacing it is rarely feasible. Here is how ZTS built a gateway that speaks every industrial protocol from MODBUS RTU to OPC-UA.',
-                    author: 'Embedded Systems Team',
-                    authorInit: 'ES',
-                    date: 'Apr 2025',
-                    read: '6 min read',
-                    icon: 'fa-network-wired',
-                    tags: ['IoT', 'Edge Computing', 'Protocol Integration', 'Smart Factory'],
-                    article: `
-      <p>Most IoT consultants will tell you to replace your legacy machines with smart, connected alternatives. Most manufacturers will tell you that is not a realistic option when a single CNC lathe costs ₹45 lakhs and has a 30-year operational lifespan. The ZeeIoT Gateway was built to bridge this gap — not replace the machine, but give it a voice on the network.</p>
-      <h2>The Legacy Machine Problem</h2>
-      <p>India has an estimated 2.8 million industrial machines installed across manufacturing facilities, the majority of which predate modern networking standards. These machines work. They are reliable. But they are invisible to modern quality management and production monitoring systems. The result is an information gap at the factory floor that makes data-driven decisions impossible.</p>
-      <h2>How the ZeeIoT Gateway Works</h2>
-      <p>The gateway is a ruggedised edge device — IP67 rated, DIN-rail mountable — that connects to any industrial machine via its existing communication interfaces. It natively supports MODBUS RTU, MODBUS TCP, OPC-UA, Profinet, EtherNet/IP, CAN Bus, RS485, and RS232. In most cases, installation requires no modification to the machine whatsoever.</p>
-      <blockquote>The first installation at a precision machining facility took 47 minutes from unboxing to first data appearing on the cloud dashboard.</blockquote>
-      <h2>Edge Intelligence</h2>
-      <p>What makes ZeeIoT different from a simple data bridge is its on-device processing capability. Running on an ARM Cortex-A55 with 4GB RAM, the gateway can execute lightweight ML models locally — detecting anomalies, filtering noise, and making time-critical decisions in under 10 milliseconds, without any cloud dependency.</p>
-      <div class="highlight-box"><p>One customer reduced their cloud data costs by <strong>67%</strong> after deploying ZeeIoT edge filtering — sending only meaningful events to the cloud instead of raw sensor streams.</p></div>
-      <h2>The Business Case</h2>
-      <p>The ZeeIoT Gateway pays for itself in most deployments within 4–6 months through a combination of reduced unplanned downtime, improved OEE visibility, and elimination of manual production logging. For facilities with 20+ machines, the ROI calculation becomes very compelling very quickly.</p>
-    `
-                },
-                {
-                    id: 2,
-                    cat: 'welding',
-                    catLabel: 'Welding Technology',
-                    title: 'Understanding Weld Quality Prediction: How Machine Learning Models Are Trained on Arc Data',
-                    excerpt: 'A deep dive into the data science behind ZTS\'s Predictive QA Module — from sensor selection and data labelling to model architecture and field validation.',
-                    author: 'Data Science Team',
-                    authorInit: 'DS',
-                    date: 'Apr 2025',
-                    read: '10 min read',
-                    icon: 'fa-fire',
-                    tags: ['Machine Learning', 'Weld Quality', 'Predictive Analytics', 'R&D'],
-                    article: `
-      <p>Building a machine learning model that predicts weld defects in real time sounds straightforward on paper. In practice, it requires solving a data problem, a physics problem, and a deployment problem simultaneously. This article walks through how ZTS built and validated the AI engine inside the Predictive QA Module.</p>
-      <h2>The Data Problem</h2>
-      <p>Weld quality prediction requires labelled training data — that is, sensor readings from known-good and known-bad welds. The challenge is that acquiring labelled bad welds in a production environment means deliberately introducing defects, which no manufacturer wants to do. Our solution was a two-phase approach: first, we collected data from destructive testing environments and research partnerships; second, we developed a simulation model that generates synthetic defect scenarios from physics-based weld process models.</p>
-      <h2>Sensor Selection</h2>
-      <p>Not all sensor data is equally predictive. Through correlation analysis on our initial dataset, we identified five primary signals that carry the most predictive information for common defect types:</p>
-      <ul>
-        <li>Arc voltage instantaneous variation (porosity predictor)</li>
-        <li>Wire feed speed consistency (undercut predictor)</li>
-        <li>Travel speed derivative (lack of fusion predictor)</li>
-        <li>Acoustic emission signature (cracking predictor)</li>
-        <li>Thermal gradient across the heat-affected zone (distortion predictor)</li>
-      </ul>
-      <h2>Model Architecture</h2>
-      <p>We evaluated three architectures: a gradient-boosted decision tree (XGBoost), a 1D convolutional neural network, and a hybrid LSTM-CNN. The hybrid approach outperformed the others on our validation set, achieving 94.2% accuracy on a held-out test set of 12,400 welds across six material grades and four welding processes.</p>
-      <blockquote>The model doesn't just predict defects — it ranks the contributing factors, giving the engineer actionable information about which parameter to adjust first.</blockquote>
-      <h2>Field Validation</h2>
-      <p>The model was deployed in shadow mode at two facilities before full activation — running predictions without triggering interventions, so we could compare its outputs against the actual quality inspection results. Over 8 weeks of shadow mode operation, the model's predictions agreed with QC inspection outcomes in 93.8% of cases, giving us confidence to move to active deployment.</p>
-      <div class="highlight-box"><p>In active deployment, the Predictive QA Module reduced weld rework rates by an average of <strong>44%</strong> across our first five customer installations.</p></div>
-    `
-                },
-                {
-                    id: 3,
-                    cat: 'automation',
-                    catLabel: 'Automation',
-                    title: 'SmartArc Explained: How Closed-Loop Arc Control Reduces Spatter by 60%',
-                    excerpt: 'Spatter is the enemy of welding productivity. ZTS\'s SmartArc controller uses a 1ms feedback loop to kill it at the source. Here\'s the engineering behind it.',
-                    author: 'Controls Engineering',
-                    authorInit: 'CE',
-                    date: 'Mar 2025',
-                    read: '7 min read',
-                    icon: 'fa-sliders-h',
-                    tags: ['Arc Control', 'Process Automation', 'Spatter Reduction', 'SMAW', 'MIG'],
-                    article: `
-      <p>Weld spatter — the tiny molten metal droplets that eject from the arc during welding — costs the global welding industry an estimated $4.5 billion annually in post-weld cleaning, rework, and productivity loss. The SmartArc controller was built specifically to attack this problem at its source: the arc itself.</p>
-      <h2>Why Spatter Happens</h2>
-      <p>Spatter is caused by arc instability — specifically, by momentary short circuits between the wire electrode and the molten weld pool that create explosive droplet ejections. These short circuits happen when the arc length varies outside the optimal range, which in turn is caused by variations in wire feed speed, contact tip wear, surface contamination, and welder technique.</p>
-      <h2>The 1ms Feedback Loop</h2>
-      <p>Conventional weld process controllers adjust parameters in the range of 10–50ms — fast enough for gross corrections, but too slow to catch the micro-instabilities that cause spatter. SmartArc samples arc voltage and current at 10kHz (every 0.1ms) and runs a proprietary control algorithm that adjusts wire feed speed and output voltage in under 1 millisecond — before the instability becomes a spatter event.</p>
-      <blockquote>At 1ms response time, SmartArc can detect and correct an arc perturbation before the human eye would even register that anything happened.</blockquote>
-      <div class="highlight-box"><p>In controlled testing across 200 hours of MIG welding on mild steel, SmartArc reduced spatter mass by <strong>61.3%</strong> compared to a conventional constant-voltage power source running identical parameters.</p></div>
-      <h2>Recipe-Based Operation</h2>
-      <p>SmartArc stores up to 500 Weld Procedure Specification recipes. Each recipe contains not just the nominal parameters, but the control algorithm tuning coefficients specific to that material, joint configuration, and process. Selecting a recipe takes one touch — the operator doesn't need to understand the underlying control theory to benefit from it.</p>
-    `
-                },
-                {
-                    id: 4,
-                    cat: 'education',
-                    catLabel: 'STEM & Education',
-                    title: 'Why India\'s Engineering Colleges Need AICTE-IDEA Labs: A Case for Experiential Learning',
-                    excerpt: 'The gap between what engineering colleges teach and what industry needs has never been wider. IDEA Labs are one of the most promising structural responses to this challenge.',
-                    author: 'Education Partnerships',
-                    authorInit: 'EP',
-                    date: 'Mar 2025',
-                    read: '6 min read',
-                    icon: 'fa-graduation-cap',
-                    tags: ['AICTE', 'IDEA Lab', 'Engineering Education', 'STEM', 'Innovation'],
-                    article: `
-      <p>India produces over 1.5 million engineering graduates every year. Fewer than 20% of them are considered industry-ready by the companies that hire them. This is not a new finding — it has been documented repeatedly by NASSCOM, CII, and the All India Council for Technical Education itself. Yet the structural response has been slow. AICTE-IDEA Labs represent one of the most promising systemic interventions we have seen.</p>
-      <h2>What's Missing in Traditional Engineering Education</h2>
-      <p>The problem is not that students aren't learning. They are — they're learning to pass exams that test theoretical recall. What they're not learning is how to think through ambiguous, open-ended problems with incomplete information. That is the core skill that industry actually needs, and it is almost impossible to develop through lectures and structured laboratory practicals alone.</p>
-      <h2>The IDEA Lab Difference</h2>
-      <p>An IDEA Lab flips the script. Instead of starting with a textbook and working toward an application, students start with a problem — a real challenge, often sourced from industry partners — and work backward to whatever knowledge and tools they need. The learning is incidental to the doing, which is exactly how professionals operate in the real world.</p>
-      <blockquote>When a student spends three days debugging a PCB they designed themselves, they learn more about electronic circuits than in an entire semester of theory lectures.</blockquote>
-      <h2>What ZTS Brings to the Partnership</h2>
-      <p>Zeekers Technology Solutions doesn't just supply equipment — we supply context. The R&D challenges our team is working on in the field become the design briefs that IDEA Lab students tackle. This creates a virtuous cycle: students get real problems, ZTS gets fresh perspectives and potential talent, and institutions get industry relevance baked into their curriculum.</p>
-      <div class="highlight-box"><p>In our pilot IDEA Lab partnership, <strong>73%</strong> of participating students reported significantly higher confidence in applying technical skills to real-world problems after one semester of IDEA Lab engagement.</p></div>
-    `
-                },
-                {
-                    id: 5,
-                    cat: 'rnd',
-                    catLabel: 'R&D Insights',
-                    title: 'From IDEX Prototype to Production: The 18-Month Journey of ZTS\'s AI Helmet',
-                    excerpt: 'Most technology projects don\'t make it from prototype to production. Here is a candid account of the engineering, regulatory, and commercial challenges ZTS navigated to get there.',
-                    author: 'Zeekers R&D Team',
-                    authorInit: 'ZK',
-                    date: 'Feb 2025',
-                    read: '9 min read',
-                    icon: 'fa-flask',
-                    tags: ['IDEX', 'Product Development', 'R&D Journey', 'Prototype', 'Manufacturing'],
-                    article: `
-      <p>In October 2023, we had a working prototype of the ZTS AI Welding Helmet. By April 2025, we had a production-ready product that had passed regulatory testing, survived 18 months of field trials, and been validated in one of India's most demanding defence manufacturing environments. This is the story of what happened in between.</p>
-      <h2>The Prototype Trap</h2>
-      <p>A prototype that works in a lab is a proof of concept. A product that works in a shipyard for 12 hours a day, 6 days a week, in 40°C heat with welding spatter, UV radiation, and magnetic interference from nearby equipment — that is an entirely different engineering challenge. Our prototype failed its first shipyard test in approximately 11 minutes.</p>
-      <h2>Iteration 1–7: Getting the Hardware Right</h2>
-      <p>The first six months were entirely about ruggedisation. We rebuilt the enclosure three times, switching from ABS to glass-filled nylon to ultimately a hybrid overmoulded structure. The wireless antenna was redesigned four times to achieve reliable connectivity in environments saturated with 50Hz electromagnetic interference from welding equipment. The battery system was re-engineered from a single-cell Li-Po to a dual-cell protected configuration after thermal runaway concerns emerged during extended operation testing.</p>
-      <blockquote>Hardware is humbling. Every assumption you made in the office gets destroyed in the field. The field is always right.</blockquote>
-      <h2>Regulatory Navigation</h2>
-      <p>Welding helmets that incorporate electronics face a complex regulatory landscape in India — they must comply with both IS 1179 (welding protection) and relevant BIS requirements for electronic equipment. Navigating this required engagement with three different certification bodies and took longer than we expected — approximately four months from first submission to final clearance.</p>
-      <h2>The Lesson</h2>
-      <p>The most important thing we learned in 18 months is that the people who can most accelerate your product development are your end users. The welders at GRSE taught us more about what the helmet needed to be than any internal review or expert consultation. Build fast, get it in front of the actual user, and take their feedback seriously — even when it hurts.</p>
-      <div class="highlight-box"><p>ZTS completed <strong>7 major hardware iterations</strong> and <strong>23 software releases</strong> between prototype and production — a pace made possible by our in-house R&D lab in Coimbatore.</p></div>
-    `
-                },
-                {
-                    id: 6,
-                    cat: 'ai',
-                    catLabel: 'AI & ML',
-                    title: 'Edge AI in Industrial Environments: Why Running Models On-Device Changes Everything',
-                    excerpt: 'Latency, bandwidth, and privacy — three reasons why cloud-dependent AI is the wrong architecture for factory floor applications, and how ZTS designs around it.',
-                    author: 'AI Architecture Team',
-                    authorInit: 'AI',
-                    date: 'Jan 2025',
-                    read: '7 min read',
-                    icon: 'fa-brain',
-                    tags: ['Edge AI', 'Machine Learning', 'Industrial IoT', 'Architecture'],
-                    article: `
-      <p>The dominant narrative around AI deployments is cloud-first: collect data, send it to a centralised compute cluster, run inference, return the result. For consumer applications — recommendation engines, language models, image search — this architecture makes perfect sense. For factory floor applications where a decision needs to happen in under 10 milliseconds and network connectivity is unreliable, it is fundamentally inadequate.</p>
-      <h2>The Three Problems with Cloud AI in Industry</h2>
-      <p>Latency is the first problem. The round-trip time from an industrial sensor to a cloud inference endpoint and back is typically 40–200ms depending on network conditions. For a welding arc travelling at 300mm per minute, that is 1–2mm of unmonitored weld. At scale, that latency accumulates into real quality risk.</p>
-      <p>Bandwidth is the second. A single ZeeIoT Gateway monitoring 20 machines at 1kHz sampling produces approximately 4GB of raw data per hour. Streaming that to the cloud continuously is cost-prohibitive and technically challenging in facilities with limited network infrastructure.</p>
-      <p>Data sovereignty is the third, and increasingly the most important for our defence sector customers. Raw production data — cycle times, quality metrics, process parameters — is commercially sensitive. Transmitting it outside the facility creates risk that many customers are unwilling to accept.</p>
-      <h2>The ZTS Edge AI Architecture</h2>
-      <p>Every ZTS product that incorporates AI runs the inference model on-device. This is not a compromise — it is a deliberate architectural choice that delivers better latency, lower cost, and stronger data governance than cloud alternatives.</p>
-      <div class="highlight-box"><p>ZTS edge AI deployments achieve average inference latencies of <strong>3.2ms</strong> — 15–60x faster than equivalent cloud-based approaches in our comparative testing.</p></div>
-      <h2>The Trade-off: Model Size</h2>
-      <p>Running AI on embedded hardware requires smaller, more efficient models. We use knowledge distillation — training large models in the cloud and then compressing their knowledge into smaller models suitable for edge deployment. The result is models that are 8–15x smaller than their cloud-optimised equivalents but retain 90–95% of their accuracy. For industrial classification tasks, that trade-off is almost always acceptable.</p>
-    `
-                },
-                {
-                    id: 7,
-                    cat: 'iot',
-                    catLabel: 'Industrial IoT',
-                    title: 'OEE Visibility in 30 Days: A Manufacturer\'s Guide to Starting Your IoT Journey',
-                    excerpt: 'Overall Equipment Effectiveness is the single most important metric in manufacturing. Here is how to measure it accurately for the first time using IoT — in under a month.',
-                    author: 'Solutions Engineering',
-                    authorInit: 'SE',
-                    date: 'Dec 2024',
-                    read: '5 min read',
-                    icon: 'fa-chart-line',
-                    tags: ['OEE', 'IoT', 'Manufacturing', 'Quick Start'],
-                    article: `
-      <p>Overall Equipment Effectiveness — the product of Availability, Performance, and Quality — is the gold standard metric for manufacturing productivity. Most facilities can tell you their OEE at the end of a month. Very few can tell you what it was between 2pm and 4pm yesterday on line 3, and why. IoT changes this — but only if you start the right way.</p>
-      <h2>Why OEE Measurement Usually Fails</h2>
-      <p>The most common failure mode is trying to do everything at once. Manufacturers see a vision of a fully connected, dashboarded factory and try to instrument 40 machines simultaneously. The project stalls under its own complexity. The second failure mode is starting with the wrong data — capturing whatever is easy to capture rather than what is actually predictive of OEE.</p>
-      <h2>The 30-Day Approach</h2>
-      <p>Start with one machine. Not your most complex one — your most representative one. The machine whose performance, if you understood it deeply, would teach you the most about your process. Install a ZeeIoT Gateway. Configure it to capture three signals: machine state (running, idle, alarm), cycle count, and part count. That is all you need for a baseline OEE measurement.</p>
-      <blockquote>You don't need 50 sensors per machine to understand OEE. You need the right three signals and the discipline to act on what they tell you.</blockquote>
-      <div class="highlight-box"><p>Manufacturers who start with a single-machine IoT pilot and focus on OEE improvement before expanding see <strong>3x higher long-term adoption rates</strong> than those who attempt facility-wide deployments from day one.</p></div>
-      <h2>Week-by-Week Plan</h2>
-      <p>Weeks 1–2: Install hardware, configure data streams, establish baseline. Week 3: Identify the top three reasons for availability loss. Week 4: Implement one targeted intervention and measure the impact. By day 30, you will have a compelling data-driven story that justifies expansion — and a team that has learned the IoT implementation discipline that will serve you for every subsequent deployment.</p>
-    `
-                },
-                {
-                    id: 8,
-                    cat: 'rnd',
-                    catLabel: 'R&D Insights',
-                    title: 'Inside the ZTS R&D Lab: How We Prototype, Test, and Validate Industrial AI Products',
-                    excerpt: 'A behind-the-scenes look at ZTS\'s Coimbatore R&D facility — the processes, tools, and philosophy that enable rapid iteration on complex industrial technology.',
-                    author: 'Zeekers R&D Team',
-                    authorInit: 'ZK',
-                    date: 'Nov 2024',
-                    read: '6 min read',
-                    icon: 'fa-microscope',
-                    tags: ['R&D Process', 'Product Development', 'Lab', 'Innovation'],
-                    article: `
-      <p>The ZTS R&D lab in Coimbatore is not a showroom. It is a working environment — surfaces covered in PCB prototypes, wire harnesses in various states of assembly, oscilloscope probes clipped to test jigs, and whiteboards filled with control system diagrams that get erased and redrawn multiple times a day. This is where our products are actually built.</p>
-      <h2>Stage 1: Concept Validation</h2>
-      <p>Every product at ZTS starts as a hypothesis: "If we add this capability to this process, we expect this outcome." Before any hardware is ordered or software is written, we spend time stress-testing the hypothesis. Who specifically has this problem? How severe is it? What would solving it be worth to them? What alternative solutions exist, and why are they inadequate?</p>
-      <h2>Stage 2: Minimum Viable Hardware</h2>
-      <p>We build the simplest possible physical artefact that can test the core assumption. For the AI helmet, this was a GoPro camera mounted to a standard welding helmet with an NVIDIA Jetson Nano zip-tied to the back. Ugly, impractical, but sufficient to test whether the AI model worked well enough to pursue. It did.</p>
-      <h2>Stage 3: Field Stress Testing</h2>
-      <p>We have a deliberate policy: no product moves to engineering-grade prototyping until it has been destroyed in the field at least twice. Not failed — destroyed. We need to know the actual failure modes, not the theoretical ones. Factory environments find failure modes that no test bench ever will.</p>
-      <div class="highlight-box"><p>The ZTS R&D process averages <strong>4.2 field-destruction cycles</strong> per product before engineering-grade prototyping begins. This sounds wasteful. It saves enormous time and money downstream.</p></div>
-      <h2>Our Toolchain</h2>
-      <p>KiCad for PCB design, Fusion 360 for mechanical design, ROS2 for robotics software, TensorFlow Lite for edge AI model development, and Git for everything. We have three 3D printers running almost continuously for enclosure prototypes, a laser cutter for sheet metal mockups, and a climate chamber for environmental testing.</p>
-    `
-                },
-                {
-                    id: 9,
-                    cat: 'welding',
-                    catLabel: 'Welding Technology',
-                    title: 'The Future of Welding Inspection: From X-Ray to AI-Enabled Real-Time Quality Assurance',
-                    excerpt: 'Non-destructive testing methods for weld inspection haven\'t fundamentally changed in 40 years. AI is about to change that — dramatically.',
-                    author: 'Quality Engineering',
-                    authorInit: 'QE',
-                    date: 'Oct 2024',
-                    read: '8 min read',
-                    icon: 'fa-search-plus',
-                    tags: ['NDT', 'Weld Inspection', 'Quality Assurance', 'AI', 'Future of Welding'],
-                    article: `
-      <p>Radiographic testing — using X-ray or gamma-ray sources to image welds for internal defects — has been the gold standard for weld quality inspection since the 1950s. It is reliable, well-understood, and accepted by every major welding standard in the world. It is also slow, expensive, hazardous, and fundamentally reactive: it tells you about a defect after the weld has been completed, not during.</p>
-      <h2>The Inspection Bottleneck</h2>
-      <p>In a typical structural fabrication project, radiographic inspection creates a significant production bottleneck. The weld must cool, the radiographic crew must set up equipment and evacuate the surrounding area, film must be exposed and developed, and a Level 3 interpreter must review the images. Total cycle time: typically 4–24 hours per weld joint. For a project with 5,000 weld joints, this is a significant constraint.</p>
-      <h2>What Real-Time AI Inspection Changes</h2>
-      <p>The ZTS Predictive QA Module doesn't replace radiographic inspection for final acceptance testing — regulatory requirements still mandate it for critical applications. What it does is dramatically reduce the number of welds that need to go to RT by identifying, during the weld itself, which joints have the highest probability of defects. Conservative early data suggests this can reduce RT inspection volumes by 35–50%.</p>
-      <blockquote>The goal isn't to replace inspection. It's to make inspection targeted rather than systematic — focusing human expertise where it's most needed.</blockquote>
-      <div class="highlight-box"><p>ZTS estimates that widespread adoption of AI-enabled weld quality prediction could reduce the global welding industry's inspection and rework costs by <strong>$1.8 billion annually</strong> by 2030.</p></div>
-      <h2>The Path to Regulatory Acceptance</h2>
-      <p>The biggest challenge for AI-based quality assurance is not technical — it is regulatory. Welding standards evolve slowly and conservatively, for good reason. ZTS is actively engaging with Bureau of Indian Standards, AWS, and IIW working groups to contribute data from our deployments to the standards development process. We believe AI-assisted quality assurance will be formally incorporated into major welding standards within 5–8 years.</p>
-    `
-                },
-                {
-                    id: 10,
-                    cat: 'automation',
-                    catLabel: 'Automation',
-                    title: 'Integrating Legacy PLCs with Modern Cloud Infrastructure: Lessons from 20 Deployments',
-                    excerpt: 'After connecting over 200 legacy machines to cloud platforms across 20 customer deployments, the ZTS integration team shares what they\'ve learned — and what they wish they\'d known.',
-                    author: 'Integration Engineering',
-                    authorInit: 'IE',
-                    date: 'Sep 2024',
-                    read: '7 min read',
-                    icon: 'fa-cogs',
-                    tags: ['PLC Integration', 'Legacy Systems', 'Cloud', 'IT/OT Convergence'],
-                    article: `
-      <p>Every industrial IoT project we have worked on has had one thing in common: the existing PLCs were never designed to talk to anything outside the machine. They were designed to control a process reliably, indefinitely, in isolation. Making them talk to the cloud — without disrupting that primary function — requires a particular set of engineering disciplines that we have had to develop through hard experience.</p>
-      <h2>Lesson 1: Never Touch the PLC Program</h2>
-      <p>The single most important rule in legacy PLC integration: read data only, never write. The PLC program is a production-critical artefact that has been refined over years of operation. Any modification — however minor — introduces risk. The ZeeIoT Gateway accesses PLC data via passive monitoring of the fieldbus or via read-only registers, never by modifying the control logic.</p>
-      <h2>Lesson 2: Network Segregation is Non-Negotiable</h2>
-      <p>OT networks and IT networks must remain segregated. The ZeeIoT Gateway creates a one-way data diode: data flows from OT to IT, but no data or commands flow from IT to OT. This protects the production environment from network security incidents that originate on the enterprise side.</p>
-      <blockquote>We have seen three separate incidents at other installations where unsegregated OT/IT networks resulted in ransomware reaching production equipment. In every case, proper network segmentation would have stopped the attack at the boundary.</blockquote>
-      <h2>Lesson 3: Start with One Data Point</h2>
-      <p>There is always pressure to extract everything from a PLC on the first integration. Resist it. Start with one data point — machine running state — and build the data pipeline, dashboards, and alert logic around that single signal before adding more. This reveals the data quality issues, the timezone handling bugs, and the dashboard performance problems before they are multiplied by 50 data streams.</p>
-      <div class="highlight-box"><p>Deployments that start with a single-signal integration and expand iteratively are <strong>2.8x more likely</strong> to reach full production deployment within 6 months than those that attempt comprehensive integrations from day one.</p></div>
-    `
-                },
-                {
-                    id: 11,
-                    cat: 'education',
-                    catLabel: 'STEM & Education',
-                    title: 'How ZTS Internships Are Bridging the Industry–Academia Gap for Engineering Students',
-                    excerpt: 'Theory meets practice: how Zeekers Technology Solutions designs internship experiences that produce engineers who are genuinely ready to contribute from day one.',
-                    author: 'Education Partnerships',
-                    authorInit: 'EP',
-                    date: 'Aug 2024',
-                    read: '5 min read',
-                    icon: 'fa-user-graduate',
-                    tags: ['Internship', 'Career Development', 'Education', 'Industry Exposure'],
-                    article: `
-      <p>The standard industrial internship goes something like this: a student arrives, is assigned a supervisor who has no time to supervise them, spends three weeks observing, and leaves with a certificate that says they interned at the company. Nobody learned anything. ZTS internships are designed to be fundamentally different.</p>
-      <h2>The ZTS Internship Model</h2>
-      <p>Every ZTS intern is assigned a real project — not a make-work project, but a genuine R&D challenge that the team needs solved. In the past year, interns have built a MODBUS protocol parser, designed a PCB mount for a sensor module, written the data cleaning pipeline for our weld quality dataset, and developed the user interface for a calibration tool. These are real deliverables that shipped to production.</p>
-      <h2>What We Look For</h2>
-      <p>We do not hire interns based on CGPA. We hire based on evidence of curiosity and initiative — GitHub repositories with actual code, Arduino projects, competition participation, personal projects of any kind. The single strongest predictor of a successful ZTS intern is prior evidence of building things for their own interest, regardless of whether those things were successful.</p>
-      <blockquote>The best intern we ever had had a CGPA of 6.8 and a GitHub with 47 personal repositories. She shipped more working code in 8 weeks than most full-time engineers produce in 6 months.</blockquote>
-      <h2>Outcomes</h2>
-      <p>Of the 23 students who have completed ZTS internships since 2023, 14 have received pre-placement offers, 6 have gone on to postgraduate programmes citing their ZTS experience as a significant factor in their research direction, and 3 have started their own technology ventures.</p>
-      <div class="highlight-box"><p><strong>78%</strong> of ZTS interns report that their internship experience was the most technically demanding — and most valuable — learning experience of their undergraduate career.</p></div>
-    `
+            };
+
+            /* ── LOAD ADMIN POSTS FROM localStorage ──────
+               Returns only published posts from admin.html.
+               Falls back to empty array if none published yet. */
+            function loadAdminPosts() {
+                try {
+                    const raw = localStorage.getItem('zts_blog_posts');
+                    if (!raw) return [];
+                    const parsed = JSON.parse(raw);
+                    // Only show published, sort newest first
+                    return parsed
+                        .filter(p => p.status === 'published')
+                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                        .map((p, i) => ({
+                            // Normalise admin post shape to match blog card format
+                            id: 'adm_' + (p.id || i),
+                            cat: p.cat || 'rnd',
+                            catLabel: p.catLabel || getCatLabel(p.cat),
+                            title: p.title || 'Untitled',
+                            excerpt: p.excerpt || '',
+                            author: p.author || 'Zeekers Team',
+                            authorInit: p.authorInit || initials(p.author || 'Z'),
+                            date: p.date || formatDate(p.createdAt),
+                            read: p.read || '5 min read',
+                            icon: p.icon || 'fa-pen-nib',
+                            featured: false,
+                            tags: p.tags || [],
+                            article: buildArticleHTML(p.article || p.content || '')
+                        }));
+                } catch (e) {
+                    return [];
                 }
-            ];
+            }
+
+            /* Build the full posts array: featured first, then admin posts */
+            function getAllPosts() {
+                return [FEATURED_POST, ...loadAdminPosts()];
+            }
+
+            /* ── HELPERS ─────────────────────────────────── */
+            function getCatLabel(cat) {
+                const map = {
+                    ai: 'AI & Machine Learning',
+                    iot: 'IoT & Connectivity',
+                    welding: 'Welding Technology',
+                    automation: 'Automation',
+                    education: 'STEM & Education',
+                    rnd: 'R&D Insights'
+                };
+                return map[cat] || cat || 'General';
+            }
+
+            function initials(name) {
+                return (name || 'Z').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+            }
+
+            function formatDate(iso) {
+                try {
+                    return new Date(iso).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+                } catch (e) {
+                    return '';
+                }
+            }
+
+            /* Convert admin plain-text / HTML article content into modal-ready HTML.
+               Admin content may contain markdown-style headings or raw HTML — this
+               function handles both gracefully. */
+            function buildArticleHTML(content) {
+                if (!content) return '<p>No content available.</p>';
+                // If content already contains HTML tags, return as-is
+                if (/<[a-z][\s\S]*>/i.test(content)) {
+                    // Wrap highlight-box markers if admin used them
+                    return content
+                        .replace(/\[HIGHLIGHT\]([\s\S]*?)\[\/HIGHLIGHT\]/gi,
+                            '<div class="highlight-box"><p>$1</p></div>');
+                }
+                // Plain text / basic markdown → convert to paragraphs
+                return content
+                    .split(/\n{2,}/)
+                    .map(para => para.trim())
+                    .filter(Boolean)
+                    .map(para => {
+                        if (para.startsWith('## ')) return `<h2>${para.slice(3)}</h2>`;
+                        if (para.startsWith('### ')) return `<h3>${para.slice(4)}</h3>`;
+                        if (para.startsWith('> ')) return `<blockquote>${para.slice(2)}</blockquote>`;
+                        return `<p>${para.replace(/\n/g, ' ')}</p>`;
+                    })
+                    .join('\n');
+            }
 
             /* ═══════════════════════════════════════════
                RENDER POSTS
@@ -1094,6 +934,7 @@ ${topic}`
             let activeFilter = 'all';
 
             function getFilteredPosts() {
+                const posts = getAllPosts();
                 const nonFeatured = posts.filter(p => !p.featured);
                 if (activeFilter === 'all') return nonFeatured;
                 return nonFeatured.filter(p => p.cat === activeFilter);
@@ -1104,12 +945,23 @@ ${topic}`
                 const filtered = getFilteredPosts();
                 const toShow = filtered.slice(0, visibleCount);
                 grid.innerHTML = '';
+
+                if (!toShow.length) {
+                    grid.innerHTML = `
+              <div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:#9a9490">
+                <i class="fas fa-pen-nib" style="font-size:36px;display:block;margin-bottom:12px;opacity:.3"></i>
+                <p style="font-size:15px">No posts in this category yet. Check back soon!</p>
+              </div>`;
+                    document.getElementById('loadMoreBtn').style.display = 'none';
+                    return;
+                }
+
                 toShow.forEach((post, i) => {
                     const card = document.createElement('div');
                     card.className = 'post-card';
                     card.innerHTML = `
       <div class="post-card-img">
-        <i class="fas ${post.icon} post-card-img-icon"></i>
+        <i class="fas ${post.icon || 'fa-pen-nib'} post-card-img-icon"></i>
         <div class="post-card-img-badge">${post.catLabel}</div>
       </div>
       <div class="post-card-body">
@@ -1124,7 +976,7 @@ ${topic}`
               <div class="pf-info-date">${post.date} · ${post.read}</div>
             </div>
           </div>
-          <button class="pf-read" onclick="openPost(${post.id})">
+          <button class="pf-read" onclick="event.stopPropagation();openPost('${post.id}')">
             Read more <i class="fas fa-arrow-right"></i>
           </button>
         </div>
@@ -1139,7 +991,7 @@ ${topic}`
                     }
                 });
 
-                // load more button
+                // Load more button
                 const btn = document.getElementById('loadMoreBtn');
                 btn.style.display = visibleCount >= filtered.length ? 'none' : 'inline-flex';
             }
@@ -1148,17 +1000,23 @@ ${topic}`
                OPEN ARTICLE MODAL
             ═══════════════════════════════════════════ */
             function openPost(id) {
-                const post = posts.find(p => p.id === id);
+                const posts = getAllPosts();
+                // id may be number (featured) or string ('adm_xxx')
+                const post = posts.find(p => String(p.id) === String(id));
                 if (!post) return;
 
-                document.getElementById('modalHeroIcon').className = `fas ${post.icon}`;
-                document.getElementById('modalTags').innerHTML = post.tags.map(t =>
-                    `<div class="modal-tag">${t}</div>`).join('');
+                document.getElementById('modalHeroIcon').className = `fas ${post.icon || 'fa-pen-nib'}`;
+
+                document.getElementById('modalTags').innerHTML =
+                    (post.tags || []).map(t => `<div class="modal-tag">${t}</div>`).join('');
+
                 document.getElementById('modalTitle').textContent = post.title;
                 document.getElementById('modalAvatar').textContent = post.authorInit;
                 document.getElementById('modalAuthor').textContent = post.author;
-                document.getElementById('modalDate').innerHTML = `<i class="fas fa-calendar-alt" style="font-size:10px"></i>&nbsp;${post.date}`;
-                document.getElementById('modalRead').innerHTML = `<i class="fas fa-clock" style="font-size:10px"></i>&nbsp;${post.read}`;
+                document.getElementById('modalDate').innerHTML =
+                    `<i class="fas fa-calendar-alt" style="font-size:10px"></i>&nbsp;${post.date}`;
+                document.getElementById('modalRead').innerHTML =
+                    `<i class="fas fa-clock" style="font-size:10px"></i>&nbsp;${post.read}`;
                 document.getElementById('modalArticle').innerHTML = post.article;
 
                 const modal = document.getElementById('modalOverlay');
@@ -1179,6 +1037,22 @@ ${topic}`
             document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
             /* ═══════════════════════════════════════════
+               FEATURED POST — wire up onclick
+            ═══════════════════════════════════════════ */
+            (function wireFeatured() {
+                const fp = document.getElementById('featuredPost');
+                if (fp) {
+                    fp.style.cursor = 'pointer';
+                    fp.onclick = () => openPost(0);
+                    // Wire the "Read Full Article" button inside featured post
+                    fp.querySelectorAll('[onclick]').forEach(btn => {
+                        const orig = btn.getAttribute('onclick');
+                        if (orig && orig.includes('openPost')) btn.setAttribute('onclick', 'event.stopPropagation();openPost(0)');
+                    });
+                }
+            })();
+
+            /* ═══════════════════════════════════════════
                FILTER TABS
             ═══════════════════════════════════════════ */
             document.querySelectorAll('.f-btn').forEach(btn => {
@@ -1188,9 +1062,8 @@ ${topic}`
                     activeFilter = btn.dataset.cat;
                     visibleCount = 6;
                     renderPosts(true);
-                    // hide featured if filtered
                     const fp = document.getElementById('featuredPost');
-                    fp.style.display = (activeFilter !== 'all') ? 'none' : '';
+                    if (fp) fp.style.display = (activeFilter !== 'all') ? 'none' : '';
                 });
             });
 
@@ -1200,22 +1073,30 @@ ${topic}`
                 renderPosts(false);
             });
 
-            /* SCROLL REVEAL */
+            /* ═══════════════════════════════════════════
+               SCROLL REVEAL
+            ═══════════════════════════════════════════ */
             const srIO = new IntersectionObserver(entries => {
-                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); srIO.unobserve(e.target); } });
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('vis'); srIO.unobserve(e.target); }
+                });
             }, { threshold: 0.1 });
             document.querySelectorAll('.sr').forEach(el => srIO.observe(el));
 
-            /* FEATURED POST reveal */
             const fpIO = new IntersectionObserver(entries => {
-                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); fpIO.unobserve(e.target); } });
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('vis'); fpIO.unobserve(e.target); }
+                });
             }, { threshold: 0.1 });
-            const fp = document.getElementById('featuredPost');
-            if (fp) fpIO.observe(fp);
+            const fpEl = document.getElementById('featuredPost');
+            if (fpEl) fpIO.observe(fpEl);
 
-            /* INIT */
+            /* ═══════════════════════════════════════════
+               INIT
+            ═══════════════════════════════════════════ */
             renderPosts(false);
-            // stagger initial grid on page load
+
+            /* Stagger initial card entrance */
             setTimeout(() => {
                 document.querySelectorAll('.post-card').forEach((c, i) => {
                     c.style.opacity = '0';
@@ -1227,6 +1108,17 @@ ${topic}`
                     }));
                 });
             }, 1500);
+
+            /* ── LIVE REFRESH ──────────────────────────────
+               When admin publishes a post in another tab,
+               this page re-renders automatically. */
+            window.addEventListener('storage', e => {
+                if (e.key === 'zts_blog_posts') {
+                    visibleCount = 6;
+                    renderPosts(false);
+                }
+            });
+
         </script>
 
 </body>

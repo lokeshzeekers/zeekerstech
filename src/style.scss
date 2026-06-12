@@ -4509,9 +4509,6 @@
    border-radius: 10px;
    border: 1px solid transparent;
    transition: all 0.2s;
- }
-
- .feature-item:hover {
    background: var(--accent-pale);
    border-color: rgba(255, 107, 43, 0.15);
  }
@@ -4520,8 +4517,8 @@
    width: 20px;
    height: 20px;
    border-radius: 6px;
-   background: var(--accent-light);
-   color: var(--accent);
+   background: var(--accent);
+   color: white;
    display: flex;
    align-items: center;
    justify-content: center;
@@ -4529,11 +4526,6 @@
    flex-shrink: 0;
    margin-top: 1px;
    transition: all 0.2s;
- }
-
- .feature-item:hover .feature-check {
-   background: var(--accent);
-   color: #fff;
  }
 
  .feature-text {

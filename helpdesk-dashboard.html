@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helpdesk — Zeekers Technology Solutions</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./assets/images/favicon.png">
+
+    <style>
+        :root {
+            --accent: #ff6b2b;
+            --accent-2: #ff9a5c;
+            --accent-dark: #d94f10;
+            --accent-light: #fff0ea;
+            --accent-pale: #fff7f2;
+            --ink: #12100e;
+            --txt2: #5a5650;
+            --txt3: #9a9490;
+            --bg: #fff;
+            --bg2: #fafaf8;
+            --bg3: #f5f0ea;
+            --line: rgba(0, 0, 0, 0.07);
+            --sh-sm: 0 2px 12px rgba(0, 0, 0, .06);
+            --sh-md: 0 8px 32px rgba(0, 0, 0, .10);
+            --sh-lg: 0 20px 60px rgba(0, 0, 0, .12);
+            --sh-or: 0 8px 32px rgba(255, 107, 43, .22);
+            --r: 14px;
+            --rl: 22px;
+            --sidebar: 256px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg2);
+            color: var(--ink);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh
+        }
+
+        /* TOPBAR */
+        .topbar {
+            height: 60px;
+            background: linear-gradient(100deg, var(--accent), var(--accent-dark));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 4px 20px rgba(255, 107, 43, .22);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100
+        }
+
+        .tb-left {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .tb-logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: .3px;
+            text-decoration: none
+        }
+
+        .tb-logo span {
+            color: rgba(255, 255, 255, .6);
+            font-weight: 500
+        }
+
+        .tb-div {
+            width: 1px;
+            height: 18px;
+            background: rgba(255, 255, 255, .25)
+        }
+
+        .tb-tag {
+            font-size: 12.5px;
+            color: rgba(255, 255, 255, .7)
+        }
+
+        .tb-right {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .tb-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 5px 12px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, .15);
+            transition: background .2s
+        }
+
+        .tb-user:hover {
+            background: rgba(255, 255, 255, .22)
+        }
+
+        .tb-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .25);
+            border: 2px solid rgba(255, 255, 255, .3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-size: 10px;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0
+        }
+
+        .tb-name {
+            font-size: 12.5px;
+            font-weight: 500;
+            color: #fff
+        }
+
+        .tb-out {
+            background: rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .2);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all .2s
+        }
+
+        .tb-out:hover {
+            background: rgba(255, 255, 255, .25)
+        }
+
+        .mob-btn {
+            display: none;
+            background: rgba(255, 255, 255, .15);
+            border: none;
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px
+        }
+
+        /* LAYOUT */
+        .app {
+            display: flex;
+            flex: 1;
+            overflow: hidden
+        }
+
+        /* SIDEBAR */
+        .sb {
+            width: var(--sidebar);
+            background: var(--bg);
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow-y: auto
+        }
+
+        .sb-sec {
+            padding: 8px 10px;
+            margin-top: 4px
+        }
+
+        .sb-lbl {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--txt3);
+            padding: 0 10px;
+            margin-bottom: 5px
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: var(--r);
+            cursor: pointer;
+            transition: all .2s;
+            color: var(--txt2);
+            font-size: 13.5px;
+            font-weight: 400
+        }
+
+        .nav i {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+            flex-shrink: 0
+        }
+
+        .nav:hover {
+            background: var(--bg2);
+            color: var(--ink)
+        }
+
+        .nav.active {
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 500
+        }
+
+        .nav.active i {
+            color: var(--accent)
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 100px;
+            min-width: 18px;
+            text-align: center
+        }
+
+        .sb-foot {
+            margin-top: auto;
+            padding: 14px 10px;
+            border-top: 1px solid var(--line)
+        }
+
+        .sb-help {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--accent-light);
+            border: 1px solid rgba(255, 107, 43, .18);
+            border-radius: var(--r)
+        }
+
+        .sb-help i {
+            font-size: 18px;
+            color: var(--accent)
+        }
+
+        .sb-help-t {
+            font-size: 12px;
+            color: var(--txt2);
+            line-height: 1.5
+        }
+
+        .sb-help-t strong {
+            color: var(--ink)
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px
+        }
+
+        /* PANELS */
+        .panel {
+            display: none
+        }
+
+        .panel.active {
+            display: block
+        }
+
+        /* PAGE HEADER */
+        .ph {
+            margin-bottom: 24px
+        }
+
+        .ph-kick {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px
+        }
+
+        .ph-kick::before {
+            content: '';
+            width: 14px;
+            height: 1px;
+            background: var(--accent)
+        }
+
+        .ph-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 800;
+            letter-spacing: -.8px;
+            color: var(--ink);
+            margin-bottom: 5px
+        }
+
+        .ph-desc {
+            font-size: 14px;
+            color: var(--txt2);
+            font-weight: 300;
+            line-height: 1.6
+        }
+
+        /* STATS */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px
+        }
+
+        .sc {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all .25s
+        }
+
+        .sc:hover {
+            box-shadow: var(--sh-sm);
+            border-color: rgba(255, 107, 43, .14)
+        }
+
+        .sc-ic {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0
+        }
+
+        .ic-or {
+            background: var(--accent-light);
+            color: var(--accent)
+        }
+
+        .ic-gr {
+            background: #f0fdf4;
+            color: #22c55e
+        }
+
+        .ic-bl {
+            background: #eff6ff;
+            color: #3b82f6
+        }
+
+        .ic-pu {
+            background: #fdf4ff;
+            color: #a855f7
+        }
+
+        .sc-n {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            line-height: 1;
+            letter-spacing: -.5px
+        }
+
+        .sc-l {
+            font-size: 11px;
+            color: var(--txt3);
+            margin-top: 3px
+        }
+
+        /* SECTION CARD */
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: var(--rl);
+            overflow: hidden;
+            margin-bottom: 20px
+        }
+
+        .card-head {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: -.3px;
+            color: var(--ink)
+        }
+
+        .card-sub {
+            font-size: 12px;
+            color: var(--txt3);
+            margin-top: 2px
+        }
+
+        .card-body {
+            padding: 22px
+        }
+
+        /* STEPS */
+        .steps {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex: 1;
+            position: relative
+        }
+
+        .step:last-child {
+            flex: 0
+        }
+
+        .step::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: var(--line);
+            margin: 0 6px
+        }
+
+        .step:last-child::after {
+            display: none
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg2);
+            border: 1.5px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--txt3);
+            flex-shrink: 0;
+            transition: all .3s
+        }
+
+        .step.active .step-num,
+        .step.done .step-num {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        .step.done .step-num {
+            background: var(--accent-dark)
+        }
+
+        .step-lbl {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--txt3);
+            white-space: nowrap;
+            transition: color .3s
+        }
+
+        .step.active .step-lbl {
+            color: var(--accent)
+        }
+
+        .step.done .step-lbl {
+            color: var(--ink)
+        }
+
+        /* CATEGORY BUTTONS */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px
+        }
+
+        .cat-btn {
+            background: var(--bg2);
+            border: 1.5px solid var(--line);
+            border-radius: var(--r);
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: all .25s;
+            text-align: left;
+            font-family: 'DM Sans', sans-serif;
+            position: relative;
+            overflow: hidden
+        }
+
+        .cat-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .3s
+        }
+
+        .cat-btn:hover {
+            border-color: rgba(255, 107, 43, .22);
+            background: var(--accent-pale)
+        }
+
+        .cat-btn:hover::before,
+        .cat-btn.selected::before {
+            transform: scaleX(1)
+        }
+
+        .cat-btn.selected {
+            border-color: var(--accent);
+            background: var(--accent-light)
+        }
+
+        .cat-ic {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin-bottom: 12px;
+            transition: all .25s
+        }
+
+        .cat-btn.selected .cat-ic,
+        .cat-btn:hover .cat-ic {
+            background: var(--accent);
+            color: #fff
+        }
+
+        .cat-btn h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -.2px;
+            margin-bottom: 4px
+        }
+
+        .cat-btn p {
+            font-size: 12px;
+            color: var(--txt3);
+            line-height: 1.5;
+            font-weight: 300
+        }
+
+        /* SUB TABS */
+        .sub-tabs {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-bottom: 16px
+        }
+
+        .sub-tab {
+            font-size: 12.5px;
+            font-weight: 500;
+            padding: 6px 15px;
+            border-radius: 100px;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--txt2);
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'DM Sans', sans-serif
+        }
+
+        .sub-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-pale)
+        }
+
+        .sub-tab.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: var(--sh-or)
+        }
+
+        /* PRODUCT LIST */
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 18px;
+            max-height: 320px;
+            overflow-y: auto
+        }
+
+        .prod-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 14px;
+            border: 1.5px solid var(--line);
+            border-radius: var(--r);
+            cursor: pointer;
+            transition: all .2s;
+            background: var(--bg2)
+        }
+
+        .prod-item:hover {
+            border-color: rgba(255, 107, 43, .22);
+            background: var(--accent-pale)
+        }
+
+        .prod-item.checked {
+            border-color: var(--accent);
+            background: var(--accent-light)
+        }
+
+        .prod-cb {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+            border: 1.5px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all .2s;
+            font-size: 10px;
+            color: transparent
+        }
+
+        .prod-item.checked .prod-cb {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        .prod-name {
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--ink)
+        }
+
+        .prod-sub {
+            font-size: 11.5px;
+            color: var(--txt3);
+            margin-top: 1px
+        }
+
+        .prod-empty {
+            font-size: 13.5px;
+            color: var(--txt3);
+            padding: 16px;
+            text-align: center
+        }
+
+        /* FORM */
+        .fg {
+            margin-bottom: 16px
+        }
+
+        .fl {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--txt2);
+            letter-spacing: .3px;
+            margin-bottom: 5px;
+            display: block
+        }
+
+        .fl .req {
+            color: var(--accent)
+        }
+
+        .fi,
+        .fsel,
+        .fta {
+            width: 100%;
+            background: var(--bg2);
+            border: 1.5px solid var(--line);
+            border-radius: var(--r);
+            padding: 10px 13px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: var(--ink);
+            outline: none;
+            transition: border .2s, background .2s;
+            appearance: none
+        }
+
+        .fi:focus,
+        .fsel:focus,
+        .fta:focus {
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(255, 107, 43, .08)
+        }
+
+        .fi::placeholder,
+        .fta::placeholder {
+            color: var(--txt3)
+        }
+
+        .fta {
+            resize: vertical;
+            min-height: 110px
+        }
+
+        /* SEVERITY */
+        .sev-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px
+        }
+
+        .sev-btn {
+            border: 1.5px solid var(--line);
+            background: var(--bg2);
+            border-radius: var(--r);
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--txt2);
+            font-weight: 400
+        }
+
+        .sev-btn:hover {
+            border-color: var(--accent);
+            color: var(--ink)
+        }
+
+        .sev-btn.active {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 500
+        }
+
+        .sev-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0
+        }
+
+        /* FILE DROP */
+        .file-drop {
+            border: 1.5px dashed var(--line);
+            border-radius: var(--r);
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .25s;
+            background: var(--bg2)
+        }
+
+        .file-drop:hover,
+        .file-drop.over {
+            border-color: var(--accent);
+            background: var(--accent-pale)
+        }
+
+        .file-drop i {
+            font-size: 26px;
+            color: var(--txt3);
+            display: block;
+            margin-bottom: 8px;
+            transition: color .25s
+        }
+
+        .file-drop:hover i {
+            color: var(--accent)
+        }
+
+        .file-drop p {
+            font-size: 13.5px;
+            color: var(--txt3)
+        }
+
+        .file-drop p span {
+            color: var(--accent);
+            font-weight: 500
+        }
+
+        .file-drop small {
+            font-size: 11.5px;
+            color: var(--txt3);
+            display: block;
+            margin-top: 3px
+        }
+
+        .file-prev {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--accent-light);
+            border: 1px solid rgba(255, 107, 43, .2);
+            border-radius: 10px;
+            margin-top: 10px
+        }
+
+        .file-prev i {
+            color: var(--accent)
+        }
+
+        .file-prev-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink);
+            flex: 1
+        }
+
+        .file-rm {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--txt3);
+            font-size: 13px;
+            transition: color .2s
+        }
+
+        .file-rm:hover {
+            color: #dc2626
+        }
+
+        /* BUTTONS */
+        .btn-p {
+            background: linear-gradient(100deg, var(--accent), var(--accent-2));
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14.5px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all .25s;
+            box-shadow: var(--sh-or)
+        }
+
+        .btn-p:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(255, 107, 43, .32)
+        }
+
+        .btn-p:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none
+        }
+
+        .btn-s {
+            background: transparent;
+            color: var(--txt2);
+            border: 1.5px solid var(--line);
+            padding: 11px 22px;
+            border-radius: 100px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s
+        }
+
+        .btn-s:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-pale)
+        }
+
+        /* SUCCESS */
+        .success-screen {
+            text-align: center;
+            padding: 48px 28px
+        }
+
+        .succ-ring {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            border: 2px solid rgba(255, 107, 43, .22);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 28px;
+            color: var(--accent);
+            animation: popIn .5s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .success-screen h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 10px
+        }
+
+        .ticket-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--accent-light);
+            border: 1px solid rgba(255, 107, 43, .25);
+            border-radius: 100px;
+            padding: 7px 18px;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 18px
+        }
+
+        .success-screen p {
+            font-size: 14px;
+            color: var(--txt2);
+            line-height: 1.75;
+            font-weight: 300;
+            max-width: 340px;
+            margin: 0 auto 22px
+        }
+
+        /* ISSUE LIST */
+        .issue-filters {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-bottom: 16px
+        }
+
+        .if-btn {
+            font-size: 12.5px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--txt2);
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'DM Sans', sans-serif
+        }
+
+        .if-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-pale)
+        }
+
+        .if-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent)
+        }
+
+        .issue-row {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+            padding: 16px 18px;
+            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: start;
+            transition: all .25s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden
+        }
+
+        .issue-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-2));
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform .3s
+        }
+
+        .issue-row:hover {
+            box-shadow: var(--sh-sm);
+            border-color: rgba(255, 107, 43, .15);
+            transform: translateY(-1px)
+        }
+
+        .issue-row:hover::before {
+            transform: scaleY(1)
+        }
+
+        .issue-id {
+            font-family: 'Syne', sans-serif;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--txt3);
+            letter-spacing: .5px;
+            margin-bottom: 4px
+        }
+
+        .issue-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -.2px;
+            margin-bottom: 6px
+        }
+
+        .issue-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .im {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--txt3)
+        }
+
+        .im i {
+            font-size: 10px;
+            color: var(--accent)
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 100px;
+            white-space: nowrap
+        }
+
+        .sp-open {
+            background: #fff0ea;
+            color: #d94f10;
+            border: 1px solid rgba(255, 107, 43, .2)
+        }
+
+        .sp-in-progress {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid rgba(59, 130, 246, .2)
+        }
+
+        .sp-resolved {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid rgba(34, 197, 94, .2)
+        }
+
+        .sp-closed {
+            background: var(--bg2);
+            color: var(--txt3);
+            border: 1px solid var(--line)
+        }
+
+        .sp-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0
+        }
+
+        .sp-open .sp-dot {
+            background: #d94f10
+        }
+
+        .sp-in-progress .sp-dot {
+            background: #2563eb
+        }
+
+        .sp-resolved .sp-dot {
+            background: #16a34a
+        }
+
+        .admin-reply {
+            background: #f0fdf4;
+            border: 1px solid rgba(34, 197, 94, .2);
+            border-radius: var(--r);
+            padding: 12px 14px;
+            margin-top: 10px;
+            display: flex;
+            gap: 10px
+        }
+
+        .admin-reply i {
+            color: #16a34a;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px
+        }
+
+        .admin-reply-text {
+            font-size: 13px;
+            color: #166534;
+            line-height: 1.6
+        }
+
+        /* EMPTY STATE */
+        .empty {
+            text-align: center;
+            padding: 52px 20px
+        }
+
+        .empty i {
+            font-size: 40px;
+            color: var(--line);
+            display: block;
+            margin-bottom: 14px
+        }
+
+        .empty h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 7px
+        }
+
+        .empty p {
+            font-size: 13.5px;
+            color: var(--txt3);
+            font-weight: 300
+        }
+
+        /* MODAL */
+        .mw {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(18, 16, 14, .55);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 28px 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .3s, visibility .3s;
+            overflow-y: auto
+        }
+
+        .mw.open {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .modal {
+            background: var(--bg);
+            border-radius: var(--rl);
+            width: 100%;
+            max-width: 620px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .15);
+            transform: translateY(24px) scale(.97);
+            transition: transform .4s cubic-bezier(.4, 0, .2, 1);
+            margin: auto;
+            overflow: hidden
+        }
+
+        .mw.open .modal {
+            transform: translateY(0) scale(1)
+        }
+
+        .mh {
+            background: var(--ink);
+            padding: 20px 24px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .mh::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 43, .12), transparent)
+        }
+
+        .mh-id {
+            font-size: 10px;
+            color: rgba(255, 255, 255, .4);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1
+        }
+
+        .mh-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -.3px;
+            position: relative;
+            z-index: 1
+        }
+
+        .mx {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .1);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all .2s;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0
+        }
+
+        .mx:hover {
+            background: var(--accent)
+        }
+
+        .mb {
+            padding: 20px 24px
+        }
+
+        .view-lbl {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--txt3);
+            margin-bottom: 7px;
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .view-lbl::before {
+            content: '';
+            width: 10px;
+            height: 1px;
+            background: var(--accent)
+        }
+
+        .view-desc {
+            font-size: 14px;
+            color: var(--txt2);
+            line-height: 1.75;
+            font-weight: 300;
+            white-space: pre-wrap;
+            background: var(--bg2);
+            border-radius: var(--r);
+            padding: 12px 14px;
+            border: 1px solid var(--line)
+        }
+
+        .view-meta-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px
+        }
+
+        .vmi {
+            background: var(--bg2);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+            padding: 10px 14px
+        }
+
+        .vmi-l {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--txt3);
+            margin-bottom: 3px
+        }
+
+        .vmi-v {
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--ink)
+        }
+
+        .prod-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px
+        }
+
+        .pt {
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 3px 11px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 107, 43, .2)
+        }
+
+        .tl-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0
+        }
+
+        .tl-row {
+            display: flex;
+            gap: 9px;
+            padding-bottom: 13px;
+            position: relative
+        }
+
+        .tl-row:last-child {
+            padding-bottom: 0
+        }
+
+        .tl-row::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 22px;
+            bottom: 0;
+            width: 1px;
+            background: var(--line)
+        }
+
+        .tl-row:last-child::before {
+            display: none
+        }
+
+        .tl-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            border: 2px solid rgba(255, 107, 43, .25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 1px
+        }
+
+        .tl-t {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink)
+        }
+
+        .tl-d {
+            font-size: 11px;
+            color: var(--txt3);
+            margin-top: 1px
+        }
+
+        .attach-view {
+            margin-top: 10px;
+            border-radius: var(--r);
+            overflow: hidden;
+            border: 1px solid var(--line)
+        }
+
+        .attach-view img {
+            width: 100%;
+            max-height: 260px;
+            object-fit: contain;
+            background: var(--bg2);
+            display: block
+        }
+
+        .attach-view video {
+            width: 100%;
+            max-height: 260px;
+            display: block;
+            background: #000
+        }
+
+        .attach-view .pdf-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--bg2)
+        }
+
+        .attach-view .pdf-row i {
+            font-size: 20px;
+            color: var(--accent)
+        }
+
+        .attach-view .pdf-row a {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 13.5px;
+            text-decoration: none
+        }
+
+        .attach-view .pdf-row a:hover {
+            text-decoration: underline
+        }
+
+        /* PROFILE */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 20px
+        }
+
+        .pf-card {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: var(--rl);
+            padding: 28px;
+            text-align: center
+        }
+
+        .pf-av-wrap {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 14px
+        }
+
+        .pf-av {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            box-shadow: var(--sh-or)
+        }
+
+        .pf-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: -.3px;
+            margin-bottom: 3px
+        }
+
+        .pf-email {
+            font-size: 12.5px;
+            color: var(--txt3);
+            margin-bottom: 3px
+        }
+
+        .pf-org {
+            font-size: 12px;
+            color: var(--txt3);
+            margin-bottom: 16px
+        }
+
+        .pf-div {
+            height: 1px;
+            background: var(--line);
+            margin: 14px 0
+        }
+
+        .pf-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .pf-stat {
+            background: var(--bg2);
+            border-radius: var(--r);
+            padding: 10px;
+            text-align: center
+        }
+
+        .pf-sn {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -.5px
+        }
+
+        .pf-sl {
+            font-size: 11px;
+            color: var(--txt3);
+            margin-top: 2px
+        }
+
+        .pf-detail {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: var(--rl);
+            overflow: hidden
+        }
+
+        .pf-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .pf-tab {
+            flex: 1;
+            padding: 13px 10px;
+            border: none;
+            background: transparent;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--txt3);
+            cursor: pointer;
+            transition: all .25s;
+            position: relative
+        }
+
+        .pf-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform .3s
+        }
+
+        .pf-tab.active {
+            color: var(--accent)
+        }
+
+        .pf-tab.active::after {
+            transform: scaleX(1)
+        }
+
+        .pf-panel {
+            display: none;
+            padding: 24px
+        }
+
+        .pf-panel.active {
+            display: block
+        }
+
+        .save-badge {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            background: #f0fdf4;
+            border: 1px solid rgba(34, 197, 94, .2);
+            color: #16a34a;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 100px;
+            margin-top: 12px
+        }
+
+        .save-badge.show {
+            display: inline-flex
+        }
+
+        .err-msg {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            font-size: 13px;
+            padding: 9px 13px;
+            border-radius: var(--r);
+            margin-bottom: 14px;
+            display: none;
+            align-items: center;
+            gap: 7px
+        }
+
+        .err-msg.show {
+            display: flex
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(18px);
+            background: var(--ink);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s, transform .3s;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .2)
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0)
+        }
+
+        .toast i {
+            color: var(--accent-2)
+        }
+
+        /* MOBILE */
+        .sb-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(18, 16, 14, .4);
+            z-index: 200
+        }
+
+        @media(max-width:900px) {
+            .sb {
+                position: fixed;
+                top: 60px;
+                left: calc(-1 * var(--sidebar));
+                bottom: 0;
+                z-index: 300;
+                transition: left .35s cubic-bezier(.4, 0, .2, 1)
+            }
+
+            .sb.open {
+                left: 0;
+                box-shadow: 8px 0 28px rgba(0, 0, 0, .12)
+            }
+
+            .sb-overlay {
+                display: block;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity .35s
+            }
+
+            .sb.open~.sb-overlay {
+                opacity: 1;
+                pointer-events: all
+            }
+
+            .mob-btn {
+                display: flex
+            }
+
+            .main {
+                padding: 16px
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .cat-grid {
+                grid-template-columns: 1fr
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr
+            }
+
+            .sev-row {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media(max-width:480px) {
+            .stats-row {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+    <!-- ISSUE DETAIL MODAL -->
+    <div class="mw" id="issueModal">
+        <div class="modal">
+            <div class="mh">
+                <div>
+                    <div class="mh-id" id="mod-id"></div>
+                    <div class="mh-title" id="mod-title"></div>
+                </div>
+                <button class="mx" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="mb">
+                <div style="margin-bottom:14px" id="mod-status-wrap"></div>
+                <div class="view-meta-row">
+                    <div class="vmi">
+                        <div class="vmi-l">Category</div>
+                        <div class="vmi-v" id="mod-cat">—</div>
+                    </div>
+                    <div class="vmi">
+                        <div class="vmi-l">Severity</div>
+                        <div class="vmi-v" id="mod-sev">—</div>
+                    </div>
+                    <div class="vmi">
+                        <div class="vmi-l">Created</div>
+                        <div class="vmi-v" id="mod-date">—</div>
+                    </div>
+                    <div class="vmi">
+                        <div class="vmi-l">Attachment</div>
+                        <div class="vmi-v" id="mod-att-name">None</div>
+                    </div>
+                </div>
+                <div class="view-lbl" style="margin-bottom:8px">Affected Products</div>
+                <div class="prod-tags" id="mod-prods"></div>
+                <div class="view-lbl" style="margin-bottom:8px">Issue Description</div>
+                <div class="view-desc" id="mod-desc" style="margin-bottom:14px"></div>
+                <div id="mod-attach-wrap" style="display:none;margin-bottom:14px">
+                    <div class="view-lbl" style="margin-bottom:8px">Attachment</div>
+                    <div class="attach-view" id="mod-attach"></div>
+                </div>
+                <div id="mod-reply-wrap" style="display:none;margin-bottom:14px">
+                    <div class="view-lbl" style="margin-bottom:8px">Admin Response</div>
+                    <div class="admin-reply"><i class="fas fa-comment-alt"></i>
+                        <div class="admin-reply-text" id="mod-reply"></div>
+                    </div>
+                </div>
+                <div class="view-lbl" style="margin-bottom:8px">Activity Timeline</div>
+                <div class="tl-wrap" id="mod-tl"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <div class="tb-left">
+            <button class="mob-btn" id="mobBtn"><i class="fas fa-bars"></i></button>
+            <a href="#" class="tb-logo">Zeekers<span>.</span> Helpdesk</a>
+            <div class="tb-div"></div>
+            <div class="tb-tag">Support Portal</div>
+        </div>
+        <div class="tb-right">
+            <div class="tb-user" onclick="navigate('profile')">
+                <div class="tb-av" id="topAvatar">U</div>
+                <div class="tb-name" id="topName">User</div>
+            </div>
+            <button class="tb-out" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
+        </div>
+    </header>
+
+    <div class="app">
+        <aside class="sb" id="sidebar">
+            <div class="sb-sec">
+                <div class="sb-lbl">Menu</div>
+                <div class="nav active" id="nav-dashboard" onclick="navigate('dashboard')"><i
+                        class="fas fa-th-large"></i>Dashboard</div>
+                <div class="nav" id="nav-issues" onclick="navigate('issues')"><i class="fas fa-ticket-alt"></i>My
+                    Issues<span class="nav-badge" id="issueCount">0</span></div>
+                <div class="nav" id="nav-profile" onclick="navigate('profile')"><i class="fas fa-user-circle"></i>My
+                    Profile</div>
+            </div>
+            <div class="sb-foot">
+                <div class="sb-help">
+                    <i class="fas fa-life-ring"></i>
+                    <div class="sb-help-t"><strong>Need help?</strong><br>support@zeekerstechnology.com</div>
+                </div>
+            </div>
+        </aside>
+        <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+
+        <main class="main">
+
+            <!-- DASHBOARD -->
+            <div class="panel active" id="panel-dashboard">
+                <div class="ph">
+                    <div class="ph-kick">Dashboard</div>
+                    <div class="ph-title">Welcome back, <span id="welcomeName">User</span> 👋</div>
+                    <div class="ph-desc">Raise a new support issue or track your existing ones below.</div>
+                </div>
+                <div class="stats-row">
+                    <div class="sc">
+                        <div class="sc-ic ic-or"><i class="fas fa-ticket-alt"></i></div>
+                        <div>
+                            <div class="sc-n" id="statTotal">0</div>
+                            <div class="sc-l">Total Issues</div>
+                        </div>
+                    </div>
+                    <div class="sc">
+                        <div class="sc-ic ic-bl"><i class="fas fa-spinner"></i></div>
+                        <div>
+                            <div class="sc-n" id="statOpen">0</div>
+                            <div class="sc-l">Open</div>
+                        </div>
+                    </div>
+                    <div class="sc">
+                        <div class="sc-ic ic-pu"><i class="fas fa-tools"></i></div>
+                        <div>
+                            <div class="sc-n" id="statIP">0</div>
+                            <div class="sc-l">In Progress</div>
+                        </div>
+                    </div>
+                    <div class="sc">
+                        <div class="sc-ic ic-gr"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <div class="sc-n" id="statRes">0</div>
+                            <div class="sc-l">Resolved</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Create New Issue</div>
+                            <div class="card-sub">Step through the form to raise a support ticket</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Steps -->
+                        <div class="steps" id="stepsBar">
+                            <div class="step active" id="step1">
+                                <div class="step-num">1</div>
+                                <div class="step-lbl">Category</div>
+                            </div>
+                            <div class="step" id="step2">
+                                <div class="step-num">2</div>
+                                <div class="step-lbl">Products</div>
+                            </div>
+                            <div class="step" id="step3">
+                                <div class="step-num">3</div>
+                                <div class="step-lbl">Details</div>
+                            </div>
+                            <div class="step" id="step4">
+                                <div class="step-num">4</div>
+                                <div class="step-lbl">Done</div>
+                            </div>
+                        </div>
+
+                        <!-- STEP 1 -->
+                        <div id="createStep1">
+                            <div style="font-size:13px;font-weight:500;color:var(--txt2);margin-bottom:12px">Select
+                                issue category</div>
+                            <div class="cat-grid">
+                                <div class="cat-btn" id="catAICTE" onclick="selectCat('aicte')">
+                                    <div class="cat-ic"><i class="fas fa-flask"></i></div>
+                                    <h4>AICTE-IDEA Lab Equipment</h4>
+                                    <p>Issues with lab equipment — 3D printers, IoT kits, robotics, AI workstations,
+                                        etc.</p>
+                                </div>
+                                <div class="cat-btn" id="catIndustrial" onclick="selectCat('industrial')">
+                                    <div class="cat-ic"><i class="fas fa-industry"></i></div>
+                                    <h4>Industrial Products</h4>
+                                    <p>Issues with ZTS products — Smart Helmet, WeldSense, ZeeIoT, SmartArc, Predictive
+                                        QA.</p>
+                                </div>
+                            </div>
+                            <div style="text-align:right"><button class="btn-p" id="step1Next" onclick="goStep(2)"
+                                    disabled>Next &nbsp;<i class="fas fa-arrow-right"
+                                        style="font-size:12px"></i></button></div>
+                        </div>
+
+                        <!-- STEP 2 -->
+                        <div id="createStep2" style="display:none">
+                            <!-- AICTE sub -->
+                            <div id="aicteSection">
+                                <div style="font-size:13px;font-weight:500;color:var(--txt2);margin-bottom:10px">Select
+                                    sub-category</div>
+                                <div class="sub-tabs">
+                                    <button class="sub-tab active" onclick="setAicteSub(this,'electrical')">Mandatory
+                                        Tools — Electrical</button>
+                                    <button class="sub-tab" onclick="setAicteSub(this,'mandatory')">Mandatory
+                                        Equipment</button>
+                                    <button class="sub-tab" onclick="setAicteSub(this,'optional')">Optional &amp;
+                                        Consumables</button>
+                                </div>
+                                <div class="product-list" id="aicteProductList"></div>
+                            </div>
+                            <!-- Industrial -->
+                            <div id="industrialSection" style="display:none">
+                                <div style="font-size:13px;font-weight:500;color:var(--txt2);margin-bottom:10px">Select
+                                    product(s) — multiple allowed</div>
+                                <div class="product-list" id="industrialProductList"></div>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-top:14px">
+                                <button class="btn-s" onclick="goStep(1)"><i class="fas fa-arrow-left"
+                                        style="font-size:12px"></i> &nbsp;Back</button>
+                                <button class="btn-p" id="step2Next" onclick="goStep(3)" disabled>Next &nbsp;<i
+                                        class="fas fa-arrow-right" style="font-size:12px"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 3 -->
+                        <div id="createStep3" style="display:none">
+                            <div class="fg"><label class="fl">Issue Subject <span class="req">*</span></label><input
+                                    class="fi" id="issueSubject" type="text"
+                                    placeholder="Short description of the problem"></div>
+                            <div class="fg">
+                                <label class="fl">Severity</label>
+                                <div class="sev-row">
+                                    <button class="sev-btn active" onclick="setSev(this,'Low')">
+                                        <div class="sev-dot" style="background:#22c55e"></div>Low
+                                    </button>
+                                    <button class="sev-btn" onclick="setSev(this,'Medium')">
+                                        <div class="sev-dot" style="background:#f59e0b"></div>Medium
+                                    </button>
+                                    <button class="sev-btn" onclick="setSev(this,'High')">
+                                        <div class="sev-dot" style="background:#ef4444"></div>High
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="fg"><label class="fl">Describe the Issue <span
+                                        class="req">*</span></label><textarea class="fta" id="issueDesc"
+                                    placeholder="What happened? What did you expect? Include any error messages…"></textarea>
+                            </div>
+                            <div class="fg">
+                                <label class="fl">Attachment <span style="color:var(--txt3)">(PDF, PNG, MP4 · max 5
+                                        MB)</span></label>
+                                <div class="file-drop" id="fileDrop"
+                                    onclick="document.getElementById('fileInput').click()">
+                                    <input type="file" id="fileInput" style="display:none"
+                                        accept=".pdf,.png,.jpg,.jpeg,.mp4,.mov,.avi">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drag &amp; drop or <span>browse file</span></p>
+                                    <small>PDF, PNG, JPG, MP4, MOV · Max 5 MB</small>
+                                </div>
+                                <div id="filePreview" style="display:none" class="file-prev">
+                                    <i class="fas fa-paperclip"></i>
+                                    <div class="file-prev-name" id="filePreviewName"></div>
+                                    <div style="font-size:11px;color:var(--txt3)" id="filePreviewSize"></div>
+                                    <button class="file-rm" onclick="removeFile()"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-top:4px">
+                                <button class="btn-s" onclick="goStep(2)"><i class="fas fa-arrow-left"
+                                        style="font-size:12px"></i> &nbsp;Back</button>
+                                <button class="btn-p" onclick="submitIssue()"><i class="fas fa-paper-plane"
+                                        style="font-size:12px"></i> &nbsp;Submit Issue</button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 4 SUCCESS -->
+                        <div id="createStep4" style="display:none">
+                            <div class="success-screen">
+                                <div class="succ-ring"><i class="fas fa-check"></i></div>
+                                <h2>Issue Raised Successfully!</h2>
+                                <div class="ticket-badge"><i class="fas fa-ticket-alt"></i><span
+                                        id="ticketIdText"></span></div>
+                                <p>Your issue has been logged. Our support team will review it and respond within 24–48
+                                    business hours.</p>
+                                <button class="btn-p" onclick="resetForm()"><i class="fas fa-plus"
+                                        style="font-size:12px"></i> &nbsp;Raise Another Issue</button>
+                                &nbsp;&nbsp;
+                                <button class="btn-s" onclick="navigate('issues')">View My Issues</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MY ISSUES -->
+            <div class="panel" id="panel-issues">
+                <div class="ph">
+                    <div class="ph-kick">My Issues</div>
+                    <div class="ph-title">Your Support Tickets</div>
+                    <div class="ph-desc">Track the status of all issues you've raised. Click any row to view full
+                        details.</div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div class="issue-filters">
+                            <button class="if-btn active" onclick="filterIssues(this,'all')">All</button>
+                            <button class="if-btn" onclick="filterIssues(this,'open')">Open</button>
+                            <button class="if-btn" onclick="filterIssues(this,'in-progress')">In Progress</button>
+                            <button class="if-btn" onclick="filterIssues(this,'resolved')">Resolved</button>
+                        </div>
+                        <button class="btn-p" style="padding:8px 18px;font-size:13px" onclick="navigate('dashboard')"><i
+                                class="fas fa-plus" style="font-size:11px"></i>New Issue</button>
+                    </div>
+                    <div class="card-body" id="issueList">
+                        <div class="empty"><i class="fas fa-ticket-alt"></i>
+                            <h3>No issues yet</h3>
+                            <p>Create your first issue from the Dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE -->
+            <div class="panel" id="panel-profile">
+                <div class="ph">
+                    <div class="ph-kick">My Account</div>
+                    <div class="ph-title">Profile Settings</div>
+                </div>
+                <div class="profile-grid">
+                    <div class="pf-card">
+                        <div class="pf-av-wrap">
+                            <div class="pf-av" id="pfAv">U</div>
+                        </div>
+                        <div class="pf-name" id="pfName">User Name</div>
+                        <div class="pf-email" id="pfEmail">email@example.com</div>
+                        <div class="pf-org" id="pfOrg">Organisation</div>
+                        <div class="pf-div"></div>
+                        <div class="pf-stats">
+                            <div class="pf-stat">
+                                <div class="pf-sn" id="pfTotal">0</div>
+                                <div class="pf-sl">Total Issues</div>
+                            </div>
+                            <div class="pf-stat">
+                                <div class="pf-sn" id="pfRes">0</div>
+                                <div class="pf-sl">Resolved</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pf-detail">
+                        <div class="pf-tabs">
+                            <button class="pf-tab active" onclick="pfTab(this,'info')">Personal Info</button>
+                            <button class="pf-tab" onclick="pfTab(this,'password')">Change Password</button>
+                        </div>
+                        <div class="pf-panel active" id="pf-info">
+                            <div class="fg"><label class="fl">First Name</label><input class="fi" id="pfFirst"
+                                    type="text"></div>
+                            <div class="fg"><label class="fl">Last Name</label><input class="fi" id="pfLast"
+                                    type="text"></div>
+                            <div class="fg"><label class="fl">Email</label><input class="fi" id="pfEmailEdit"
+                                    type="email"></div>
+                            <div class="fg"><label class="fl">Organisation</label><input class="fi" id="pfOrgEdit"
+                                    type="text"></div>
+                            <button class="btn-p" onclick="saveProfile()" style="padding:10px 22px">Save
+                                Changes</button>
+                            <div class="save-badge" id="profileSaved"><i class="fas fa-check"></i>Saved successfully
+                            </div>
+                        </div>
+                        <div class="pf-panel" id="pf-password">
+                            <div class="err-msg" id="pwErr"><i class="fas fa-exclamation-circle"></i><span></span></div>
+                            <div class="fg"><label class="fl">Current Password</label><input class="fi" id="pwCur"
+                                    type="password" placeholder="Current password"></div>
+                            <div class="fg"><label class="fl">New Password</label><input class="fi" id="pwNew"
+                                    type="password" placeholder="Min. 8 characters"></div>
+                            <div class="fg"><label class="fl">Confirm New Password</label><input class="fi" id="pwCon"
+                                    type="password" placeholder="Repeat new password"></div>
+                            <button class="btn-p" onclick="changePassword()" style="padding:10px 22px">Update
+                                Password</button>
+                            <div class="save-badge" id="pwSaved"><i class="fas fa-check"></i>Password updated</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        /* ════════════════════════════════════════
+           STORAGE
+        ════════════════════════════════════════ */
+        const S = {
+            g: (k, d = []) => { try { return JSON.parse(localStorage.getItem(k)) || d } catch { return d } },
+            s: (k, v) => localStorage.setItem(k, JSON.stringify(v))
+        };
+
+        /* ════════════════════════════════════════
+           STATE
+        ════════════════════════════════════════ */
+        let session = null, currentCat = '', currentSub = 'electrical', selectedProds = [], currentSev = 'Low', attachedFile = null, attachedDataUrl = null, issueFilter = 'all', PRODUCTS = {};
+
+        /* ════════════════════════════════════════
+           INIT
+        ════════════════════════════════════════ */
+        function init() {
+            session = JSON.parse(localStorage.getItem('zts_session') || 'null');
+            if (!session) { window.location.href = 'helpdesk-login.html'; return; }
+
+            // Load products from admin sync (falls back to hardcoded if admin hasn't run yet)
+            loadProducts();
+
+            const initials = getInits(session.name);
+            document.getElementById('topAvatar').textContent = initials;
+            document.getElementById('topName').textContent = session.name.split(' ')[0];
+            document.getElementById('welcomeName').textContent = session.name.split(' ')[0];
+
+            renderStats();
+            renderIssueCount();
+            navigate('dashboard');
+        }
+
+        function loadProducts() {
+            const stored = S.g('zts_products', null);
+            if (stored && stored.aicte) {
+                PRODUCTS = stored;
+            } else {
+                // fallback defaults
+                PRODUCTS = {
+                    aicte: {
+                        electrical: [
+                            { id: 'el1', name: '3D Printer', sub: 'FDM / SLA additive manufacturing' },
+                            { id: 'el2', name: 'Laser Cutting Machine', sub: 'Precision cutting & engraving' },
+                            { id: 'el3', name: 'CNC Router', sub: 'Multi-purpose fabrication routing' },
+                            { id: 'el4', name: 'Oscilloscope', sub: 'Waveform analysis & testing' },
+                            { id: 'el5', name: 'Electronics Workstation', sub: 'Power supply, soldering, components' },
+                            { id: 'el6', name: 'PCB Milling Machine', sub: 'Circuit board prototyping' },
+                        ],
+                        mandatory: [
+                            { id: 'mq1', name: 'IoT Development Kit', sub: 'Arduino, Raspberry Pi, ESP32 modules' },
+                            { id: 'mq2', name: 'Robotics Kit', sub: 'Modular robotics & mechatronics' },
+                            { id: 'mq3', name: 'AI Workstation', sub: 'GPU-accelerated ML system' },
+                            { id: 'mq4', name: '3D Scanner', sub: 'High-precision object capture' },
+                            { id: 'mq5', name: 'Drone / UAV', sub: 'Custom UAV for research' },
+                        ],
+                        optional: [
+                            { id: 'op1', name: 'VR Headset', sub: 'Immersive simulation & training' },
+                            { id: 'op2', name: 'Filament / Resin', sub: '3D printing consumables' },
+                            { id: 'op3', name: 'Electronic Components', sub: 'Resistors, capacitors, ICs etc.' },
+                        ]
+                    },
+                    industrial: [
+                        { id: 'p1', name: 'ZTS AI Smart Welding Helmet', sub: 'Real-time arc monitoring & safety' },
+                        { id: 'p2', name: 'WeldSense Analytics Platform', sub: 'Cloud weld quality dashboard' },
+                        { id: 'p3', name: 'ZeeIoT Industrial Gateway', sub: 'Edge IoT device — IP67 rated' },
+                        { id: 'p4', name: 'SmartArc Weld Controller', sub: 'Adaptive arc parameter control' },
+                        { id: 'p5', name: 'ZTS Predictive QA Module', sub: 'AI defect prediction engine' },
+                    ]
+                };
+            }
+        }
+
+        /* ════════════════════════════════════════
+           NAVIGATION
+        ════════════════════════════════════════ */
+        function navigate(page) {
+            ['dashboard', 'issues', 'profile'].forEach(p => {
+                document.getElementById('panel-' + p).classList.toggle('active', p === page);
+                document.getElementById('nav-' + p).classList.toggle('active', p === page);
+            });
+            if (page === 'issues') renderIssues();
+            if (page === 'profile') loadProfile();
+            closeSidebar();
+        }
+
+        document.getElementById('mobBtn').onclick = () => document.getElementById('sidebar').classList.toggle('open');
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open') }
+
+        /* ════════════════════════════════════════
+           STATS
+        ════════════════════════════════════════ */
+        function getMyIssues() { return S.g('zts_issues', []).filter(i => i.userId === session.userId); }
+        function renderStats() {
+            const m = getMyIssues();
+            document.getElementById('statTotal').textContent = m.length;
+            document.getElementById('statOpen').textContent = m.filter(i => i.status === 'open').length;
+            document.getElementById('statIP').textContent = m.filter(i => i.status === 'in-progress').length;
+            document.getElementById('statRes').textContent = m.filter(i => i.status === 'resolved').length;
+        }
+        function renderIssueCount() { document.getElementById('issueCount').textContent = getMyIssues().length; }
+
+        /* ════════════════════════════════════════
+           CREATE ISSUE
+        ════════════════════════════════════════ */
+        function selectCat(cat) {
+            currentCat = cat;
+            selectedProds = [];
+            document.getElementById('catAICTE').classList.toggle('selected', cat === 'aicte');
+            document.getElementById('catIndustrial').classList.toggle('selected', cat === 'industrial');
+            const btn = document.getElementById('step1Next');
+            btn.disabled = false;
+        }
+
+        function goStep(n) {
+            if (n === 2 && !currentCat) return;
+            if (n === 3 && selectedProds.length === 0) { showToast('Select at least one product'); return; }
+            [1, 2, 3, 4].forEach(s => {
+                document.getElementById('createStep' + s).style.display = s === n ? 'block' : 'none';
+                const el = document.getElementById('step' + s);
+                if (s < n) { el.classList.remove('active'); el.classList.add('done'); }
+                else if (s === n) { el.classList.add('active'); el.classList.remove('done'); }
+                else { el.classList.remove('active', 'done'); }
+            });
+            if (n === 2) {
+                // reload products from localStorage each time (picks up admin changes)
+                loadProducts();
+                document.getElementById('aicteSection').style.display = currentCat === 'aicte' ? 'block' : 'none';
+                document.getElementById('industrialSection').style.display = currentCat === 'industrial' ? 'block' : 'none';
+                if (currentCat === 'aicte') renderAicteProds(currentSub);
+                else renderIndustrialProds();
+            }
+        }
+
+        function setAicteSub(btn, sub) {
+            currentSub = sub;
+            selectedProds = [];
+            document.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderAicteProds(sub);
+            checkStep2();
+        }
+
+        function renderAicteProds(sub) {
+            const el = document.getElementById('aicteProductList');
+            const list = (PRODUCTS.aicte && PRODUCTS.aicte[sub]) || [];
+            el.innerHTML = '';
+            if (!list.length) { el.innerHTML = '<div class="prod-empty">No products in this category yet.</div>'; return; }
+            list.forEach(p => el.appendChild(makeProdItem(p)));
+        }
+
+        function renderIndustrialProds() {
+            const el = document.getElementById('industrialProductList');
+            const list = PRODUCTS.industrial || [];
+            el.innerHTML = '';
+            if (!list.length) { el.innerHTML = '<div class="prod-empty">No products in this category yet.</div>'; return; }
+            list.forEach(p => el.appendChild(makeProdItem(p)));
+        }
+
+        function makeProdItem(p) {
+            const div = document.createElement('div');
+            div.className = 'prod-item';
+            div.id = 'pi_' + p.id;
+            div.innerHTML = `<div class="prod-cb" id="cb_${p.id}"><i class="fas fa-check" style="font-size:9px"></i></div><div><div class="prod-name">${p.name}</div><div class="prod-sub">${p.sub || ''}</div></div>`;
+            div.onclick = () => toggleProd(p);
+            return div;
+        }
+
+        function toggleProd(p) {
+            const idx = selectedProds.findIndex(x => x.id === p.id);
+            if (idx === -1) selectedProds.push(p);
+            else selectedProds.splice(idx, 1);
+            const el = document.getElementById('pi_' + p.id);
+            if (el) el.classList.toggle('checked', selectedProds.some(x => x.id === p.id));
+            checkStep2();
+        }
+
+        function checkStep2() {
+            const ok = selectedProds.length > 0;
+            document.getElementById('step2Next').disabled = !ok;
+        }
+
+        function setSev(btn, sev) {
+            currentSev = sev;
+            document.querySelectorAll('.sev-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        /* ════════════════════════════════════════
+           FILE UPLOAD — stored as base64
+        ════════════════════════════════════════ */
+        document.addEventListener('DOMContentLoaded', () => {
+            const fi = document.getElementById('fileInput');
+            fi.addEventListener('change', () => { if (fi.files[0]) handleFile(fi.files[0]); });
+            const fd = document.getElementById('fileDrop');
+            fd.addEventListener('dragover', e => { e.preventDefault(); fd.classList.add('over') });
+            fd.addEventListener('dragleave', () => fd.classList.remove('over'));
+            fd.addEventListener('drop', e => { e.preventDefault(); fd.classList.remove('over'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+            init();
+        });
+
+        function handleFile(file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            const ok = ['pdf', 'png', 'jpg', 'jpeg', 'mp4', 'mov', 'avi'];
+            if (file.size > 5 * 1024 * 1024) { showToast('File too large — max 5 MB'); return; }
+            if (!ok.includes(ext)) { showToast('Invalid file type'); return; }
+            attachedFile = file;
+            // Read as base64 so it can be stored and previewed
+            const reader = new FileReader();
+            reader.onload = e => {
+                attachedDataUrl = e.target.result;
+                document.getElementById('fileDrop').style.display = 'none';
+                document.getElementById('filePreview').style.display = 'flex';
+                document.getElementById('filePreviewName').textContent = file.name;
+                document.getElementById('filePreviewSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeFile() {
+            attachedFile = null; attachedDataUrl = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileDrop').style.display = 'block';
+            document.getElementById('filePreview').style.display = 'none';
+        }
+
+        /* ════════════════════════════════════════
+           SUBMIT ISSUE
+        ════════════════════════════════════════ */
+        function submitIssue() {
+            const subject = document.getElementById('issueSubject').value.trim();
+            const desc = document.getElementById('issueDesc').value.trim();
+            if (!subject || !desc) { showToast('Fill subject and description'); return; }
+
+            const id = 'ZTS-' + String(Date.now()).slice(-6);
+            const issue = {
+                id, userId: session.userId,
+                category: currentCat === 'aicte' ? 'AICTE-IDEA Lab Equipment' : 'Industrial Products',
+                subCategory: currentCat === 'aicte' ? currentSub : '',
+                products: selectedProds.map(p => p.name),
+                subject, desc, severity: currentSev,
+                attachment: attachedFile ? attachedFile.name : '',
+                attachmentData: attachedDataUrl || '',   // base64 stored here — enables preview in admin
+                status: 'open',
+                adminResponse: '',
+                createdAt: new Date().toISOString(),
+                timeline: [{ event: 'Issue created', time: new Date().toISOString() }]
+            };
+
+            const issues = S.g('zts_issues', []);
+            issues.push(issue);
+            S.s('zts_issues', issues);
+            renderStats();
+            renderIssueCount();
+            document.getElementById('ticketIdText').textContent = id;
+            goStep(4);
+        }
+
+        function resetForm() {
+            currentCat = ''; selectedProds = []; currentSev = 'Low'; attachedFile = null; attachedDataUrl = null;
+            document.getElementById('catAICTE').classList.remove('selected');
+            document.getElementById('catIndustrial').classList.remove('selected');
+            document.getElementById('issueSubject').value = '';
+            document.getElementById('issueDesc').value = '';
+            document.getElementById('step1Next').disabled = true;
+            document.querySelectorAll('.sev-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+            removeFile();
+            [1, 2, 3, 4].forEach(s => {
+                const el = document.getElementById('step' + s);
+                el.classList.remove('active', 'done');
+                if (s === 1) el.classList.add('active');
+            });
+            document.getElementById('createStep1').style.display = 'block';
+            document.getElementById('createStep2').style.display = 'none';
+            document.getElementById('createStep3').style.display = 'none';
+            document.getElementById('createStep4').style.display = 'none';
+        }
+
+        /* ════════════════════════════════════════
+           MY ISSUES
+        ════════════════════════════════════════ */
+        function renderIssues() {
+            const mine = getMyIssues();
+            const filtered = issueFilter === 'all' ? mine : mine.filter(i => i.status === issueFilter);
+            const el = document.getElementById('issueList');
+            if (!filtered.length) {
+                el.innerHTML = `<div class="empty"><i class="fas fa-ticket-alt"></i><h3>No issues found</h3><p>${mine.length ? 'No issues match the filter.' : 'Create your first issue from the Dashboard.'}</p></div>`;
+                return;
+            }
+            // Sort newest first
+            const sorted = [...filtered].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            el.innerHTML = sorted.map(i => `
+    <div class="issue-row" onclick="openIssue('${i.id}')">
+      <div>
+        <div class="issue-id">${i.id}</div>
+        <div class="issue-title">${i.subject}</div>
+        <div class="issue-meta">
+          <div class="im"><i class="fas fa-layer-group"></i>${i.category}</div>
+          <div class="im"><i class="fas fa-exclamation-circle"></i>${i.severity}</div>
+          <div class="im"><i class="fas fa-calendar-alt"></i>${fmtD(i.createdAt)}</div>
+        </div>
+        ${i.adminResponse ? `<div style="margin-top:8px;font-size:12px;color:#16a34a;display:flex;align-items:center;gap:5px"><i class="fas fa-comment-alt" style="font-size:10px"></i>Admin responded</div>` : ''}
+      </div>
+      <span class="status-pill sp-${i.status}"><div class="sp-dot"></div>${fmtStatus(i.status)}</span>
+    </div>
+  `).join('');
+        }
+
+        function filterIssues(btn, filter) {
+            issueFilter = filter;
+            document.querySelectorAll('.if-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderIssues();
+        }
+
+        function openIssue(id) {
+            const issues = S.g('zts_issues', []);
+            const i = issues.find(x => x.id === id);
+            if (!i) return;
+
+            document.getElementById('mod-id').textContent = i.id;
+            document.getElementById('mod-title').textContent = i.subject;
+            document.getElementById('mod-cat').textContent = i.category + (i.subCategory ? ' — ' + i.subCategory : '');
+            document.getElementById('mod-sev').textContent = i.severity;
+            document.getElementById('mod-date').textContent = fmtD(i.createdAt);
+            document.getElementById('mod-desc').textContent = i.desc;
+            document.getElementById('mod-att-name').textContent = i.attachment || 'None';
+
+            // Status badge
+            document.getElementById('mod-status-wrap').innerHTML = `<span class="status-pill sp-${i.status}"><div class="sp-dot"></div>${fmtStatus(i.status)}</span>`;
+
+            // Products
+            const prodsEl = document.getElementById('mod-prods');
+            prodsEl.innerHTML = i.products && i.products.length
+                ? i.products.map(p => `<span class="pt">${p}</span>`).join('')
+                : '<span style="font-size:13px;color:var(--txt3)">None specified</span>';
+
+            // Attachment preview
+            const attWrap = document.getElementById('mod-attach-wrap');
+            const attEl = document.getElementById('mod-attach');
+            if (i.attachment) {
+                attWrap.style.display = 'block';
+                const ext = (i.attachment.split('.').pop() || '').toLowerCase();
+                const data = i.attachmentData || '';
+                if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+                    attEl.innerHTML = data
+                        ? `<img src="${data}" alt="${i.attachment}">`
+                        : `<div class="pdf-row"><i class="fas fa-image"></i><span>${i.attachment} (no preview)</span></div>`;
+                } else if (['mp4', 'mov', 'avi', 'webm'].includes(ext)) {
+                    attEl.innerHTML = data
+                        ? `<video controls><source src="${data}">Video not supported.</video>`
+                        : `<div class="pdf-row"><i class="fas fa-video"></i><span>${i.attachment} (no preview)</span></div>`;
+                } else if (ext === 'pdf') {
+                    attEl.innerHTML = data
+                        ? `<div class="pdf-row"><i class="fas fa-file-pdf"></i><a href="${data}" target="_blank">Open PDF: ${i.attachment}</a></div>`
+                        : `<div class="pdf-row"><i class="fas fa-file-pdf"></i><span>${i.attachment}</span></div>`;
+                } else {
+                    attEl.innerHTML = `<div class="pdf-row"><i class="fas fa-paperclip"></i><span>${i.attachment}</span></div>`;
+                }
+            } else {
+                attWrap.style.display = 'none';
+            }
+
+            // Admin reply
+            const replyWrap = document.getElementById('mod-reply-wrap');
+            if (i.adminResponse) {
+                replyWrap.style.display = 'block';
+                document.getElementById('mod-reply').textContent = i.adminResponse;
+            } else {
+                replyWrap.style.display = 'none';
+            }
+
+            // Timeline
+            const tl = document.getElementById('mod-tl');
+            const timeline = i.timeline || [{ event: 'Issue created', time: i.createdAt }];
+            tl.innerHTML = timeline.map(t => `<div class="tl-row"><div class="tl-dot"><i class="fas fa-circle" style="font-size:6px"></i></div><div><div class="tl-t">${t.event}</div><div class="tl-d">${fmtD(t.time)}</div></div></div>`).join('');
+
+            document.getElementById('issueModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('issueModal').classList.remove('open');
+            document.body.style.overflow = '';
+            renderIssues(); // refresh to show any admin updates
+            renderStats();
+        }
+
+        document.getElementById('issueModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        /* ════════════════════════════════════════
+           PROFILE
+        ════════════════════════════════════════ */
+        function loadProfile() {
+            const users = S.g('zts_users', []);
+            const u = users.find(x => x.id === session.userId);
+            if (!u) return;
+            const inits = getInits(session.name);
+            document.getElementById('pfAv').textContent = inits;
+            document.getElementById('pfName').textContent = u.firstName + ' ' + u.lastName;
+            document.getElementById('pfEmail').textContent = u.email;
+            document.getElementById('pfOrg').textContent = u.org || '—';
+            document.getElementById('pfFirst').value = u.firstName;
+            document.getElementById('pfLast').value = u.lastName;
+            document.getElementById('pfEmailEdit').value = u.email;
+            document.getElementById('pfOrgEdit').value = u.org || '';
+            const mine = getMyIssues();
+            document.getElementById('pfTotal').textContent = mine.length;
+            document.getElementById('pfRes').textContent = mine.filter(i => i.status === 'resolved').length;
+        }
+
+        function pfTab(btn, tab) {
+            document.querySelectorAll('.pf-tab').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.pf-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('pf-' + tab).classList.add('active');
+        }
+
+        function saveProfile() {
+            const users = S.g('zts_users', []);
+            const idx = users.findIndex(u => u.id === session.userId);
+            if (idx === -1) return;
+            users[idx].firstName = document.getElementById('pfFirst').value.trim() || users[idx].firstName;
+            users[idx].lastName = document.getElementById('pfLast').value.trim() || users[idx].lastName;
+            users[idx].email = document.getElementById('pfEmailEdit').value.trim() || users[idx].email;
+            users[idx].org = document.getElementById('pfOrgEdit').value.trim();
+            S.s('zts_users', users);
+            session.name = users[idx].firstName + ' ' + users[idx].lastName;
+            session.email = users[idx].email;
+            localStorage.setItem('zts_session', JSON.stringify(session));
+            document.getElementById('topName').textContent = users[idx].firstName;
+            document.getElementById('topAvatar').textContent = getInits(session.name);
+            loadProfile();
+            const b = document.getElementById('profileSaved');
+            b.classList.add('show');
+            setTimeout(() => b.classList.remove('show'), 3000);
+        }
+
+        function changePassword() {
+            const cur = document.getElementById('pwCur').value;
+            const nw = document.getElementById('pwNew').value;
+            const cf = document.getElementById('pwCon').value;
+            const errEl = document.getElementById('pwErr');
+            errEl.classList.remove('show');
+            const users = S.g('zts_users', []);
+            const u = users.find(x => x.id === session.userId);
+            if (!u || u.password !== cur) { errEl.querySelector('span').textContent = 'Current password is incorrect.'; errEl.classList.add('show'); return; }
+            if (nw.length < 8) { errEl.querySelector('span').textContent = 'New password must be at least 8 characters.'; errEl.classList.add('show'); return; }
+            if (nw !== cf) { errEl.querySelector('span').textContent = 'Passwords do not match.'; errEl.classList.add('show'); return; }
+            u.password = nw;
+            S.s('zts_users', users);
+            ['pwCur', 'pwNew', 'pwCon'].forEach(id => document.getElementById(id).value = '');
+            const b = document.getElementById('pwSaved');
+            b.classList.add('show');
+            setTimeout(() => b.classList.remove('show'), 3000);
+        }
+
+        /* ════════════════════════════════════════
+           UTILS
+        ════════════════════════════════════════ */
+        function fmtD(iso) { try { return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) } catch { return iso || '—' } }
+        function fmtStatus(s) { if (s === 'in-progress') return 'In Progress'; return s.charAt(0).toUpperCase() + s.slice(1); }
+        function getInits(n) { return (n || 'U').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase(); }
+
+        function doLogout() { localStorage.removeItem('zts_session'); window.location.href = 'helpdesk-login.html'; }
+
+        let _tt;
+        function showToast(msg) {
+            document.getElementById('toastMsg').textContent = msg;
+            const t = document.getElementById('toast');
+            t.classList.add('show');
+            clearTimeout(_tt);
+            _tt = setTimeout(() => t.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+
+</html>

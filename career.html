@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./assets/images/favicon.png">
 
@@ -96,8 +96,8 @@
                     <li><a href="#" class="active">Careers</a></li>
 
                     <li><a href="contact.html">Contact</a></li>
-                    
-                    <li><a href="helpdesk.html">Helpdesk</a></li>
+
+                    <li><a href="helpdesk-login.html">Helpdesk</a></li>
 
                 </ul>
             </div>
@@ -300,18 +300,18 @@
                         </div>
 
                         <div class="pc-row">
-                            <span class="pc-key">Team Size</span>
-                            <span class="pc-val orange">50+ and Growing</span>
+                            <span class="pc-key">Team Culture</span>
+                            <span class="pc-val orange">Let's Grow Together</span>
                         </div>
 
                         <div class="pc-row">
-                            <span class="pc-key">Open Roles</span>
-                            <span class="pc-val orange">8 Positions</span>
+                            <span class="pc-key">Join Our Team</span>
+                            <span class="pc-val orange">Build Innovative Solutions</span>
                         </div>
 
                         <div class="pc-row">
                             <span class="pc-key">Focus Areas</span>
-                            <span class="pc-val">AI · IoT · Embedded · Automation</span>
+                            <span class="pc-val">AI · IoT · Embedded</span>
                         </div>
 
                     </div>
@@ -319,8 +319,8 @@
                     <div class="mini-stat-row">
 
                         <div class="mini-stat">
-                            <div class="mini-stat-n">8<span>+</span></div>
-                            <div class="mini-stat-l">Open Roles</div>
+                            <div class="mini-stat-n">Grow</div>
+                            <div class="mini-stat-l">Your Career</div>
                         </div>
 
                         <div class="mini-stat">
@@ -547,12 +547,12 @@
     <div class="stats-band">
         <div class="stats-row">
             <div class="stat-col">
-                <div class="stat-num">50<span style="font-size:.6em">+</span></div>
+                <div class="stat-num">20<span style="font-size:.6em">+</span></div>
                 <div class="stat-label">Team Members</div>
             </div>
             <div class="stat-col">
-                <div class="stat-num">8</div>
-                <div class="stat-label">Open Positions</div>
+                <div class="stat-num">5+</div>
+                <div class="stat-label">Years of Innovation</div>
             </div>
             <div class="stat-col">
                 <div class="stat-num">100%</div>
@@ -873,78 +873,99 @@
 
         <script>
             /* ═══════════════════════════════════════════
-               JOB DATA
+               JOB DATA — reads from admin localStorage,
+               falls back to hardcoded list if admin has
+               not published any jobs yet.
             ═══════════════════════════════════════════ */
-            const jobs = [
-                {
-                    id: 1, dept: 'engineering', title: 'Senior Embedded Systems Engineer',
-                    location: 'Coimbatore, TN', type: 'Full-time', exp: '3–6 years',
-                    isNew: true,
-                    desc: 'Lead firmware development for AI-integrated weld monitoring hardware. Own the full embedded stack from bare-metal BSP to RTOS application layer on ARM Cortex-M and A-series platforms.',
-                    tags: ['C/C++', 'ARM Cortex', 'FreeRTOS', 'SPI/I²C/UART', 'Keil/IAR', 'PCB Bring-up']
-                },
-                {
-                    id: 2, dept: 'ai', title: 'AI / ML Engineer — Industrial Applications',
-                    location: 'Coimbatore, TN', type: 'Full-time', exp: '2–5 years',
-                    isNew: true,
-                    desc: 'Build and deploy machine learning models for real-time weld quality prediction and anomaly detection. Work at the intersection of edge AI and industrial IoT — models run on-device, not in the cloud.',
-                    tags: ['Python', 'TensorFlow Lite', 'PyTorch', 'ONNX', 'Edge AI', 'Data Pipelines', 'Industrial IoT']
-                },
-                {
-                    id: 3, dept: 'engineering', title: 'IoT Platform Engineer',
-                    location: 'Coimbatore, TN', type: 'Full-time', exp: '2–4 years',
-                    isNew: false,
-                    desc: 'Design and maintain the ZeeIoT cloud platform — device management, data ingestion pipelines, MQTT brokering, and the APIs consumed by the WeldSense dashboard. Ownership from device to dashboard.',
-                    tags: ['Node.js / Python', 'MQTT', 'OPC-UA', 'AWS/GCP', 'TimeSeries DB', 'Docker', 'Protocol Integration']
-                },
-                {
-                    id: 4, dept: 'engineering', title: 'Mechanical CAD Designer & Tech Engineer',
-                    location: 'Coimbatore, TN', type: 'Full-time', exp: '1–3 years',
-                    isNew: false,
-                    desc: 'Design ruggedised enclosures and mechanical sub-systems for industrial hardware products. Responsible for Fusion 360 modelling, DFM, GD&T, and coordination with the electronics and firmware teams.',
-                    tags: ['Fusion 360', 'SolidWorks', 'GD&T', 'Injection Moulding', 'Sheet Metal', 'IP67/IP54 Design']
-                },
-                {
-                    id: 5, dept: 'ai', title: 'Data Engineer — Weld Analytics',
-                    location: 'Coimbatore, TN · Hybrid', type: 'Full-time', exp: '2–4 years',
-                    isNew: true,
-                    desc: 'Build and maintain the data infrastructure powering ZTS\'s predictive quality products. Design efficient ingestion pipelines for high-frequency sensor data, maintain data quality standards, and own the analytical data warehouse.',
-                    tags: ['Python', 'Apache Kafka', 'PostgreSQL', 'InfluxDB', 'DBT', 'Airflow', 'SQL']
-                },
-                {
-                    id: 6, dept: 'design', title: 'Product Manager — IoT & Industrial Devices',
-                    location: 'Coimbatore, TN', type: 'Full-time', exp: '3–5 years',
-                    isNew: false,
-                    desc: 'Define and execute the product roadmap for ZTS\'s IoT hardware portfolio. Work directly with customers, the engineering team, and ZTS leadership to ship products that solve real industrial problems at scale.',
-                    tags: ['Product Strategy', 'Roadmapping', 'Industrial IoT', 'User Research', 'OKRs', 'Agile/Scrum']
-                },
-                {
-                    id: 7, dept: 'business', title: 'Enterprise Sales Manager, Industry & Defence',
-                    location: 'Coimbatore, TN', type: 'Full-time', exp: '4–7 years',
-                    isNew: false,
-                    desc: 'Own the complete sales cycle for ZTS\'s hardware and software products in manufacturing, defence, and energy verticals. Build relationships with CXO-level stakeholders and close enterprise deals.',
-                    tags: ['B2B Enterprise Sales', 'Industrial / Mfg Sector', 'CRM', 'Proposal Writing', 'Defence Sector a plus']
-                },
-                {
-                    id: 8, dept: 'JET', title: 'R&D Engg Intern, Embedded / AI',
-                    location: 'Coimbatore, TN', type: 'Internship', exp: 'Fresher / Final Year',
-                    isNew: true,
-                    desc: 'Work on a real R&D project alongside ZTS engineers. Previous interns have shipped production firmware, built sensor calibration tools, and contributed to our weld quality ML dataset. Expect to build something that matters.',
-                    tags: ['C/C++ or Python', 'Arduino/Raspberry Pi', 'Curiosity Required', 'Portfolio / GitHub', 'Any branch of Engineering']
-                }
+
+            /* Hardcoded fallback jobs (used when admin hasn't published yet) */
+            const FALLBACK_JOBS = [
+                // {
+                //     id: 'j_f1', dept: 'engineering', title: 'Senior Embedded Systems Engineer',
+                //     location: 'Coimbatore, TN', type: 'Full-time', exp: '3–6 years',
+                //     isNew: true, status: 'active',
+                //     desc: 'Lead firmware development for AI-integrated weld monitoring hardware. Own the full embedded stack from bare-metal BSP to RTOS application layer on ARM Cortex-M and A-series platforms.',
+                //     tags: ['C/C++', 'ARM Cortex', 'FreeRTOS', 'SPI/I²C/UART', 'Keil/IAR', 'PCB Bring-up']
+                // },
+                // {
+                //     id: 'j_f2', dept: 'ai', title: 'AI / ML Engineer — Industrial Applications',
+                //     location: 'Coimbatore, TN', type: 'Full-time', exp: '2–5 years',
+                //     isNew: true, status: 'active',
+                //     desc: 'Build and deploy machine learning models for real-time weld quality prediction and anomaly detection. Work at the intersection of edge AI and industrial IoT — models run on-device, not in the cloud.',
+                //     tags: ['Python', 'TensorFlow Lite', 'PyTorch', 'ONNX', 'Edge AI', 'Data Pipelines', 'Industrial IoT']
+                // },
+                // {
+                //     id: 'j_f3', dept: 'engineering', title: 'IoT Platform Engineer',
+                //     location: 'Coimbatore, TN', type: 'Full-time', exp: '2–4 years',
+                //     isNew: false, status: 'active',
+                //     desc: 'Design and maintain the ZeeIoT cloud platform — device management, data ingestion pipelines, MQTT brokering, and the APIs consumed by the WeldSense dashboard. Ownership from device to dashboard.',
+                //     tags: ['Node.js / Python', 'MQTT', 'OPC-UA', 'AWS/GCP', 'TimeSeries DB', 'Docker', 'Protocol Integration']
+                // },
+                // {
+                //     id: 'j_f4', dept: 'engineering', title: 'Mechanical CAD Designer & Tech Engineer',
+                //     location: 'Coimbatore, TN', type: 'Full-time', exp: '1–3 years',
+                //     isNew: false, status: 'active',
+                //     desc: 'Design ruggedised enclosures and mechanical sub-systems for industrial hardware products. Responsible for Fusion 360 modelling, DFM, GD&T, and coordination with the electronics and firmware teams.',
+                //     tags: ['Fusion 360', 'SolidWorks', 'GD&T', 'Injection Moulding', 'Sheet Metal', 'IP67/IP54 Design']
+                // },
+                // {
+                //     id: 'j_f5', dept: 'ai', title: 'Data Engineer — Weld Analytics',
+                //     location: 'Coimbatore, TN · Hybrid', type: 'Full-time', exp: '2–4 years',
+                //     isNew: true, status: 'active',
+                //     desc: "Build and maintain the data infrastructure powering ZTS's predictive quality products. Design efficient ingestion pipelines for high-frequency sensor data, maintain data quality standards, and own the analytical data warehouse.",
+                //     tags: ['Python', 'Apache Kafka', 'PostgreSQL', 'InfluxDB', 'DBT', 'Airflow', 'SQL']
+                // },
+                // {
+                //     id: 'j_f6', dept: 'design', title: 'Product Manager — IoT & Industrial Devices',
+                //     location: 'Coimbatore, TN', type: 'Full-time', exp: '3–5 years',
+                //     isNew: false, status: 'active',
+                //     desc: "Define and execute the product roadmap for ZTS's IoT hardware portfolio. Work directly with customers, the engineering team, and ZTS leadership to ship products that solve real industrial problems at scale.",
+                //     tags: ['Product Strategy', 'Roadmapping', 'Industrial IoT', 'User Research', 'OKRs', 'Agile/Scrum']
+                // },
+                // {
+                //     id: 'j_f7', dept: 'business', title: 'Enterprise Sales Manager, Industry & Defence',
+                //     location: 'Coimbatore, TN', type: 'Full-time', exp: '4–7 years',
+                //     isNew: false, status: 'active',
+                //     desc: "Own the complete sales cycle for ZTS's hardware and software products in manufacturing, defence, and energy verticals. Build relationships with CXO-level stakeholders and close enterprise deals.",
+                //     tags: ['B2B Enterprise Sales', 'Industrial / Mfg Sector', 'CRM', 'Proposal Writing', 'Defence Sector a plus']
+                // },
+                // {
+                //     id: 'j_f8', dept: 'internship', title: 'R&D Engg Intern — Embedded / AI',
+                //     location: 'Coimbatore, TN', type: 'Internship', exp: 'Fresher / Final Year',
+                //     isNew: true, status: 'active',
+                //     desc: 'Work on a real R&D project alongside ZTS engineers. Previous interns have shipped production firmware, built sensor calibration tools, and contributed to our weld quality ML dataset. Expect to build something that matters.',
+                //     tags: ['C/C++ or Python', 'Arduino/Raspberry Pi', 'Curiosity Required', 'Portfolio / GitHub', 'Any branch of Engineering']
+                // }
             ];
 
+            /* ── Load jobs from admin localStorage (zts_jobs),
+                  fall back to FALLBACK_JOBS if not present ── */
+            function loadJobs() {
+                try {
+                    const stored = localStorage.getItem('zts_jobs');
+                    if (stored) {
+                        const parsed = JSON.parse(stored);
+                        // Only show active jobs
+                        const active = parsed.filter(j => j.status === 'active');
+                        if (active.length > 0) return active;
+                    }
+                } catch (e) { /* ignore parse errors */ }
+                return FALLBACK_JOBS;
+            }
+
+            /* jobs is rebuilt every render so it always reflects latest admin changes */
             let activeDept = 'all';
             let searchQuery = '';
 
             function getFiltered() {
+                const jobs = loadJobs();
                 return jobs.filter(j => {
                     const matchDept = activeDept === 'all' || j.dept === activeDept;
                     const q = searchQuery.toLowerCase();
                     const matchSearch = !q ||
                         j.title.toLowerCase().includes(q) ||
                         j.desc.toLowerCase().includes(q) ||
-                        j.tags.some(t => t.toLowerCase().includes(q)) ||
+                        (j.tags || []).some(t => t.toLowerCase().includes(q)) ||
                         j.dept.toLowerCase().includes(q);
                     return matchDept && matchSearch;
                 });
@@ -955,6 +976,7 @@
                 const noRes = document.getElementById('noResults');
                 const countEl = document.getElementById('jobCountDisplay');
                 const filtered = getFiltered();
+
                 countEl.textContent = filtered.length;
 
                 if (!filtered.length) {
@@ -968,36 +990,46 @@
                 filtered.forEach((job, i) => {
                     const card = document.createElement('div');
                     card.className = 'job-card';
+
+                    /* safely escape single quotes in title/dept/location/type for inline onclick */
+                    const esc = s => (s || '').replace(/'/g, "\\'");
+
                     card.innerHTML = `
-      <div class="job-left">
-        <div class="job-meta-row">
-          <div class="job-dept">${job.dept.charAt(0).toUpperCase() + job.dept.slice(1)}</div>
-          ${job.isNew ? '<div class="job-badge-new">New</div>' : ''}
-        </div>
-        <div class="job-title">${job.title}</div>
-        <div class="job-desc">${job.desc}</div>
-        <div class="job-tags-row">${job.tags.map(t => `<div class="job-tag">${t}</div>`).join('')}</div>
-      </div>
-      <div class="job-right">
-        <div class="job-info-stack">
-          <div class="job-info-item"><i class="fas fa-map-marker-alt"></i>${job.location}</div>
-          <div class="job-info-item"><i class="fas fa-briefcase"></i>${job.type}</div>
-          <div class="job-info-item"><i class="fas fa-layer-group"></i>${job.exp}</div>
-        </div>
-        <button class="btn-apply" onclick="openApply({title:'${job.title}',dept:'${job.dept}',location:'${job.location}',type:'${job.type}'})">
-          Apply Now <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>`;
+              <div class="job-left">
+                <div class="job-meta-row">
+                  <div class="job-dept">${(job.dept || '').charAt(0).toUpperCase() + (job.dept || '').slice(1)}</div>
+                  ${job.isNew ? '<div class="job-badge-new">New</div>' : ''}
+                </div>
+                <div class="job-title">${job.title || ''}</div>
+                <div class="job-desc">${job.desc || ''}</div>
+                <div class="job-tags-row">${(job.tags || []).map(t => `<div class="job-tag">${t}</div>`).join('')}</div>
+              </div>
+              <div class="job-right">
+                <div class="job-info-stack">
+                  <div class="job-info-item"><i class="fas fa-map-marker-alt"></i>${job.location || ''}</div>
+                  <div class="job-info-item"><i class="fas fa-briefcase"></i>${job.type || ''}</div>
+                  <div class="job-info-item"><i class="fas fa-layer-group"></i>${job.exp || ''}</div>
+                </div>
+                <button class="btn-apply"
+                  onclick="openApply({title:'${esc(job.title)}',dept:'${esc(job.dept)}',location:'${esc(job.location)}',type:'${esc(job.type)}'})">
+                  Apply Now <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>`;
+
                     list.appendChild(card);
 
-                    // stagger animation
+                    /* stagger fade-in animation */
                     card.style.transitionDelay = `${i * 0.07}s`;
                     card.style.transition = `opacity .55s ${i * 0.07}s ease, transform .55s ${i * 0.07}s ease, box-shadow .3s, border-color .3s, transform .3s`;
                     requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('vis')));
                 });
+
+                /* Update hero job count stat if it exists on the page */
+                const heroCount = document.getElementById('heroJobCount');
+                if (heroCount) heroCount.textContent = loadJobs().length + '+';
             }
 
-            /* ── FILTER TABS ──────────────────────────── */
+            /* ── FILTER TABS ── */
             document.querySelectorAll('.jf-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.jf-btn').forEach(b => b.classList.remove('active'));
@@ -1007,18 +1039,18 @@
                 });
             });
 
-            /* ── SEARCH ───────────────────────────────── */
+            /* ── SEARCH ── */
             document.getElementById('jobSearch').addEventListener('input', e => {
                 searchQuery = e.target.value;
                 renderJobs();
             });
 
-            /* ── MODAL ────────────────────────────────── */
+            /* ── APPLY MODAL ── */
             function openApply(job) {
-                document.getElementById('modalJobTitle').textContent = job.title;
-                document.getElementById('modalJobLocation').textContent = job.location;
-                document.getElementById('modalJobType').textContent = job.type;
-                document.getElementById('modalJobDept').textContent = job.dept;
+                document.getElementById('modalJobTitle').textContent = job.title || '';
+                document.getElementById('modalJobLocation').textContent = job.location || '';
+                document.getElementById('modalJobType').textContent = job.type || '';
+                document.getElementById('modalJobDept').textContent = job.dept || '';
                 document.getElementById('modalForm').style.display = '';
                 document.getElementById('modalSuccess').classList.remove('show');
                 const modal = document.getElementById('applyModal');
@@ -1051,7 +1083,7 @@
             });
             document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-            /* file drop */
+            /* ── FILE DROP ── */
             const fileInput = document.getElementById('fileInput');
             const fileDrop = document.getElementById('fileDrop');
             const fileName = document.getElementById('fileName');
@@ -1074,20 +1106,24 @@
                 });
             });
 
-            /* SCROLL REVEAL */
+            /* ── SCROLL REVEAL ── */
             const srIO = new IntersectionObserver(entries => {
-                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); srIO.unobserve(e.target); } });
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('vis'); srIO.unobserve(e.target); }
+                });
             }, { threshold: 0.1 });
             document.querySelectorAll('.sr,.sr-l,.sr-r').forEach(el => srIO.observe(el));
 
-            /* PERKS stagger */
+            /* ── PERKS STAGGER ── */
             const perksIO = new IntersectionObserver(entries => {
                 entries.forEach(e => {
                     if (e.isIntersecting) {
                         e.target.querySelectorAll('.perk-card').forEach((c, i) => {
                             c.style.opacity = '0'; c.style.transform = 'translateY(20px)';
-                            c.style.transition = `opacity .5s ${i * .06}s ease,transform .5s ${i * .06}s ease`;
-                            requestAnimationFrame(() => requestAnimationFrame(() => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }));
+                            c.style.transition = `opacity .5s ${i * .06}s ease, transform .5s ${i * .06}s ease`;
+                            requestAnimationFrame(() => requestAnimationFrame(() => {
+                                c.style.opacity = '1'; c.style.transform = 'translateY(0)';
+                            }));
                         });
                         perksIO.unobserve(e.target);
                     }
@@ -1096,14 +1132,16 @@
             const pg = document.getElementById('perksGrid');
             if (pg) perksIO.observe(pg);
 
-            /* WHY stagger */
+            /* ── WHY STAGGER ── */
             const whyIO = new IntersectionObserver(entries => {
                 entries.forEach(e => {
                     if (e.isIntersecting) {
                         e.target.querySelectorAll('.why-card').forEach((c, i) => {
                             c.style.opacity = '0'; c.style.transform = 'translateY(24px)';
-                            c.style.transition = `opacity .55s ${i * .1}s ease,transform .55s ${i * .1}s ease`;
-                            requestAnimationFrame(() => requestAnimationFrame(() => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }));
+                            c.style.transition = `opacity .55s ${i * .1}s ease, transform .55s ${i * .1}s ease`;
+                            requestAnimationFrame(() => requestAnimationFrame(() => {
+                                c.style.opacity = '1'; c.style.transform = 'translateY(0)';
+                            }));
                         });
                         whyIO.unobserve(e.target);
                     }
@@ -1112,8 +1150,19 @@
             const wg = document.querySelector('.why-grid');
             if (wg) whyIO.observe(wg);
 
-            /* INIT */
+            /* ── INIT ── */
             renderJobs();
+
+            /*
+              ── LIVE REFRESH ──────────────────────────────────────
+              Listens for changes to localStorage from other tabs
+              (e.g. admin panel open in another tab) and re-renders
+              automatically without a page reload.
+            */
+            window.addEventListener('storage', e => {
+                if (e.key === 'zts_jobs') renderJobs();
+            });
+
         </script>
 
 </body>
