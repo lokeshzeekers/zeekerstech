@@ -1,0 +1,107 @@
+<?php
+// ─────────────────────────────────────────────────────────────
+//  Zeekers Technology Solutions — Blog Posts API
+//
+//  PUBLIC:
+//    GET  /api/blogs.php              → all published posts
+//    GET  /api/blogs.php?id=1         → single post
+//
+//  ADMIN (requires Bearer token):
+//    GET  /api/blogs.php?all=1        → all posts (incl. drafts)
+//    POST /api/blogs.php              → create post
+//    PUT  /api/blogs.php?id=1         → update post
+//    DELETE /api/blogs.php?id=1       → delete post
+// ─────────────────────────────────────────────────────────────
+require_once __DIR__ . '/config.php';
+setHeaders();
+
+$db     = getDB();
+$method = $_SERVER['REQUEST_METHOD'];
+$id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
+
+// ── GET ──────────────────────────────────────────────────────
+if ($method === 'GET') {
+    // Single post
+    if ($id) {
+        $stmt = $db->prepare('SELECT * FROM blog_posts WHERE id = ?');
+        $stmt->execute([$id]);
+        $post = $stmt->fetch();
+        if (!$post) respondError('Post not found', 404);
+        respond(['success' => true, 'data' => $post]);
+    }
+
+    // Admin: all posts
+    if (isset($_GET['all'])) {
+        requireAdminAuth();
+        $stmt = $db->query('SELECT * FROM blog_posts ORDER BY created_at DESC');
+        respond(['success' => true, 'data' => $stmt->fetchAll()]);
+    }
+
+    // Public: published only
+    $stmt = $db->query('SELECT * FROM blog_posts WHERE published = 1 ORDER BY created_at DESC');
+    respond(['success' => true, 'data' => $stmt->fetchAll()]);
+}
+
+// ── POST (create) ─────────────────────────────────────────────
+if ($method === 'POST') {
+    requireAdminAuth();
+    $input = getInput();
+
+    $title     = sanitize($input['title'] ?? '');
+    $content   = $input['content'] ?? '';
+    $author    = sanitize($input['author'] ?? 'Zeekers Team');
+    $category  = sanitize($input['category'] ?? 'rnd');
+    $image_url = sanitize($input['image_url'] ?? '');
+    $published = (bool)($input['published'] ?? false);
+
+    if (!$title) respondError('Title is required');
+
+    $stmt = $db->prepare(
+        'INSERT INTO blog_posts (title, content, author, category, image_url, published)
+         VALUES (?, ?, ?, ?, ?, ?)'
+    );
+    $stmt->execute([$title, $content, $author, $category, $image_url, $published ? 1 : 0]);
+    $newId = $db->lastInsertId();
+
+    respond(['success' => true, 'id' => $newId, 'message' => 'Post created'], 201);
+}
+
+// ── PUT (update) ──────────────────────────────────────────────
+if ($method === 'PUT') {
+    requireAdminAuth();
+    if (!$id) respondError('Post ID required');
+
+    $input     = getInput();
+    $title     = sanitize($input['title'] ?? '');
+    $content   = $input['content'] ?? '';
+    $author    = sanitize($input['author'] ?? '');
+    $category  = sanitize($input['category'] ?? '');
+    $image_url = sanitize($input['image_url'] ?? '');
+    $published = (bool)($input['published'] ?? false);
+
+    if (!$title) respondError('Title is required');
+
+    $stmt = $db->prepare(
+        'UPDATE blog_posts
+         SET title=?, content=?, author=?, category=?, image_url=?, published=?, updated_at=NOW()
+         WHERE id=?'
+    );
+    $stmt->execute([$title, $content, $author, $category, $image_url, $published ? 1 : 0, $id]);
+
+    if ($stmt->rowCount() === 0) respondError('Post not found or no change', 404);
+    respond(['success' => true, 'message' => 'Post updated']);
+}
+
+// ── DELETE ────────────────────────────────────────────────────
+if ($method === 'DELETE') {
+    requireAdminAuth();
+    if (!$id) respondError('Post ID required');
+
+    $stmt = $db->prepare('DELETE FROM blog_posts WHERE id = ?');
+    $stmt->execute([$id]);
+
+    if ($stmt->rowCount() === 0) respondError('Post not found', 404);
+    respond(['success' => true, 'message' => 'Post deleted']);
+}
+
+respondError('Method not allowed', 405);

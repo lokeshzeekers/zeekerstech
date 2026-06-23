@@ -1546,6 +1546,7 @@
 
     </div>
 
+    <script src="/src/js/api.js"></script>
     <script>
 
         function openBrochureModal(productName) {
@@ -1586,51 +1587,41 @@
             );
         }
 
-        function downloadBrochure() {
+        async function downloadBrochure() {
 
-            const name = document.getElementById("bname").value.trim();
-            const mobile = document.getElementById("bmobile").value.trim();
-            const email = document.getElementById("bemail").value.trim();
+            const name    = document.getElementById("bname").value.trim();
+            const mobile  = document.getElementById("bmobile").value.trim();
+            const email   = document.getElementById("bemail").value.trim();
             const product = document.getElementById("bproduct").value;
             const purpose = document.getElementById("bpurpose").value.trim();
 
             if (!name || !mobile || !email || !product || !purpose) {
-
                 alert("Please fill all mandatory fields.");
-
                 return;
             }
 
-            const brochureFiles = {
+            const btn = document.querySelector(".btn-submit");
+            if (btn) { btn.disabled = true; btn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin" style="font-size:12px"></i>'; }
 
-                "ZwelDAQ": "brochures/ZwelDAQ.pdf",
+            try {
+                const res = await BrochureAPI.submit({ name, mobile, email, product, purpose, type: 'product' });
 
-                "ZweldMET": "brochures/ZweldMET.pdf",
+                // Open the brochure PDF
+                if (res.file) {
+                    window.open(res.file, "_blank");
+                } else {
+                    alert("Brochure file not available yet. Our team will email it to you shortly.");
+                }
+                closeBrochureModal();
 
-                "Zeekers IoT Kit": "brochures/Zeekers-IoT-Kit.pdf",
+                // Reset form
+                ["bname","bmobile","bemail","bpurpose"].forEach(id => document.getElementById(id).value = "");
 
-                "ZeekWeigh": "brochures/ZeekWeigh.pdf",
-
-                "Zeevior": "brochures/Zeevior.pdf",
-
-                "ASSET TRACKING": "brochures/Asset-Tracking.pdf",
-
-                "ZEEBOT": "brochures/ZEEBOT.pdf"
-            };
-
-            if (brochureFiles[product]) {
-
-                window.open(
-                    brochureFiles[product],
-                    "_blank"
-                );
-
-            } else {
-
-                alert("Brochure file not found.");
+            } catch (e) {
+                alert("Something went wrong. Please try again or contact us directly.");
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerHTML = 'Download Brochure <i class="fas fa-download" style="font-size:12px"></i>'; }
             }
-
-            closeBrochureModal();
         }
 
     </script>

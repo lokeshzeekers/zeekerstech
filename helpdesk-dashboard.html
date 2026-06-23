@@ -2161,6 +2161,7 @@
         </main>
     </div>
 
+    <script src="/src/js/api.js"></script>
     <script>
         /* ════════════════════════════════════════
            STORAGE
@@ -2391,33 +2392,48 @@
         /* ════════════════════════════════════════
            SUBMIT ISSUE
         ════════════════════════════════════════ */
-        function submitIssue() {
+        async function submitIssue() {
             const subject = document.getElementById('issueSubject').value.trim();
             const desc = document.getElementById('issueDesc').value.trim();
             if (!subject || !desc) { showToast('Fill subject and description'); return; }
 
-            const id = 'ZTS-' + String(Date.now()).slice(-6);
-            const issue = {
-                id, userId: session.userId,
-                category: currentCat === 'aicte' ? 'AICTE-IDEA Lab Equipment' : 'Industrial Products',
-                subCategory: currentCat === 'aicte' ? currentSub : '',
-                products: selectedProds.map(p => p.name),
-                subject, desc, severity: currentSev,
-                attachment: attachedFile ? attachedFile.name : '',
-                attachmentData: attachedDataUrl || '',   // base64 stored here — enables preview in admin
-                status: 'open',
-                adminResponse: '',
-                createdAt: new Date().toISOString(),
-                timeline: [{ event: 'Issue created', time: new Date().toISOString() }]
-            };
+            const priority = currentSev === 'Critical' ? 'critical'
+                           : currentSev === 'High'     ? 'high'
+                           : currentSev === 'Medium'   ? 'medium' : 'low';
 
-            const issues = S.g('zts_issues', []);
-            issues.push(issue);
-            S.s('zts_issues', issues);
-            renderStats();
-            renderIssueCount();
-            document.getElementById('ticketIdText').textContent = id;
-            goStep(4);
+            try {
+                const res = await TicketsAPI.create({
+                    name:     session.name,
+                    email:    session.email,
+                    subject:  subject,
+                    message:  desc + (selectedProds.length ? '\n\nProducts: ' + selectedProds.map(p => p.name).join(', ') : ''),
+                    priority: priority
+                });
+                const ticketNum = res.ticket_number;
+
+                // Also keep local copy for instant UI update
+                const issue = {
+                    id: ticketNum, userId: session.userId,
+                    category: currentCat === 'aicte' ? 'AICTE-IDEA Lab Equipment' : 'Industrial Products',
+                    subCategory: currentCat === 'aicte' ? currentSub : '',
+                    products: selectedProds.map(p => p.name),
+                    subject, desc, severity: currentSev,
+                    attachment: attachedFile ? attachedFile.name : '',
+                    status: 'open', adminResponse: '',
+                    createdAt: new Date().toISOString(),
+                    timeline: [{ event: 'Issue created', time: new Date().toISOString() }]
+                };
+                const issues = S.g('zts_issues', []);
+                issues.push(issue);
+                S.s('zts_issues', issues);
+
+                renderStats();
+                renderIssueCount();
+                document.getElementById('ticketIdText').textContent = ticketNum;
+                goStep(4);
+            } catch (e) {
+                showToast('Failed to submit ticket: ' + e.message);
+            }
         }
 
         function resetForm() {

@@ -569,8 +569,9 @@
         </div>
     </div>
 
+    <script src="/src/js/api.js"></script>
     <script>
-        /* ── simple localStorage-based auth (replace with real backend) ── */
+        /* ── MySQL-backed auth via helpdesk_users table ── */
 
         function switchTab(t) {
             document.getElementById('tabLogin').classList.toggle('active', t === 'login');
@@ -599,39 +600,28 @@
             document.getElementById(btnId).classList.toggle('loading', on);
         }
 
-        function getUsers() {
-            return JSON.parse(localStorage.getItem('zts_users') || '[]');
-        }
-        function saveUsers(u) { localStorage.setItem('zts_users', JSON.stringify(u)); }
+        /* localStorage helpers no longer needed — auth handled by server */
 
-        /* seed a demo user if none exist */
-        (function () {
-            const u = getUsers();
-            if (!u.length) {
-                saveUsers([{ id: 'usr_demo', firstName: 'Demo', lastName: 'User', email: 'demo@zeekers.com', password: 'demo1234', org: 'Zeekers Technology', avatar: '' }]);
-            }
-        })();
-
-        function doLogin() {
+        async function doLogin() {
             const email = document.getElementById('loginEmail').value.trim();
             const pass = document.getElementById('loginPass').value;
             document.getElementById('loginError').classList.remove('show');
             if (!email || !pass) { showError('loginError', 'Please enter email and password.'); return; }
             setLoading('loginBtn', true);
-            setTimeout(() => {
-                const users = getUsers();
-                const user = users.find(u => u.email === email && u.password === pass);
-                if (user) {
-                    localStorage.setItem('zts_session', JSON.stringify({ userId: user.id, name: user.firstName + ' ' + user.lastName, email: user.email, org: user.org, avatar: user.avatar || '' }));
-                    window.location.href = 'helpdesk-dashboard.html';
-                } else {
-                    setLoading('loginBtn', false);
-                    showError('loginError', 'Invalid email or password.');
-                }
-            }, 900);
+            try {
+                const res = await apiFetch('helpdesk-auth.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password: pass, action: 'login' })
+                });
+                localStorage.setItem('zts_session', JSON.stringify(res.user));
+                window.location.href = 'helpdesk-dashboard.html';
+            } catch (e) {
+                setLoading('loginBtn', false);
+                showError('loginError', e.message || 'Invalid email or password.');
+            }
         }
 
-        function doRegister() {
+        async function doRegister() {
             const first = document.getElementById('regFirst').value.trim();
             const last = document.getElementById('regLast').value.trim();
             const email = document.getElementById('regEmail').value.trim();
@@ -640,16 +630,18 @@
             document.getElementById('regError').classList.remove('show');
             if (!first || !last || !email || !pass) { showError('regError', 'Please fill all required fields.'); return; }
             if (pass.length < 8) { showError('regError', 'Password must be at least 8 characters.'); return; }
-            const users = getUsers();
-            if (users.find(u => u.email === email)) { showError('regError', 'An account with this email already exists.'); return; }
             setLoading('regBtn', true);
-            setTimeout(() => {
-                const newUser = { id: 'usr_' + Date.now(), firstName: first, lastName: last, email, password: pass, org, avatar: '' };
-                users.push(newUser);
-                saveUsers(users);
-                localStorage.setItem('zts_session', JSON.stringify({ userId: newUser.id, name: first + ' ' + last, email, org, avatar: '' }));
+            try {
+                const res = await apiFetch('helpdesk-auth.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ first_name: first, last_name: last, email, password: pass, org, action: 'register' })
+                });
+                localStorage.setItem('zts_session', JSON.stringify(res.user));
                 window.location.href = 'helpdesk-dashboard.html';
-            }, 900);
+            } catch (e) {
+                setLoading('regBtn', false);
+                showError('regError', e.message || 'Registration failed. Try again.');
+            }
         }
 
         document.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginPanel').style.display !== 'none' ? doLogin() : doRegister(); });

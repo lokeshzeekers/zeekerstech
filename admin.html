@@ -2227,10 +2227,13 @@
     </div>
   </div>
 
+  <script src="/src/js/api.js"></script>
   <script>
     /* ════════════════════════════════════════
        CONSTANTS
     ════════════════════════════════════════ */
+    // Credentials now validated server-side via /api/auth.php
+    // const CREDS kept for reference only
     const CREDS = { email: 'admin@zeekerstechnology.com', password: 'Admin@ZTS2025' };
 
     /* ════════════════════════════════════════
@@ -2244,6 +2247,29 @@
     /* ════════════════════════════════════════
        DEFAULT DATA SEEDING
     ════════════════════════════════════════ */
+    /* ── DB cache for admin panel ── */
+    let _db = { issues: [], users: [], jobs: [], posts: [], contacts: [], applications: [] };
+
+    async function loadAllFromDB() {
+      try {
+        const [issues, jobs, posts, contacts, apps] = await Promise.all([
+          TicketsAPI.getAll(),
+          JobsAPI.getAll(),
+          BlogAPI.getAll(),
+          ContactAPI.getAll(),
+          ApplicationsAPI.getAll()
+        ]);
+        _db.issues       = issues.data       || [];
+        _db.jobs         = jobs.data         || [];
+        _db.posts        = posts.data        || [];
+        _db.contacts     = contacts.data     || [];
+        _db.applications = apps.data         || [];
+        updateBadges();
+      } catch (e) {
+        console.warn('loadAllFromDB error:', e.message);
+      }
+    }
+
     function seedDefaults() {
       // products
       if (!localStorage.getItem('admin_products')) {
@@ -2304,25 +2330,14 @@
       S.s('zts_products', obj);
     }
 
-    function syncJobs() {
-      const jobs = S.g('admin_jobs', []);
-      S.s('zts_jobs', jobs.filter(j => j.status === 'active'));
-    }
-
-    function syncBlog() {
-      const posts = S.g('admin_posts', []);
-      S.s('zts_blog_posts', posts.filter(p => p.status === 'published'));
-    }
+    function syncJobs()  { /* no-op — jobs now live in MySQL */ }
+    function syncBlog()  { /* no-op — posts now live in MySQL */ }
 
     function updateBadges() {
-      const issues = S.g('zts_issues', []);
-      const users = S.g('zts_users', []);
-      const jobs = S.g('admin_jobs', []);
-      const posts = S.g('admin_posts', []);
-      document.getElementById('nb-is').textContent = issues.length;
-      document.getElementById('nb-us').textContent = users.length;
-      document.getElementById('nb-ca').textContent = jobs.filter(j => j.status === 'active').length;
-      document.getElementById('nb-bl').textContent = posts.filter(p => p.status === 'published').length;
+      document.getElementById('nb-is').textContent = _db.issues.length;
+      document.getElementById('nb-us').textContent = _db.applications.length;
+      document.getElementById('nb-ca').textContent = _db.jobs.filter(j => j.active).length;
+      document.getElementById('nb-bl').textContent = _db.posts.filter(p => p.published).length;
     }
 
     /* ════════════════════════════════════════
@@ -2336,24 +2351,28 @@
       ic.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
     }
 
-    function doLogin() {
+    async function doLogin() {
       const e = document.getElementById('ae').value.trim();
       const p = document.getElementById('ap').value;
       const err = document.getElementById('lerr');
       err.classList.remove('show');
-      if (e === CREDS.email && p === CREDS.password) {
+      try {
+        const res = await AuthAPI.login(e, p);
+        localStorage.setItem('zts_admin_token', res.token);
+        localStorage.setItem('zts_admin_user', res.user);
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('shell').classList.add('on');
         document.body.style.overflow = '';
-        seedDefaults();
+        await loadAllFromDB();
         go('ov');
-      } else {
-        err.querySelector('span').textContent = 'Invalid credentials.';
+      } catch (ex) {
+        err.querySelector('span').textContent = ex.message || 'Invalid credentials.';
         err.classList.add('show');
       }
     }
 
     function doLogout() {
+      AuthAPI.logout();
       document.getElementById('shell').classList.remove('on');
       document.getElementById('loginScreen').style.display = 'flex';
     }
@@ -2369,12 +2388,14 @@
        NAVIGATION
     ════════════════════════════════════════ */
     const pages = ['ov', 'is', 'us', 'pr', 'ca', 'bl'];
-    function go(p) {
+    async function go(p) {
       pages.forEach(x => {
         document.getElementById('pnl-' + x).classList.toggle('on', x === p);
         document.getElementById('n-' + x).classList.toggle('on', x === p);
       });
       closeSB();
+      // Refresh DB data, then render
+      await loadAllFromDB();
       const renders = { ov: renderOverview, is: renderIssues, us: renderUsers, pr: renderProds, ca: renderJobs, bl: renderBlog };
       if (renders[p]) renders[p]();
     }
@@ -2386,31 +2407,27 @@
        OVERVIEW
     ════════════════════════════════════════ */
     function renderOverview() {
-      const issues = S.g('zts_issues', []);
-      const users = S.g('zts_users', []);
-      const jobs = S.g('admin_jobs', []);
-      const posts = S.g('admin_posts', []);
+      const issues = _db.issues;
+      const jobs = _db.jobs;
+      const posts = _db.posts;
       document.getElementById('ov-t').textContent = issues.length;
       document.getElementById('ov-o').textContent = issues.filter(i => i.status === 'open').length;
-      document.getElementById('ov-h').textContent = issues.filter(i => i.severity === 'High').length;
+      document.getElementById('ov-h').textContent = issues.filter(i => i.priority === 'high').length;
       document.getElementById('ov-r').textContent = issues.filter(i => i.status === 'resolved').length;
-      document.getElementById('ov-u').textContent = users.length;
-      document.getElementById('ov-j').textContent = jobs.filter(j => j.status === 'active').length;
-      document.getElementById('ov-b').textContent = posts.filter(p => p.status === 'published').length;
-      const recent = [...issues].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+      document.getElementById('ov-u').textContent = 0;
+      document.getElementById('ov-j').textContent = jobs.filter(j => j.active).length;
+      document.getElementById('ov-b').textContent = posts.filter(p => p.published).length;
+      const recent = [...issues].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
       const tbl = document.getElementById('ov-tbl');
       if (!recent.length) { tbl.innerHTML = '<tr><td colspan="6" class="empty"><i class="fas fa-inbox"></i>No issues yet</td></tr>'; return; }
-      tbl.innerHTML = recent.map(i => {
-        const u = users.find(u => u.id === i.userId);
-        return `<tr>
-      <td><span class="td-m">${i.id}</span></td>
+      tbl.innerHTML = recent.map(i => `<tr>
+      <td><span class="td-m">${i.ticket_number}</span></td>
       <td class="td-b" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.subject}</td>
-      <td>${u ? u.firstName + ' ' + u.lastName : '—'}</td>
-      <td><span class="p p-${i.severity.toLowerCase()}">${i.severity}</span></td>
+      <td>${i.name || '—'}</td>
+      <td><span class="p p-${i.priority}">${cap(i.priority)}</span></td>
       <td><span class="p p-${i.status.replace(' ', '-')}">${fmtS(i.status)}</span></td>
-      <td class="td-m">${fmtD(i.createdAt)}</td>
-    </tr>`;
-      }).join('');
+      <td class="td-m">${fmtD(i.created_at)}</td>
+    </tr>`).join('');
       updateBadges();
     }
 
@@ -2419,33 +2436,29 @@
     ════════════════════════════════════════ */
     let editIssueId = null;
     function renderIssues() {
-      const issues = S.g('zts_issues', []);
-      const users = S.g('zts_users', []);
+      const issues = _db.issues;
       const q = (document.getElementById('is-q')?.value || '').toLowerCase();
       const st = document.getElementById('is-st')?.value || 'all';
       const sv = document.getElementById('is-sv')?.value || 'all';
-      let list = [...issues].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      let list = [...issues].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       if (st !== 'all') list = list.filter(i => i.status === st);
-      if (sv !== 'all') list = list.filter(i => i.severity === sv);
-      if (q) list = list.filter(i => i.id.toLowerCase().includes(q) || i.subject.toLowerCase().includes(q));
+      if (sv !== 'all') list = list.filter(i => i.priority === sv.toLowerCase());
+      if (q) list = list.filter(i => (i.ticket_number||'').toLowerCase().includes(q) || i.subject.toLowerCase().includes(q));
       const tbl = document.getElementById('is-tbl');
       if (!list.length) { tbl.innerHTML = '<tr><td colspan="8" class="empty"><i class="fas fa-search-minus"></i>No issues found</td></tr>'; return; }
-      tbl.innerHTML = list.map(i => {
-        const u = users.find(u => u.id === i.userId);
-        return `<tr>
-      <td><span class="td-m">${i.id}</span></td>
-      <td><div class="td-b">${i.subject}</div><div style="font-size:12px;color:var(--txt3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.desc}</div></td>
-      <td style="font-size:12px;color:var(--txt3);white-space:nowrap">${i.category}</td>
-      <td class="td-m">${u ? u.firstName + ' ' + u.lastName : '—'}</td>
-      <td><span class="p p-${i.severity.toLowerCase()}">${i.severity}</span></td>
+      tbl.innerHTML = list.map(i => `<tr>
+      <td><span class="td-m">${i.ticket_number}</span></td>
+      <td><div class="td-b">${i.subject}</div><div style="font-size:12px;color:var(--txt3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.message}</div></td>
+      <td style="font-size:12px;color:var(--txt3);white-space:nowrap">Helpdesk</td>
+      <td class="td-m">${i.name || '—'}</td>
+      <td><span class="p p-${i.priority}">${cap(i.priority)}</span></td>
       <td><span class="p p-${i.status.replace(' ', '-')}">${fmtS(i.status)}</span></td>
-      <td class="td-m">${fmtD(i.createdAt)}</td>
+      <td class="td-m">${fmtD(i.created_at)}</td>
       <td><div class="ar">
-        <button class="ab view" onclick="viewIssue('${i.id}')" title="View & Edit"><i class="fas fa-eye"></i></button>
-        <button class="ab del" onclick="askDelete('issue','${i.id}','Issue ${i.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+        <button class="ab view" onclick="viewIssue('${i.ticket_number}')" title="View & Edit"><i class="fas fa-eye"></i></button>
+        <button class="ab del" onclick="askDelete('issue','${i.ticket_number}','Issue ${i.ticket_number}')" title="Delete"><i class="fas fa-trash"></i></button>
       </div></td>
-    </tr>`;
-      }).join('');
+    </tr>`).join('');
     }
 
     function viewIssue(id) {
@@ -2509,22 +2522,18 @@
       OM('mIssue');
     }
 
-    function saveIssue() {
-      const issues = S.g('zts_issues', []);
-      const idx = issues.findIndex(i => i.id === editIssueId);
-      if (idx === -1) return;
+    async function saveIssue() {
       const newStatus = document.getElementById('mi-st').value;
+      const priority  = document.getElementById('mi-sv').value.toLowerCase();
       const note = document.getElementById('mi-note').value.trim();
-      issues[idx].status = newStatus;
-      issues[idx].severity = document.getElementById('mi-sv').value;
-      issues[idx].adminResponse = note;
-      if (!issues[idx].timeline) issues[idx].timeline = [{ event: 'Issue created', time: issues[idx].createdAt }];
-      if (note) issues[idx].timeline.push({ event: 'Admin responded · Status: ' + fmtS(newStatus), time: new Date().toISOString() });
-      S.s('zts_issues', issues);
-      CM('mIssue');
-      renderIssues();
-      renderOverview();
-      showToast('Issue updated');
+      try {
+        await TicketsAPI.update(editIssueId, { status: newStatus, priority, admin_response: note });
+        await loadAllFromDB();
+        CM('mIssue');
+        renderIssues();
+        renderOverview();
+        showToast('Issue updated');
+      } catch (e) { showToast('Error: ' + e.message); }
     }
 
     /* ════════════════════════════════════════
@@ -2671,24 +2680,24 @@
     let jTagList = [];
 
     function renderJobs() {
-      const jobs = S.g('admin_jobs', []);
+      const jobs = _db.jobs;
       const q = (document.getElementById('ca-q')?.value || '').toLowerCase();
       const df = document.getElementById('ca-d')?.value || 'all';
       let list = jobs;
-      if (df !== 'all') list = list.filter(j => j.dept === df);
+      if (df !== 'all') list = list.filter(j => j.department === df);
       if (q) list = list.filter(j => j.title.toLowerCase().includes(q));
       const tbl = document.getElementById('ca-tbl');
       const dmap = { engineering: 'Engineering', ai: 'AI & Data', design: 'Product & Design', business: 'Business', internship: 'Internship' };
       if (!list.length) { tbl.innerHTML = '<tr><td colspan="6" class="empty"><i class="fas fa-briefcase"></i>No jobs yet</td></tr>'; return; }
       tbl.innerHTML = list.map(j => `<tr>
-    <td><div class="td-b">${j.title}${j.isNew ? '<span class="p p-o" style="margin-left:6px;font-size:10px">New</span>' : ''}</div><div class="td-m">${j.exp || ''}</div></td>
-    <td><span class="p p-o">${dmap[j.dept] || j.dept}</span></td>
+    <td><div class="td-b">${j.title}</div><div class="td-m">${j.location}</div></td>
+    <td><span class="p p-o">${dmap[j.department] || j.department || '—'}</span></td>
     <td class="td-m">${j.location}</td>
     <td class="td-m">${j.type}</td>
-    <td><span class="p ${j.status === 'active' ? 'p-r' : 'p-c'}">${j.status === 'active' ? 'Active' : 'Paused'}</span></td>
+    <td><span class="p ${j.active ? 'p-r' : 'p-c'}">${j.active ? 'Active' : 'Paused'}</span></td>
     <td><div class="ar">
       <button class="ab" onclick="editJob('${j.id}')" title="Edit"><i class="fas fa-edit"></i></button>
-      <button class="ab ${j.status === 'active' ? '' : 'view'}" onclick="toggleJob('${j.id}')" title="${j.status === 'active' ? 'Pause' : 'Activate'}"><i class="fas fa-${j.status === 'active' ? 'pause' : 'play'}"></i></button>
+      <button class="ab ${j.active ? '' : 'view'}" onclick="toggleJob('${j.id}')" title="${j.active ? 'Pause' : 'Activate'}"><i class="fas fa-${j.active ? 'pause' : 'play'}"></i></button>
       <button class="ab del" onclick="askDelete('job','${j.id}','${j.title}')" title="Delete"><i class="fas fa-trash"></i></button>
     </div></td>
   </tr>`).join('');
@@ -2707,53 +2716,58 @@
     }
 
     function editJob(id) {
-      const j = S.g('admin_jobs', []).find(x => x.id === id);
+      const j = _db.jobs.find(x => x.id == id);
       if (!j) return;
-      editJobId = id; jTagList = [...(j.tags || [])];
+      editJobId = id; jTagList = j.requirements ? j.requirements.split(',').map(r => r.trim()).filter(Boolean) : [];
       document.getElementById('mj-title').textContent = 'Edit Job';
       document.getElementById('j-t').value = j.title;
-      document.getElementById('j-d').value = j.dept;
-      document.getElementById('j-ty').value = j.type;
+      document.getElementById('j-d').value = j.department || 'engineering';
+      document.getElementById('j-ty').value = j.type || 'Full-time';
       document.getElementById('j-l').value = j.location;
-      document.getElementById('j-e').value = j.exp || '';
-      document.getElementById('j-desc').value = j.desc;
-      document.getElementById('j-st').value = j.status;
-      document.getElementById('j-new').checked = j.isNew;
+      document.getElementById('j-e').value = '';
+      document.getElementById('j-desc').value = j.description;
+      document.getElementById('j-st').value = j.active ? 'active' : 'paused';
+      document.getElementById('j-new').checked = false;
       renderTagUI('j-tw', 'j-ti', jTagList, 'j');
       OM('mJob');
     }
 
-    function saveJob() {
+    async function saveJob() {
       const title = document.getElementById('j-t').value.trim();
-      const loc = document.getElementById('j-l').value.trim();
-      const desc = document.getElementById('j-desc').value.trim();
+      const loc   = document.getElementById('j-l').value.trim();
+      const desc  = document.getElementById('j-desc').value.trim();
       if (!title || !loc || !desc) { showToast('Fill required fields'); return; }
-      const jobs = S.g('admin_jobs', []);
-      const data = { title, dept: document.getElementById('j-d').value, type: document.getElementById('j-ty').value, location: loc, exp: document.getElementById('j-e').value.trim(), desc, tags: [...jTagList], isNew: document.getElementById('j-new').checked, status: document.getElementById('j-st').value };
-      if (editJobId) {
-        const idx = jobs.findIndex(j => j.id === editJobId);
-        if (idx !== -1) jobs[idx] = { ...jobs[idx], ...data };
-      } else {
-        jobs.push({ id: 'job_' + Date.now(), ...data });
-      }
-      S.s('admin_jobs', jobs);
-      syncJobs();
-      CM('mJob');
-      renderJobs();
-      updateBadges();
-      showToast(editJobId ? 'Job updated — live on careers page' : 'Job published — live on careers page');
+      const active = document.getElementById('j-st').value === 'active';
+      const payload = {
+        title,
+        department:   document.getElementById('j-d').value,
+        type:         document.getElementById('j-ty').value,
+        location:     loc,
+        description:  desc,
+        requirements: jTagList.join(', '),
+        active
+      };
+      try {
+        if (editJobId) await JobsAPI.update(editJobId, payload);
+        else           await JobsAPI.create(payload);
+        await loadAllFromDB();
+        CM('mJob');
+        renderJobs();
+        updateBadges();
+        showToast(editJobId ? 'Job updated — live on careers page' : 'Job published — live on careers page');
+      } catch (e) { showToast('Error: ' + e.message); }
     }
 
-    function toggleJob(id) {
-      const jobs = S.g('admin_jobs', []);
-      const idx = jobs.findIndex(j => j.id === id);
-      if (idx === -1) return;
-      jobs[idx].status = jobs[idx].status === 'active' ? 'paused' : 'active';
-      S.s('admin_jobs', jobs);
-      syncJobs();
-      renderJobs();
-      updateBadges();
-      showToast('Job ' + (jobs[idx].status === 'active' ? 'activated' : 'paused'));
+    async function toggleJob(id) {
+      const j = _db.jobs.find(x => x.id == id);
+      if (!j) return;
+      try {
+        await JobsAPI.update(id, { ...j, title: j.title, department: j.department, location: j.location, type: j.type, description: j.description, requirements: j.requirements, active: !j.active });
+        await loadAllFromDB();
+        renderJobs();
+        updateBadges();
+        showToast('Job ' + (!j.active ? 'activated' : 'paused'));
+      } catch (e) { showToast('Error: ' + e.message); }
     }
 
     /* ════════════════════════════════════════
@@ -2763,7 +2777,7 @@
     let bTagList = [];
 
     function renderBlog() {
-      const posts = S.g('admin_posts', []);
+      const posts = _db.posts;
       const q = (document.getElementById('bl-q')?.value || '').toLowerCase();
       const cf = document.getElementById('bl-c')?.value || 'all';
       const sf = document.getElementById('bl-s')?.value || 'all';
@@ -2776,13 +2790,13 @@
       if (!list.length) { tbl.innerHTML = '<tr><td colspan="6" class="empty"><i class="fas fa-pen-nib"></i>No posts yet</td></tr>'; return; }
       tbl.innerHTML = list.map(p => `<tr>
     <td><div class="td-b" style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.title}</div></td>
-    <td><span class="p p-o">${cmap[p.cat] || p.cat}</span></td>
+    <td><span class="p p-o">${cmap[p.category] || p.category}</span></td>
     <td class="td-m">${p.author || '—'}</td>
-    <td><span class="p ${p.status === 'published' ? 'p-r' : 'p-c'}">${cap(p.status)}</span></td>
-    <td class="td-m">${fmtD(p.createdAt)}</td>
+    <td><span class="p ${p.published ? 'p-r' : 'p-c'}">${p.published ? 'Published' : 'Draft'}</span></td>
+    <td class="td-m">${fmtD(p.created_at)}</td>
     <td><div class="ar">
       <button class="ab" onclick="editPost('${p.id}')" title="Edit"><i class="fas fa-edit"></i></button>
-      <button class="ab ${p.status === 'published' ? '' : 'view'}" onclick="togglePost('${p.id}')" title="${p.status === 'published' ? 'Unpublish' : 'Publish'}"><i class="fas fa-${p.status === 'published' ? 'eye-slash' : 'eye'}"></i></button>
+      <button class="ab ${p.published ? '' : 'view'}" onclick="togglePost('${p.id}')" title="${p.published ? 'Unpublish' : 'Publish'}"><i class="fas fa-${p.published ? 'eye-slash' : 'eye'}"></i></button>
       <button class="ab del" onclick="askDelete('post','${p.id}','${p.title.substring(0, 30)}…')" title="Delete"><i class="fas fa-trash"></i></button>
     </div></td>
   </tr>`).join('');
@@ -2800,24 +2814,24 @@
     }
 
     function editPost(id) {
-      const p = S.g('admin_posts', []).find(x => x.id === id);
+      const p = _db.posts.find(x => x.id == id);
       if (!p) return;
-      editPostId = id; bTagList = [...(p.tags || [])];
+      editPostId = id; bTagList = [];
       document.getElementById('mb-title').textContent = 'Edit Post';
       document.getElementById('b-t').value = p.title;
-      document.getElementById('b-cat').value = p.cat;
+      document.getElementById('b-cat').value = p.category || 'rnd';
       document.getElementById('b-au').value = p.author || '';
-      document.getElementById('b-ex').value = p.excerpt || '';
-      document.getElementById('b-co').value = p.article || '';
-      document.getElementById('b-rt').value = p.read || '';
-      document.getElementById('b-ic').value = p.icon || '';
-      document.getElementById('b-pub').checked = p.status === 'published';
-      document.getElementById('bec').textContent = (p.excerpt || '').length;
+      document.getElementById('b-ex').value = (p.content || '').replace(/<[^>]*>/g,'').substring(0, 160);
+      document.getElementById('b-co').value = p.content || '';
+      document.getElementById('b-rt').value = '5 min read';
+      document.getElementById('b-ic').value = '';
+      document.getElementById('b-pub').checked = !!p.published;
+      document.getElementById('bec').textContent = 0;
       renderTagUI('b-tw', 'b-ti', bTagList, 'b');
       OM('mBlog');
     }
 
-    function saveBlog(forcePublish) {
+    async function saveBlog(forcePublish) {
       const title = document.getElementById('b-t').value.trim();
       const excerpt = document.getElementById('b-ex').value.trim();
       const content = document.getElementById('b-co').value.trim();
@@ -2840,30 +2854,35 @@
         date: new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
         createdAt: new Date().toISOString(),
       };
-      if (editPostId) {
-        const idx = posts.findIndex(p => p.id === editPostId);
-        if (idx !== -1) posts[idx] = { ...posts[idx], ...data, id: editPostId };
-      } else {
-        posts.push({ id: 'post_' + Date.now(), ...data });
-      }
-      S.s('admin_posts', posts);
-      syncBlog();
-      CM('mBlog');
-      renderBlog();
-      updateBadges();
-      showToast(editPostId ? 'Post updated' : (pub ? 'Post published — live on blog page' : 'Saved as draft'));
+      const payload = {
+        title,
+        content,
+        author,
+        category: cat,
+        image_url: '',
+        published: pub ? 1 : 0
+      };
+      try {
+        if (editPostId) await BlogAPI.update(editPostId, payload);
+        else            await BlogAPI.create(payload);
+        await loadAllFromDB();
+        CM('mBlog');
+        renderBlog();
+        updateBadges();
+        showToast(editPostId ? 'Post updated' : (pub ? 'Post published — live on blog page' : 'Saved as draft'));
+      } catch (e) { showToast('Error: ' + e.message); }
     }
 
-    function togglePost(id) {
-      const posts = S.g('admin_posts', []);
-      const idx = posts.findIndex(p => p.id === id);
-      if (idx === -1) return;
-      posts[idx].status = posts[idx].status === 'published' ? 'draft' : 'published';
-      S.s('admin_posts', posts);
-      syncBlog();
-      renderBlog();
-      updateBadges();
-      showToast('Post ' + (posts[idx].status === 'published' ? 'published' : 'unpublished'));
+    async function togglePost(id) {
+      const p = _db.posts.find(x => x.id == id);
+      if (!p) return;
+      try {
+        await BlogAPI.update(id, { title: p.title, content: p.content, author: p.author, category: p.category, image_url: p.image_url || '', published: p.published ? 0 : 1 });
+        await loadAllFromDB();
+        renderBlog();
+        updateBadges();
+        showToast('Post ' + (!p.published ? 'published' : 'unpublished'));
+      } catch (e) { showToast('Error: ' + e.message); }
     }
 
     /* ════════════════════════════════════════
@@ -2921,25 +2940,24 @@
       OM('mConfirm');
     }
 
-    function doDelete(type, id) {
-      if (type === 'issue') {
-        S.s('zts_issues', S.g('zts_issues', []).filter(i => i.id !== id));
-        renderIssues(); renderOverview();
-      } else if (type === 'user') {
-        S.s('zts_users', S.g('zts_users', []).filter(u => u.id !== id));
-        renderUsers();
-      } else if (type === 'product') {
-        S.s('admin_products', S.g('admin_products', []).filter(p => p.id !== id));
-        syncProducts(); renderProds();
-      } else if (type === 'job') {
-        S.s('admin_jobs', S.g('admin_jobs', []).filter(j => j.id !== id));
-        syncJobs(); renderJobs();
-      } else if (type === 'post') {
-        S.s('admin_posts', S.g('admin_posts', []).filter(p => p.id !== id));
-        syncBlog(); renderBlog();
-      }
-      updateBadges();
-      showToast('Deleted');
+    async function doDelete(type, id) {
+      try {
+        if (type === 'issue')   await TicketsAPI.delete(id);
+        else if (type === 'job')    await JobsAPI.delete(id);
+        else if (type === 'post')   await BlogAPI.delete(id);
+        else if (type === 'application') await ApplicationsAPI.delete(id);
+        // products still use localStorage (no DB table for AICTE products)
+        else if (type === 'product') {
+          S.s('admin_products', S.g('admin_products', []).filter(p => p.id !== id));
+          syncProducts(); renderProds(); showToast('Deleted'); return;
+        }
+        await loadAllFromDB();
+        if (type === 'issue') { renderIssues(); renderOverview(); }
+        else if (type === 'job')  renderJobs();
+        else if (type === 'post') renderBlog();
+        updateBadges();
+        showToast('Deleted');
+      } catch (e) { showToast('Delete failed: ' + e.message); }
     }
 
     /* ════════════════════════════════════════

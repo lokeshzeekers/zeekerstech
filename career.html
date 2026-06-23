@@ -727,6 +727,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Your JS -->
+        <script src="/src/js/api.js"></script>
         <script type="module" src="/src/js/main.js"></script>
 
         <script>
@@ -938,27 +939,40 @@
                 // }
             ];
 
-            /* ── Load jobs from admin localStorage (zts_jobs),
-                  fall back to FALLBACK_JOBS if not present ── */
-            function loadJobs() {
+            /* ── Load jobs from MySQL API, fall back to FALLBACK_JOBS ── */
+            let _apiJobs = null;
+
+            async function loadJobs() {
+                if (_apiJobs !== null) return _apiJobs;
                 try {
-                    const stored = localStorage.getItem('zts_jobs');
-                    if (stored) {
-                        const parsed = JSON.parse(stored);
-                        // Only show active jobs
-                        const active = parsed.filter(j => j.status === 'active');
-                        if (active.length > 0) return active;
+                    const res = await JobsAPI.getActive();
+                    if (res.data && res.data.length > 0) {
+                        _apiJobs = res.data.map(j => ({
+                            id: j.id,
+                            title: j.title,
+                            dept: j.department,
+                            location: j.location || 'Coimbatore, Tamil Nadu',
+                            type: j.type || 'Full-time',
+                            desc: j.description || '',
+                            tags: j.requirements ? j.requirements.split(',').map(r => r.trim()) : [],
+                            status: j.active ? 'active' : 'inactive',
+                            isNew: false
+                        }));
+                        return _apiJobs;
                     }
-                } catch (e) { /* ignore parse errors */ }
-                return FALLBACK_JOBS;
+                } catch (e) {
+                    console.warn('Jobs API unavailable, using fallback jobs.', e.message);
+                }
+                _apiJobs = FALLBACK_JOBS;
+                return _apiJobs;
             }
 
-            /* jobs is rebuilt every render so it always reflects latest admin changes */
+            /* jobs loaded from API once per page visit */
             let activeDept = 'all';
             let searchQuery = '';
 
-            function getFiltered() {
-                const jobs = loadJobs();
+            async function getFiltered() {
+                const jobs = await loadJobs();
                 return jobs.filter(j => {
                     const matchDept = activeDept === 'all' || j.dept === activeDept;
                     const q = searchQuery.toLowerCase();
@@ -971,11 +985,12 @@
                 });
             }
 
-            function renderJobs() {
+            async function renderJobs() {
                 const list = document.getElementById('jobsList');
                 const noRes = document.getElementById('noResults');
                 const countEl = document.getElementById('jobCountDisplay');
-                const filtered = getFiltered();
+                list.innerHTML = '<div style="text-align:center;padding:40px;color:#9a9490"><i class="fas fa-spinner fa-spin" style="font-size:28px"></i></div>';
+                const filtered = await getFiltered();
 
                 countEl.textContent = filtered.length;
 
@@ -1054,6 +1069,7 @@
                 document.getElementById('modalForm').style.display = '';
                 document.getElementById('modalSuccess').classList.remove('show');
                 const modal = document.getElementById('applyModal');
+                modal.dataset.jobId = job.id || 0;  // store for API submit
                 modal.classList.add('open');
                 document.body.style.overflow = 'hidden';
                 modal.scrollTop = 0;
@@ -1064,16 +1080,31 @@
                 document.body.style.overflow = '';
             }
 
-            function submitApplication() {
+            async function submitApplication() {
                 const name = document.getElementById('fname').value.trim();
                 const email = document.getElementById('femail').value.trim();
                 const msg = document.getElementById('fmsg').value.trim();
+                const phone = document.getElementById('fphone') ? document.getElementById('fphone').value.trim() : '';
                 if (!name || !email || !msg) {
                     alert('Please fill in your name, email, and motivation message.');
                     return;
                 }
-                document.getElementById('modalForm').style.display = 'none';
-                document.getElementById('modalSuccess').classList.add('show');
+                const btn = document.querySelector('.btn-submit');
+                if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+                try {
+                    // Get job_id from modal header (stored in data attr when openApply called)
+                    const jobId = parseInt(document.getElementById('applyModal').dataset.jobId || 0);
+                    await ApplicationsAPI.submit({
+                        job_id: jobId,
+                        name, email, phone,
+                        cover_letter: msg
+                    });
+                    document.getElementById('modalForm').style.display = 'none';
+                    document.getElementById('modalSuccess').classList.add('show');
+                } catch (e) {
+                    alert('Submission failed: ' + e.message);
+                    if (btn) { btn.disabled = false; btn.textContent = 'Submit Application'; }
+                }
             }
 
             document.getElementById('modalClose').addEventListener('click', closeModal);

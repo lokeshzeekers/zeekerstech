@@ -628,6 +628,7 @@ ${topic}`
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Your JS -->
+        <script src="/src/js/api.js"></script>
         <script type="module" src="/src/js/main.js"></script>
 
         <script>
@@ -841,39 +842,40 @@ ${topic}`
             /* ── LOAD ADMIN POSTS FROM localStorage ──────
                Returns only published posts from admin.html.
                Falls back to empty array if none published yet. */
-            function loadAdminPosts() {
+            /* ── LOAD POSTS FROM MySQL API (replaces localStorage) ── */
+            let _apiPosts = null;
+
+            async function loadAdminPosts() {
+                if (_apiPosts !== null) return _apiPosts;
                 try {
-                    const raw = localStorage.getItem('zts_blog_posts');
-                    if (!raw) return [];
-                    const parsed = JSON.parse(raw);
-                    // Only show published, sort newest first
-                    return parsed
-                        .filter(p => p.status === 'published')
-                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                        .map((p, i) => ({
-                            // Normalise admin post shape to match blog card format
-                            id: 'adm_' + (p.id || i),
-                            cat: p.cat || 'rnd',
-                            catLabel: p.catLabel || getCatLabel(p.cat),
-                            title: p.title || 'Untitled',
-                            excerpt: p.excerpt || '',
-                            author: p.author || 'Zeekers Team',
-                            authorInit: p.authorInit || initials(p.author || 'Z'),
-                            date: p.date || formatDate(p.createdAt),
-                            read: p.read || '5 min read',
-                            icon: p.icon || 'fa-pen-nib',
-                            featured: false,
-                            tags: p.tags || [],
-                            article: buildArticleHTML(p.article || p.content || '')
-                        }));
+                    const res = await BlogAPI.getPublished();
+                    _apiPosts = (res.data || []).map(p => ({
+                        id: 'db_' + p.id,
+                        _dbId: p.id,
+                        cat: p.category || 'rnd',
+                        catLabel: getCatLabel(p.category),
+                        title: p.title || 'Untitled',
+                        excerpt: (p.content || '').replace(/<[^>]*>/g, '').substring(0, 160) + '…',
+                        author: p.author || 'Zeekers Team',
+                        authorInit: initials(p.author || 'Z'),
+                        date: formatDate(p.created_at),
+                        read: '5 min read',
+                        icon: 'fa-pen-nib',
+                        featured: false,
+                        tags: [],
+                        article: buildArticleHTML(p.content || '')
+                    }));
                 } catch (e) {
-                    return [];
+                    console.warn('Blog API unavailable:', e.message);
+                    _apiPosts = [];
                 }
+                return _apiPosts;
             }
 
-            /* Build the full posts array: featured first, then admin posts */
-            function getAllPosts() {
-                return [FEATURED_POST, ...loadAdminPosts()];
+            /* Build the full posts array: featured first, then DB posts */
+            async function getAllPosts() {
+                const dbPosts = await loadAdminPosts();
+                return [FEATURED_POST, ...dbPosts];
             }
 
             /* ── HELPERS ─────────────────────────────────── */
@@ -933,16 +935,17 @@ ${topic}`
             let visibleCount = 6;
             let activeFilter = 'all';
 
-            function getFilteredPosts() {
-                const posts = getAllPosts();
+            async function getFilteredPosts() {
+                const posts = await getAllPosts();
                 const nonFeatured = posts.filter(p => !p.featured);
                 if (activeFilter === 'all') return nonFeatured;
                 return nonFeatured.filter(p => p.cat === activeFilter);
             }
 
-            function renderPosts(animate = true) {
+            async function renderPosts(animate = true) {
                 const grid = document.getElementById('postsGrid');
-                const filtered = getFilteredPosts();
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:#9a9490"><i class="fas fa-spinner fa-spin" style="font-size:28px"></i></div>';
+                const filtered = await getFilteredPosts();
                 const toShow = filtered.slice(0, visibleCount);
                 grid.innerHTML = '';
 
@@ -999,9 +1002,9 @@ ${topic}`
             /* ═══════════════════════════════════════════
                OPEN ARTICLE MODAL
             ═══════════════════════════════════════════ */
-            function openPost(id) {
-                const posts = getAllPosts();
-                // id may be number (featured) or string ('adm_xxx')
+            async function openPost(id) {
+                const posts = await getAllPosts();
+                // id may be number (featured) or string ('db_xxx')
                 const post = posts.find(p => String(p.id) === String(id));
                 if (!post) return;
 

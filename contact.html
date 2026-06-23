@@ -808,6 +808,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Your JS -->
+        <script src="/src/js/api.js"></script>
         <script type="module" src="/src/js/main.js"></script>
 
         <script>
@@ -905,11 +906,41 @@
             }
 
             /* FORM SUBMIT */
-            function submitForm() {
-                document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-                const success = document.getElementById('formSuccess');
-                success.classList.add('show');
-                window.scrollTo({ top: document.querySelector('.contact-form-wrap').offsetTop - 100, behavior: 'smooth' });
+            async function submitForm() {
+                // Collect fields from active tab
+                const activePanel = document.querySelector('.form-panel.active');
+                if (!activePanel) return;
+
+                const nameEl    = activePanel.querySelector('input[type="text"]');
+                const emailEl   = activePanel.querySelector('input[type="email"]');
+                const phoneEl   = activePanel.querySelector('input[type="tel"]');
+                const subjectEl = activePanel.querySelector('select, input[placeholder*="subject"], input[placeholder*="Subject"]');
+                const msgEl     = activePanel.querySelector('textarea');
+
+                const name    = nameEl  ? nameEl.value.trim()  : '';
+                const email   = emailEl ? emailEl.value.trim() : '';
+                const phone   = phoneEl ? phoneEl.value.trim() : '';
+                const subject = subjectEl ? subjectEl.value.trim() : activePanel.id === 'tab-demo' ? 'Product Demo Request' : 'General Enquiry';
+                const message = msgEl   ? msgEl.value.trim()   : '';
+
+                if (!name || !email || !message) {
+                    alert('Please fill in your name, email, and message.');
+                    return;
+                }
+
+                const btn = activePanel.querySelector('.btn-submit-form');
+                if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+                try {
+                    await ContactAPI.submit({ name, email, phone, subject, message });
+                    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+                    const success = document.getElementById('formSuccess');
+                    success.classList.add('show');
+                    window.scrollTo({ top: document.querySelector('.contact-form-wrap').offsetTop - 100, behavior: 'smooth' });
+                } catch (e) {
+                    alert('Failed to send message: ' + e.message);
+                    if (btn) { btn.disabled = false; btn.textContent = 'Send Message'; }
+                }
             }
 
             function resetForm() {
