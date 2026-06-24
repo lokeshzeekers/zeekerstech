@@ -1064,7 +1064,7 @@ ${topic}`
                     btn.classList.add('active');
                     activeFilter = btn.dataset.cat;
                     visibleCount = 6;
-                    renderPosts(true);
+                    renderPosts(true).catch(e => console.warn("blog render:", e.message));
                     const fp = document.getElementById('featuredPost');
                     if (fp) fp.style.display = (activeFilter !== 'all') ? 'none' : '';
                 });
@@ -1073,7 +1073,7 @@ ${topic}`
             /* LOAD MORE */
             document.getElementById('loadMoreBtn').addEventListener('click', () => {
                 visibleCount += 3;
-                renderPosts(false);
+                renderPosts(false).catch(e => console.warn("blog render:", e.message));
             });
 
             /* ═══════════════════════════════════════════
@@ -1097,7 +1097,7 @@ ${topic}`
             /* ═══════════════════════════════════════════
                INIT
             ═══════════════════════════════════════════ */
-            renderPosts(false);
+            renderPosts(false).catch(e => console.warn("blog render:", e.message));
 
             /* Stagger initial card entrance */
             setTimeout(() => {
@@ -1118,7 +1118,7 @@ ${topic}`
             window.addEventListener('storage', e => {
                 if (e.key === 'zts_blog_posts') {
                     visibleCount = 6;
-                    renderPosts(false);
+                    renderPosts(false).catch(e => console.warn('blog init:', e.message));
                 }
             });
 

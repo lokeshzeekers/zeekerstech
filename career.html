@@ -1050,14 +1050,14 @@
                     document.querySelectorAll('.jf-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     activeDept = btn.dataset.dept;
-                    renderJobs();
+                    renderJobs().catch(e => console.warn("career render:", e.message));
                 });
             });
 
             /* ── SEARCH ── */
             document.getElementById('jobSearch').addEventListener('input', e => {
                 searchQuery = e.target.value;
-                renderJobs();
+                renderJobs().catch(e => console.warn("career render:", e.message));
             });
 
             /* ── APPLY MODAL ── */
@@ -1182,17 +1182,7 @@
             if (wg) whyIO.observe(wg);
 
             /* ── INIT ── */
-            renderJobs();
-
-            /*
-              ── LIVE REFRESH ──────────────────────────────────────
-              Listens for changes to localStorage from other tabs
-              (e.g. admin panel open in another tab) and re-renders
-              automatically without a page reload.
-            */
-            window.addEventListener('storage', e => {
-                if (e.key === 'zts_jobs') renderJobs();
-            });
+            renderJobs().catch(e => console.warn('renderJobs init:', e.message));
 
         </script>
 

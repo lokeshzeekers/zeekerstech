@@ -2364,7 +2364,7 @@
         document.getElementById('shell').classList.add('on');
         document.body.style.overflow = '';
         await loadAllFromDB();
-        go('ov');
+        go('ov').catch(e => console.warn('admin go:', e.message));
       } catch (ex) {
         err.querySelector('span').textContent = ex.message || 'Invalid credentials.';
         err.classList.add('show');
@@ -2395,7 +2395,7 @@
       });
       closeSB();
       // Refresh DB data, then render
-      await loadAllFromDB();
+      try { await loadAllFromDB(); } catch(e) { console.warn('DB load failed:', e.message); }
       const renders = { ov: renderOverview, is: renderIssues, us: renderUsers, pr: renderProds, ca: renderJobs, bl: renderBlog };
       if (renders[p]) renders[p]();
     }
