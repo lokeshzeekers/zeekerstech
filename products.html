@@ -35,7 +35,7 @@
 
     <!-- GOOGLE FONTS -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
 </head>
@@ -1385,7 +1385,7 @@
 
                     <div class="product-img-container">
 
-                        <img src="assets/images/zeebot-mobile-robotics.jpg" alt="ZEEBOT Mobile Robotics">
+                        <img src="assets/images/zeebot-mobile-robotics.svg" alt="ZEEBOT Mobile Robotics">
 
                         <!-- Replace image path with your actual image -->
 
@@ -1546,7 +1546,7 @@
 
     </div>
 
-    <script src="/src/js/api.js"></script>
+    <script src="/assets/js/api.js"></script>
     <script>
 
         function openBrochureModal(productName) {
@@ -1835,7 +1835,7 @@
             <div class="container-align">
                 <div class="cta-inner">
                     <div class="cta-text">
-                        <h2 style="color:white; font-family:'Syne';">Ready to deploy ZTS products in your facility?</h2>
+                        <h2 style="color:white; font-family:'Inter';">Ready to deploy ZTS products in your facility?</h2>
                         <p style="color:rgba(255,255,255,0.85);">Talk to our engineering team for a custom evaluation
                             and
                             product demonstration at your site.</p>
@@ -2128,6 +2128,9 @@
                     });
 
                     button.classList.add('active');
+
+                    /* Scroll active button into view on mobile */
+                    button.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
                     /* CURRENT FILTER */
                     const filterValue = button.dataset.filter.toLowerCase();

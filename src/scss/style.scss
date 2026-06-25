@@ -44,7 +44,7 @@
  }
 
  body {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    background: var(--surface);
    color: var(--text-primary);
    overflow-x: hidden;
@@ -111,7 +111,7 @@
    align-items: center;
    gap: 8px;
    transition: color 0.2s;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
  }
 
  .top-left a i {
@@ -208,7 +208,7 @@
 
  .desktop-nav ul li a {
    text-decoration: none;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 16px;
    font-weight: 700;
    color: #ff6b2b;
@@ -361,7 +361,7 @@
  .side-menu ul li a {
    text-decoration: none;
    color: #ff6b2b;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 17px;
    font-weight: 700;
 
@@ -609,7 +609,7 @@
  }
 
  .hero-content h1 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(40px, 5vw, 60px);
    font-weight: 800;
    line-height: 1.1;
@@ -701,7 +701,7 @@
  }
 
  .stat-num {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 26px;
    font-weight: 800;
    color: var(--accent);
@@ -799,7 +799,7 @@
  }
 
  .metric-big {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 38px;
    font-weight: 800;
  }
@@ -973,7 +973,7 @@
 
  .aicte-popup-card h3 {
 
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
 
    font-size: clamp(28px, 4vw, 42px);
 
@@ -1116,7 +1116,7 @@
  }
 
  .service-card h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 18px;
    font-weight: 700;
    margin-bottom: 10px;
@@ -1234,7 +1234,7 @@
  }
 
  .footer-logo h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 28px;
    font-weight: 800;
    background: linear-gradient(135deg, #ff9a5c, #ff6b2b);
@@ -1253,7 +1253,7 @@
 
  .footer-col h4 {
    color: white;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 16px;
    margin-bottom: 22px;
    font-weight: 700;
@@ -1576,7 +1576,7 @@
    color: var(--text-secondary);
    font-size: 14px;
    font-weight: 600;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    white-space: nowrap;
    /* 🔥 no wrapping */
    overflow: hidden;
@@ -1754,7 +1754,7 @@
  }
 
  .build-title {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(28px, 4vw, 42px);
    font-weight: 800;
    margin-bottom: 20px;
@@ -1824,7 +1824,7 @@
  }
 
  .icon-card h3 {
-   font-family: 'Syne';
+   font-family: 'Inter';
    font-size: 16px;
    margin-bottom: 6px;
  }
@@ -2128,13 +2128,13 @@
    font-weight: 800;
    color: rgba(15, 23, 42, 0.05);
 
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
  }
 
  /* ========================================= */
 
  .why-card h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 22px;
    margin-bottom: 14px;
    font-weight: 700;
@@ -2178,7 +2178,7 @@
  .strip-item h4 {
    color: white;
    font-size: 28px;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    margin-bottom: 6px;
    font-weight: bolder;
  }
@@ -2342,7 +2342,7 @@
    font-size: 13px;
    font-weight: 500;
    flex-shrink: 0;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    letter-spacing: 0.3px;
  }
 
@@ -2440,7 +2440,7 @@
  }
 
  .tw-big-quote {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 100px;
    font-weight: 800;
    line-height: 0.65;
@@ -2487,7 +2487,7 @@
    justify-content: center;
    font-size: 15px;
    font-weight: 500;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    flex-shrink: 0;
    border: 1px solid #ff6b2b;
    /* black border added */
@@ -2761,7 +2761,7 @@
    display: inline-flex;
    align-items: center;
    gap: 8px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 11px;
    font-weight: 500;
    letter-spacing: 2px;
@@ -2780,7 +2780,7 @@
  }
 
  .hero-h1 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(40px, 5.5vw, 72px);
    font-weight: 800;
    line-height: 1.02;
@@ -2819,7 +2819,7 @@
  }
 
  .hero-chip {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 12px;
    font-weight: 400;
    padding: 5px 14px;
@@ -2858,7 +2858,7 @@
    top: 50%;
    left: 50%;
    transform: translate(-50%, -52%);
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(120px, 18vw, 210px);
    font-weight: 800;
    letter-spacing: -6px;
@@ -2910,7 +2910,7 @@
  }
 
  .pc-label {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 10px;
    font-weight: 500;
    letter-spacing: 2px;
@@ -2938,7 +2938,7 @@
  }
 
  .pc-val {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 700;
    color: var(--text-primary);
@@ -2970,7 +2970,7 @@
  }
 
  .mini-stat-n {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 22px;
    font-weight: 800;
    color: #fff;
@@ -3022,7 +3022,7 @@
    gap: 12px;
    padding: 0 32px;
    white-space: nowrap;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 700;
    color: #fff;
@@ -3050,7 +3050,7 @@
  }
 
  .section-label {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 11px;
    font-weight: 500;
    letter-spacing: 2.5px;
@@ -3070,7 +3070,7 @@
  }
 
  .section-title {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(28px, 4vw, 50px);
    font-weight: 800;
    color: var(--text-primary);
@@ -3229,7 +3229,7 @@
    position: absolute;
    bottom: -24px;
    right: -16px;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 120px;
    font-weight: 800;
    line-height: 1;
@@ -3272,7 +3272,7 @@
  }
 
  .mv-tag {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 10px;
    font-weight: 500;
    letter-spacing: 2px;
@@ -3289,7 +3289,7 @@
  }
 
  .mv-card h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 26px;
    font-weight: 800;
    line-height: 1.2;
@@ -3399,7 +3399,7 @@
  }
 
  .tl-dot-yr {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 11px;
    font-weight: 800;
    color: var(--text-muted);
@@ -3423,7 +3423,7 @@
  }
 
  .tl-phase {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 10px;
    font-weight: 500;
    letter-spacing: 2px;
@@ -3433,7 +3433,7 @@
  }
 
  .tl-item h4 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 17px;
    font-weight: 700;
    color: var(--text-primary);
@@ -3551,7 +3551,7 @@
  }
 
  .cap-num {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 10px;
    font-weight: 400;
    letter-spacing: 1.5px;
@@ -3568,7 +3568,7 @@
  }
 
  .cap-card h4 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 15px;
    font-weight: 700;
    color: #fff;
@@ -3691,7 +3691,7 @@
  }
 
  .why-n {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 22px;
    font-weight: 800;
    color: rgba(255, 107, 43, 0.14);
@@ -3705,7 +3705,7 @@
  }
 
  .why-row h4 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 16px;
    font-weight: 700;
    color: var(--text-primary);
@@ -4010,7 +4010,7 @@
  }
 
  .hcc-name {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 700;
    color: var(--text-primary);
@@ -4056,7 +4056,7 @@
  }
 
  .hero-mini-n {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 22px;
    font-weight: 800;
    color: #fff;
@@ -4148,7 +4148,7 @@
  }
 
  .filter-btn {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 500;
 
@@ -4178,8 +4178,18 @@
    background: var(--accent);
    color: #fff;
    border-color: var(--accent);
-
    box-shadow: var(--shadow-or);
+   transform: scale(1.05);
+ }
+
+ @keyframes filterPulse {
+   0%   { box-shadow: 0 0 0 0 rgba(255,107,53,0.5); }
+   70%  { box-shadow: 0 0 0 8px rgba(255,107,53,0); }
+   100% { box-shadow: 0 0 0 0 rgba(255,107,53,0); }
+ }
+
+ .filter-btn.active {
+   animation: filterPulse 0.4s ease-out;
  }
 
  /* ═══════════════════════════════════════════
@@ -4307,7 +4317,7 @@
  }
 
  .product-img-placeholder span {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 600;
    color: var(--text-muted);
@@ -4393,7 +4403,7 @@
  }
 
  .product-number {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 11px;
    font-weight: 700;
    letter-spacing: 3px;
@@ -4434,7 +4444,7 @@
  }
 
  .product-name {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(26px, 3.2vw, 40px);
    font-weight: 800;
    letter-spacing: -1.2px;
@@ -4616,7 +4626,7 @@
    background: var(--accent);
    color: #fff;
 
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    font-weight: 500;
 
@@ -4648,7 +4658,7 @@
    background: transparent;
    color: var(--text-primary);
 
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    font-weight: 500;
 
@@ -5076,7 +5086,7 @@
  }
 
  .cat-title {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(22px, 3vw, 34px);
    font-weight: 800;
    color: #fff;
@@ -5100,7 +5110,7 @@
  }
 
  .cat-count {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 48px;
    font-weight: 800;
    color: rgba(255, 255, 255, 0.877);
@@ -5163,7 +5173,7 @@
  }
 
  .cs-div-label {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 10px;
    font-weight: 500;
    letter-spacing: 2.5px;
@@ -5185,7 +5195,7 @@
  }
 
  .cs-div-title {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(24px, 3.2vw, 36px);
    font-weight: 800;
    color: #fff;
@@ -5210,7 +5220,7 @@
  }
 
  .cs-div-count {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 56px;
    font-weight: 800;
    color: rgb(255, 255, 255);
@@ -5389,7 +5399,7 @@
  }
 
  .cs-name {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 22px;
    font-weight: 800;
    margin-bottom: 8px;
@@ -5579,7 +5589,7 @@
  }
 
  .hic-v {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 700;
    color: var(--text-primary);
@@ -5597,7 +5607,7 @@
    gap: 12px;
    padding: 0 32px;
    white-space: nowrap;
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 700;
    color: #fff;
@@ -5638,7 +5648,7 @@
  }
 
  .s-title {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(28px, 4vw, 50px);
    font-weight: 800;
    color: var(--text-primary);
@@ -5717,7 +5727,7 @@
  }
 
  .support-left h2 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(26px, 3.5vw, 44px);
    font-weight: 800;
    line-height: 1.2;
@@ -5794,7 +5804,7 @@
  }
 
  .support-card h4 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14.5px;
    font-weight: 700;
    color: #fff;
@@ -5865,7 +5875,7 @@
  }
 
  .svc-card h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 18px;
    font-weight: 800;
    color: var(--text-primary);
@@ -5960,7 +5970,7 @@
  }
 
  .oem-body h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 16px;
    font-weight: 800;
    color: var(--text-primary);
@@ -6072,7 +6082,7 @@
  }
 
  .video-text-side h2 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(26px, 3.5vw, 42px);
    font-weight: 800;
    letter-spacing: -1.2px;
@@ -6270,7 +6280,7 @@
  }
 
  .blog-hero-h1 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(36px, 5vw, 64px);
    font-weight: 800;
    line-height: 1.02;
@@ -6313,7 +6323,7 @@
  }
 
  .blog-hero-stat-n {
-   font-family: 'Syne';
+   font-family: 'Inter';
    font-size: 24px;
    font-weight: 800;
    color: #fff;
@@ -6411,7 +6421,7 @@
    gap: 12px;
    padding: 0 28px;
    white-space: nowrap;
-   font-family: 'Syne';
+   font-family: 'Inter';
    font-size: 13px;
    font-weight: 700;
    color: #fff;
@@ -6425,7 +6435,7 @@
  }
 
  .f-btn {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 500;
    padding: 7px 18px;
@@ -6565,7 +6575,7 @@
  }
 
  .featured-body h2 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(22px, 2.8vw, 34px);
    font-weight: 800;
    line-height: 1.3;
@@ -6603,7 +6613,7 @@
    display: flex;
    align-items: center;
    justify-content: center;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 12px;
    font-weight: 800;
    color: #fff;
@@ -6648,7 +6658,7 @@
    border: none;
    padding: 12px 22px;
    border-radius: 100px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    font-weight: 500;
    cursor: pointer;
@@ -6777,7 +6787,7 @@
  }
 
  .post-card-body h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 17px;
    font-weight: 800;
    letter-spacing: -.4px;
@@ -6828,7 +6838,7 @@
    display: flex;
    align-items: center;
    justify-content: center;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 11px;
    font-weight: 800;
    color: #fff;
@@ -6893,7 +6903,7 @@
    border: 1.5px solid var(--border);
    padding: 13px 28px;
    border-radius: 100px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    font-weight: 500;
    cursor: pointer;
@@ -6940,7 +6950,7 @@
  }
 
  .nl-left h2 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(32px, 4vw, 52px);
    font-weight: 800;
    color: #fff;
@@ -7129,7 +7139,7 @@
  }
 
  .modal-title {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(24px, 3.5vw, 38px);
    font-weight: 800;
    letter-spacing: -1.2px;
@@ -7156,7 +7166,7 @@
    display: flex;
    align-items: center;
    justify-content: center;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 12px;
    font-weight: 800;
    color: #fff;
@@ -7194,7 +7204,7 @@
 
  /* article body typography */
  .modal-article h2 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 22px;
    font-weight: 800;
    letter-spacing: -.5px;
@@ -7203,7 +7213,7 @@
  }
 
  .modal-article h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 18px;
    font-weight: 700;
    letter-spacing: -.3px;
@@ -7421,7 +7431,7 @@
  }
 
  .perk-card h4 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 15px;
    font-weight: 700;
    color: #fff;
@@ -7449,7 +7459,7 @@
  }
 
  .culture-text h2 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(26px, 3.5vw, 44px);
    font-weight: 800;
    letter-spacing: -1.2px;
@@ -7606,7 +7616,7 @@
    border: 1.5px solid var(--border);
    border-radius: 100px;
    padding: 12px 20px 12px 44px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    color: var(--text-primary);
    outline: none;
@@ -7642,7 +7652,7 @@
  }
 
  .jf-btn {
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 500;
    padding: 7px 18px;
@@ -7775,7 +7785,7 @@
  }
 
  .job-title {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 19px;
    font-weight: 800;
    letter-spacing: -.4px;
@@ -7843,7 +7853,7 @@
    border: none;
    padding: 11px 22px;
    border-radius: 100px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13.5px;
    font-weight: 500;
    cursor: pointer;
@@ -7904,7 +7914,7 @@
  }
 
  .jobs-count {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    font-weight: 700;
    color: var(--text-primary)
@@ -8014,7 +8024,7 @@
  }
 
  .modal-header h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 20px;
    font-weight: 800;
    color: #fff;
@@ -8075,7 +8085,7 @@
    border: 1.5px solid var(--border);
    border-radius: 10px;
    padding: 11px 14px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    color: var(--text-primary);
    outline: none;
@@ -8158,7 +8168,7 @@
    border: 1.5px solid var(--border);
    padding: 11px 22px;
    border-radius: 100px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    font-weight: 500;
    cursor: pointer;
@@ -8176,7 +8186,7 @@
    border: none;
    padding: 12px 26px;
    border-radius: 100px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    font-weight: 500;
    cursor: pointer;
@@ -8262,7 +8272,7 @@
  }
 
  .modal-success h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 22px;
    font-weight: 800;
    color: var(--text-primary);
@@ -8308,7 +8318,7 @@
  }
 
  .open-app-inner h2 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: clamp(22px, 3vw, 34px);
    font-weight: 800;
    color: #fff;
@@ -8336,7 +8346,7 @@
    border: none;
    padding: 15px 30px;
    border-radius: 100px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 15px;
    font-weight: 500;
    cursor: pointer;
@@ -8524,7 +8534,7 @@
  }
 
  .detail-value {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14.5px;
    font-weight: 700;
    color: var(--text-primary);
@@ -8614,7 +8624,7 @@
  .form-tab {
    flex: 1;
    padding: 16px 10px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    font-weight: 500;
    color: var(--text-muted);
@@ -8711,7 +8721,7 @@
    border: 1.5px solid var(--border);
    border-radius: 10px;
    padding: 11px 14px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 14px;
    color: var(--text-primary);
    outline: none;
@@ -8786,7 +8796,7 @@
    display: flex;
    align-items: center;
    gap: 10px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
    color: var(--text-secondary);
    font-weight: 400;
@@ -8818,7 +8828,7 @@
    border: none;
    padding: 14px 28px;
    border-radius: 100px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 15px;
    font-weight: 500;
    cursor: pointer;
@@ -8900,7 +8910,7 @@
  }
 
  .form-success h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 22px;
    font-weight: 800;
    color: var(--text-primary);
@@ -8924,7 +8934,7 @@
    border: 1.5px solid rgba(255, 107, 43, .3);
    padding: 10px 20px;
    border-radius: 100px;
-   font-family: 'DM Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 13.5px;
    font-weight: 500;
    cursor: pointer;
@@ -9005,7 +9015,7 @@
  }
 
  .channel-card h3 {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 17px;
    font-weight: 800;
    letter-spacing: -.3px;
@@ -9202,7 +9212,7 @@
  }
 
  .faq-q-text {
-   font-family: 'Syne', sans-serif;
+   font-family: 'Inter', sans-serif;
    font-size: 15.5px;
    font-weight: 700;
    letter-spacing: -.3px;
