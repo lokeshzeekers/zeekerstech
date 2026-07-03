@@ -48,7 +48,7 @@ jobs:
             npm install --production=false
 
             echo ">>> Building project..."
-            npm run build || echo "build failed but continuing"
+            npm run build
 
             echo ">>> Reloading Nginx..."
             nginx -t
