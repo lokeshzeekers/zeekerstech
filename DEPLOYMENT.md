@@ -7,7 +7,7 @@
 
 | File | What changed |
 |------|-------------|
-| `src/js/api.js` | NEW — shared API client used by all pages |
+| `assets/js/api.js` | NEW — shared API client used by all pages |
 | `api/config.php` | NEW — DB credentials + JWT + helpers |
 | `api/auth.php` | NEW — admin login → JWT token |
 | `api/blogs.php` | NEW — CRUD for blog posts |
@@ -100,9 +100,9 @@ This creates all tables and inserts a sample admin, blog post, and job.
 
 ---
 
-## STEP 5 — Update API_BASE in src/js/api.js
+## STEP 5 — Update API_BASE in assets/js/api.js
 
-Open `src/js/api.js` and change line 9:
+Open `assets/js/api.js` and change line 9:
 
 ```javascript
 // Development (local):
@@ -201,7 +201,7 @@ A successful login returns: `{"success":true,"token":"eyJ...","user":"admin"}`
 
 **CORS errors in browser console**
 → Make sure api/.htaccess is uploaded
-→ Check API_BASE in src/js/api.js matches your domain
+→ Check API_BASE in assets/js/api.js matches your domain
 
 **Blog/jobs not showing on public pages**
 → Check browser console for API errors
