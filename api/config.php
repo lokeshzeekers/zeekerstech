@@ -1,16 +1,6 @@
 <?php
-// ─────────────────────────────────────────────────────────────
-//  Zeekers Technology Solutions — Database Configuration
-//  File: api/config.php
-//  ⚠ Update DB_HOST, DB_NAME, DB_USER, DB_PASS with your
-//    Hostinger MySQL credentials before deploying.
-// ─────────────────────────────────────────────────────────────
 
-define('DB_HOST', 'localhost');       // Hostinger: usually 'localhost'
-define('DB_NAME', 'your_db_name');   // e.g. u123456789_zeekers
-define('DB_USER', 'your_db_user');   // e.g. u123456789_admin
-define('DB_PASS', 'your_db_pass');   // Your MySQL password
-define('DB_CHARSET', 'utf8mb4');
+require_once __DIR__ . '/config.local.php';
 
 // JWT Secret — change this to a long random string
 define('JWT_SECRET', 'ZTS_SUPER_SECRET_KEY_CHANGE_THIS_2025');
