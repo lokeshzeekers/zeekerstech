@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   department   VARCHAR(100),
   location     VARCHAR(100) DEFAULT 'Coimbatore, Tamil Nadu',
   type         VARCHAR(50)  DEFAULT 'Full-time',
+  experience   VARCHAR(100) DEFAULT '',
   description  TEXT,
   requirements TEXT,
   active       TINYINT(1)   DEFAULT 1,
@@ -66,6 +67,11 @@ CREATE TABLE IF NOT EXISTS tickets (
   message       TEXT,
   status        VARCHAR(50)  DEFAULT 'open',
   priority      VARCHAR(20)  DEFAULT 'medium',
+  category      VARCHAR(150) DEFAULT '',
+  sub_category  VARCHAR(150) DEFAULT '',
+  products      TEXT NULL,
+  attachment_name VARCHAR(255) DEFAULT '',
+  attachment_data LONGTEXT NULL,
   created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 

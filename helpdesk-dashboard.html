@@ -2206,26 +2206,29 @@
 
         /* Pull this user's tickets straight from the DB (via their own Bearer token),
            so status/priority/admin-response changes made on the admin side always show up.
-           Merges in the UI-only metadata (category, products, attachment) that the
-           current backend schema doesn't persist, keyed by ticket number. */
+           category/products/attachment are now stored server-side too; the local
+           metadata cache is only used as a fallback for tickets created before that
+           was added (so they don't lose their extra details). */
         async function refreshMyTickets() {
             const metaStore = S.g('zts_issue_meta', {});
             try {
                 const res = await TicketsAPI.getMine();
                 myTickets = (res.data || []).map(t => {
                     const meta = metaStore[t.ticket_number] || {};
+                    let products = [];
+                    try { products = t.products ? JSON.parse(t.products) : (meta.products || []); } catch { products = meta.products || []; }
                     return {
                         id: t.ticket_number,
                         userId: session.userId,
-                        category: meta.category || 'Support Ticket',
-                        subCategory: meta.subCategory || '',
-                        products: meta.products || [],
+                        category: t.category || meta.category || 'Support Ticket',
+                        subCategory: t.sub_category || meta.subCategory || '',
+                        products: products,
                         subject: t.subject,
                         desc: t.message,
                         severity: cap(t.priority),
                         priority: t.priority,
-                        attachment: meta.attachment || '',
-                        attachmentData: meta.attachmentData || '',
+                        attachment: t.attachment_name || meta.attachment || '',
+                        attachmentData: t.attachment_data || meta.attachmentData || '',
                         status: t.status,               // 'open' | 'in_progress' | 'resolved' | 'closed'
                         createdAt: t.created_at,
                     };
@@ -2445,28 +2448,24 @@
                            : currentSev === 'High'     ? 'high'
                            : currentSev === 'Medium'   ? 'medium' : 'low';
 
+            const category = currentCat === 'aicte' ? 'AICTE-IDEA Lab Equipment' : 'Industrial Products';
+            const subCategory = currentCat === 'aicte' ? currentSub : '';
+            const productNames = selectedProds.map(p => p.name);
+
             try {
                 const res = await TicketsAPI.create({
-                    name:     session.name,
-                    email:    session.email,
-                    subject:  subject,
-                    message:  desc + (selectedProds.length ? '\n\nProducts: ' + selectedProds.map(p => p.name).join(', ') : ''),
-                    priority: priority
+                    name:            session.name,
+                    email:           session.email,
+                    subject:         subject,
+                    message:         desc,
+                    priority:        priority,
+                    category:        category,
+                    sub_category:    subCategory,
+                    products:        productNames,
+                    attachment_name: attachedFile ? attachedFile.name : '',
+                    attachment_data: attachedDataUrl || ''
                 });
                 const ticketNum = res.ticket_number;
-
-                // The current backend schema stores only name/email/subject/message/priority/status,
-                // so category, product tags, and the attachment preview are kept client-side,
-                // keyed by ticket number, and merged back in by refreshMyTickets().
-                const metaStore = S.g('zts_issue_meta', {});
-                metaStore[ticketNum] = {
-                    category: currentCat === 'aicte' ? 'AICTE-IDEA Lab Equipment' : 'Industrial Products',
-                    subCategory: currentCat === 'aicte' ? currentSub : '',
-                    products: selectedProds.map(p => p.name),
-                    attachment: attachedFile ? attachedFile.name : '',
-                    attachmentData: attachedDataUrl || ''
-                };
-                S.s('zts_issue_meta', metaStore);
 
                 await refreshMyTickets();
                 renderStats();
@@ -2628,7 +2627,7 @@
             const text = document.getElementById('mod-followup').value.trim();
             if (!text) { showToast('Type an update before sending'); return; }
             try {
-                await TicketsAPI.update(currentOpenIssueId, { message: text });
+                await TicketsAPI.update(currentOpenIssueId, { message: text }, 'user');
                 showToast('Update sent');
                 await refreshMyTickets();
                 openIssue(currentOpenIssueId);
@@ -2641,7 +2640,7 @@
         async function closeIssueTicket() {
             if (!confirm('Mark this ticket as closed?')) return;
             try {
-                await TicketsAPI.update(currentOpenIssueId, { status: 'closed' });
+                await TicketsAPI.update(currentOpenIssueId, { status: 'closed' }, 'user');
                 showToast('Ticket closed');
                 await refreshMyTickets();
                 openIssue(currentOpenIssueId);
@@ -2655,7 +2654,7 @@
         async function deleteIssueTicket() {
             if (!confirm('Delete this ticket permanently? This cannot be undone.')) return;
             try {
-                await TicketsAPI.delete(currentOpenIssueId);
+                await TicketsAPI.delete(currentOpenIssueId, 'user');
                 const metaStore = S.g('zts_issue_meta', {});
                 delete metaStore[currentOpenIssueId];
                 S.s('zts_issue_meta', metaStore);

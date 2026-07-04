@@ -23,6 +23,32 @@ $db     = getDB();
 $method = $_SERVER['REQUEST_METHOD'];
 $id     = $_GET['id'] ?? null;  // ticket_number e.g. ZTS-123456
 
+// The original tickets table (see setup.sql) only has name/email/subject/
+// message/priority/status. Category, affected products, and attachments
+// were previously kept client-side only, which is why they never showed
+// up on the admin side. Add the columns here (idempotently) so both the
+// admin panel and the helpdesk dashboard read/write the same data.
+function ensureTicketColumns(PDO $db): void {
+    static $checked = false;
+    if ($checked) return;
+    $checked = true;
+
+    $existing = $db->query('SHOW COLUMNS FROM tickets')->fetchAll(PDO::FETCH_COLUMN);
+    $columns = [
+        'category'        => "VARCHAR(150) DEFAULT ''",
+        'sub_category'    => "VARCHAR(150) DEFAULT ''",
+        'products'        => 'TEXT NULL',
+        'attachment_name' => "VARCHAR(255) DEFAULT ''",
+        'attachment_data' => 'LONGTEXT NULL',
+    ];
+    foreach ($columns as $name => $definition) {
+        if (!in_array($name, $existing, true)) {
+            $db->exec("ALTER TABLE tickets ADD COLUMN `$name` $definition");
+        }
+    }
+}
+ensureTicketColumns($db);
+
 function findTicket(PDO $db, string $ticketNumber): ?array {
     $stmt = $db->prepare('SELECT * FROM tickets WHERE ticket_number = ?');
     $stmt->execute([$ticketNumber]);
@@ -60,11 +86,16 @@ if ($method === 'GET') {
 if ($method === 'POST') {
     $input = getInput();
 
-    $name     = sanitize($input['name'] ?? '');
-    $email    = filter_var($input['email'] ?? '', FILTER_VALIDATE_EMAIL);
-    $subject  = sanitize($input['subject'] ?? '');
-    $message  = sanitize($input['message'] ?? '');
-    $priority = sanitize($input['priority'] ?? 'medium');
+    $name         = sanitize($input['name'] ?? '');
+    $email        = filter_var($input['email'] ?? '', FILTER_VALIDATE_EMAIL);
+    $subject      = sanitize($input['subject'] ?? '');
+    $message      = sanitize($input['message'] ?? '');
+    $priority     = sanitize($input['priority'] ?? 'medium');
+    $category     = sanitize($input['category'] ?? '');
+    $subCategory  = sanitize($input['sub_category'] ?? '');
+    $products     = $input['products'] ?? [];
+    $attachName   = sanitize($input['attachment_name'] ?? '');
+    $attachData   = $input['attachment_data'] ?? '';
 
     if (!$name)    respondError('Name is required');
     if (!$email)   respondError('Valid email is required');
@@ -75,14 +106,26 @@ if ($method === 'POST') {
         $priority = 'medium';
     }
 
+    // Attachments are stored inline as a data URL. Cap the size so a large
+    // photo/video can't blow past the DB's max packet size or PHP's post limits.
+    // Base64 inflates size by ~33%, so this matches the frontend's 5MB raw-file limit.
+    if ($attachData && strlen($attachData) > 7 * 1024 * 1024) {
+        respondError('Attachment is too large (max 5MB). Please attach a smaller file.');
+    }
+
+    $productsJson = is_array($products) ? json_encode(array_values($products)) : null;
+
     // Generate ticket number: ZTS-XXXXXX
     $ticket_number = 'ZTS-' . strtoupper(substr(md5(uniqid()), 0, 6));
 
     $stmt = $db->prepare(
-        'INSERT INTO tickets (ticket_number, name, email, subject, message, priority)
-         VALUES (?, ?, ?, ?, ?, ?)'
+        'INSERT INTO tickets (ticket_number, name, email, subject, message, priority, category, sub_category, products, attachment_name, attachment_data)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
-    $stmt->execute([$ticket_number, $name, $email, $subject, $message, $priority]);
+    $stmt->execute([
+        $ticket_number, $name, $email, $subject, $message, $priority,
+        $category, $subCategory, $productsJson, $attachName, $attachData ?: null
+    ]);
 
     respond([
         'success'       => true,

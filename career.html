@@ -950,6 +950,7 @@
                             dept: j.department,
                             location: j.location || 'Coimbatore, Tamil Nadu',
                             type: j.type || 'Full-time',
+                            exp: j.experience || '',
                             desc: j.description || '',
                             tags: j.requirements ? j.requirements.split(',').map(r => r.trim()) : [],
                             status: j.active ? 'active' : 'inactive',
@@ -1020,7 +1021,7 @@
                 <div class="job-info-stack">
                   <div class="job-info-item"><i class="fas fa-map-marker-alt"></i>${job.location || ''}</div>
                   <div class="job-info-item"><i class="fas fa-briefcase"></i>${job.type || ''}</div>
-                  <div class="job-info-item"><i class="fas fa-layer-group"></i>${job.exp || ''}</div>
+                  ${job.exp ? `<div class="job-info-item"><i class="fas fa-layer-group"></i>${job.exp}</div>` : ''}
                 </div>
                 <button class="btn-apply"
                   onclick="openApply({title:'${esc(job.title)}',dept:'${esc(job.dept)}',location:'${esc(job.location)}',type:'${esc(job.type)}'})">

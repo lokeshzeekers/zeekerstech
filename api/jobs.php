@@ -19,6 +19,21 @@ $db     = getDB();
 $method = $_SERVER['REQUEST_METHOD'];
 $id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
+// The 'experience' field exists in the admin job-posting form but was never
+// added to the schema, so it was always silently discarded. Add it here
+// idempotently so existing installs pick it up without a manual migration.
+function ensureJobColumns(PDO $db): void {
+    static $checked = false;
+    if ($checked) return;
+    $checked = true;
+
+    $existing = $db->query('SHOW COLUMNS FROM jobs')->fetchAll(PDO::FETCH_COLUMN);
+    if (!in_array('experience', $existing, true)) {
+        $db->exec("ALTER TABLE jobs ADD COLUMN `experience` VARCHAR(100) DEFAULT ''");
+    }
+}
+ensureJobColumns($db);
+
 // ── GET ──────────────────────────────────────────────────────
 if ($method === 'GET') {
     if ($id) {
@@ -49,6 +64,7 @@ if ($method === 'POST') {
     $department   = sanitize($input['department'] ?? '');
     $location     = sanitize($input['location'] ?? 'Coimbatore, Tamil Nadu');
     $type         = sanitize($input['type'] ?? 'Full-time');
+    $experience   = sanitize($input['experience'] ?? '');
     $description  = $input['description'] ?? '';
     $requirements = $input['requirements'] ?? '';
     $active       = (bool)($input['active'] ?? true);
@@ -56,10 +72,10 @@ if ($method === 'POST') {
     if (!$title) respondError('Title is required');
 
     $stmt = $db->prepare(
-        'INSERT INTO jobs (title, department, location, type, description, requirements, active)
-         VALUES (?, ?, ?, ?, ?, ?, ?)'
+        'INSERT INTO jobs (title, department, location, type, experience, description, requirements, active)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
     );
-    $stmt->execute([$title, $department, $location, $type, $description, $requirements, $active ? 1 : 0]);
+    $stmt->execute([$title, $department, $location, $type, $experience, $description, $requirements, $active ? 1 : 0]);
     $newId = $db->lastInsertId();
 
     respond(['success' => true, 'id' => $newId, 'message' => 'Job created'], 201);
@@ -75,6 +91,7 @@ if ($method === 'PUT') {
     $department   = sanitize($input['department'] ?? '');
     $location     = sanitize($input['location'] ?? '');
     $type         = sanitize($input['type'] ?? '');
+    $experience   = sanitize($input['experience'] ?? '');
     $description  = $input['description'] ?? '';
     $requirements = $input['requirements'] ?? '';
     $active       = (bool)($input['active'] ?? true);
@@ -89,10 +106,10 @@ if ($method === 'PUT') {
     if (!$exists->fetch()) respondError('Job not found', 404);
 
     $stmt = $db->prepare(
-        'UPDATE jobs SET title=?, department=?, location=?, type=?, description=?, requirements=?, active=?
+        'UPDATE jobs SET title=?, department=?, location=?, type=?, experience=?, description=?, requirements=?, active=?
          WHERE id=?'
     );
-    $stmt->execute([$title, $department, $location, $type, $description, $requirements, $active ? 1 : 0, $id]);
+    $stmt->execute([$title, $department, $location, $type, $experience, $description, $requirements, $active ? 1 : 0, $id]);
 
     respond(['success' => true, 'message' => 'Job updated']);
 }

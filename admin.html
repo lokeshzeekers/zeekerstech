@@ -2333,7 +2333,7 @@
 
     function updateBadges() {
       document.getElementById('nb-is').textContent = _db.issues.length;
-      document.getElementById('nb-us').textContent = _db.applications.length;
+      document.getElementById('nb-us').textContent = _db.users.length;
       document.getElementById('nb-ca').textContent = _db.jobs.filter(j => j.active).length;
       document.getElementById('nb-bl').textContent = _db.posts.filter(p => p.published).length;
     }
@@ -2481,7 +2481,7 @@
 
       document.getElementById('mi-title').textContent = i.subject;
       document.getElementById('mi-id').textContent = i.ticket_number;
-      document.getElementById('mi-cat').textContent = 'Helpdesk Ticket';
+      document.getElementById('mi-cat').textContent = (i.category || 'Helpdesk Ticket') + (i.sub_category ? ' — ' + i.sub_category : '');
       document.getElementById('mi-user').textContent = (i.name || 'Unknown User') + (i.email ? ' (' + i.email + ')' : '');
       document.getElementById('mi-date').textContent = fmtD(i.created_at);
       document.getElementById('mi-st').value = i.status;
@@ -2492,15 +2492,42 @@
         ? 'Last response: ' + lastAdminNote.text.slice(0, 80) + (lastAdminNote.text.length > 80 ? '…' : '')
         : 'Add a response for the customer…';
 
-      // products — not stored in the tickets table; hide the section gracefully
+      // products
+      let products = [];
+      try { products = i.products ? JSON.parse(i.products) : []; } catch { products = []; }
       const prodsEl = document.getElementById('mi-prods');
-      prodsEl.innerHTML = '<span style="font-size:13px;color:var(--txt3)">Not tracked separately for helpdesk tickets</span>';
+      prodsEl.innerHTML = products.length
+        ? products.map(p => `<span class="prod-tag">${p}</span>`).join('')
+        : '<span style="font-size:13px;color:var(--txt3)">None specified</span>';
 
-      // attachment — not currently uploaded to the server; nothing to show
+      // attachment
       const attWrap = document.getElementById('mi-attach-wrap');
       const attName = document.getElementById('mi-att-name');
-      attWrap.style.display = 'none';
-      attName.textContent = 'None';
+      const attPrev = document.getElementById('mi-attach-preview');
+      if (i.attachment_name) {
+        attName.textContent = i.attachment_name;
+        const ext = (i.attachment_name.split('.').pop() || '').toLowerCase();
+        const dataUrl = i.attachment_data || '';
+        attWrap.style.display = 'block';
+        if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+          attPrev.innerHTML = dataUrl
+            ? `<img src="${dataUrl}" alt="attachment">`
+            : `<div style="padding:14px;font-size:13px;color:var(--txt3)"><i class="fas fa-image" style="margin-right:6px;color:var(--accent)"></i>${i.attachment_name} <em>(preview not available)</em></div>`;
+        } else if (['mp4', 'mov', 'avi', 'webm'].includes(ext)) {
+          attPrev.innerHTML = dataUrl
+            ? `<video controls><source src="${dataUrl}">Your browser does not support video.</video>`
+            : `<div style="padding:14px;font-size:13px;color:var(--txt3)"><i class="fas fa-video" style="margin-right:6px;color:var(--accent)"></i>${i.attachment_name} <em>(preview not available)</em></div>`;
+        } else if (ext === 'pdf') {
+          attPrev.innerHTML = dataUrl
+            ? `<div class="pdf-link"><i class="fas fa-file-pdf"></i><a href="${dataUrl}" target="_blank">Open PDF: ${i.attachment_name}</a></div>`
+            : `<div class="pdf-link"><i class="fas fa-file-pdf"></i><div style="font-size:13px;color:var(--txt3)">${i.attachment_name} <em>(preview not available)</em></div></div>`;
+        } else {
+          attPrev.innerHTML = `<div class="pdf-link"><i class="fas fa-paperclip"></i><div style="font-size:13px;color:var(--txt3)">${i.attachment_name}</div></div>`;
+        }
+      } else {
+        attWrap.style.display = 'none';
+        attName.textContent = 'None';
+      }
 
       // timeline — built from created + any appended notes (exact per-note
       // timestamps aren't stored separately in the current schema)
@@ -2710,7 +2737,7 @@
       document.getElementById('j-d').value = j.department || 'engineering';
       document.getElementById('j-ty').value = j.type || 'Full-time';
       document.getElementById('j-l').value = j.location;
-      document.getElementById('j-e').value = '';
+      document.getElementById('j-e').value = j.experience || '';
       document.getElementById('j-desc').value = j.description;
       document.getElementById('j-st').value = j.active ? 'active' : 'paused';
       document.getElementById('j-new').checked = false;
@@ -2729,6 +2756,7 @@
         department:   document.getElementById('j-d').value,
         type:         document.getElementById('j-ty').value,
         location:     loc,
+        experience:   document.getElementById('j-e').value.trim(),
         description:  desc,
         requirements: jTagList.join(', '),
         active
