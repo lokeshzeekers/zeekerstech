@@ -1995,14 +1995,15 @@
         <div class="f2" style="margin-bottom:14px">
           <div class="fg"><label class="fl">Status</label><select class="fsel" id="mi-st">
               <option value="open">Open</option>
-              <option value="in-progress">In Progress</option>
+              <option value="in_progress">In Progress</option>
               <option value="resolved">Resolved</option>
               <option value="closed">Closed</option>
             </select></div>
           <div class="fg"><label class="fl">Severity</label><select class="fsel" id="mi-sv">
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
             </select></div>
         </div>
         <div class="fg" style="margin-bottom:14px">
@@ -2051,12 +2052,8 @@
             type="email" placeholder="user@example.com"></div>
         <div class="fg"><label class="fl">Organisation</label><input class="fi" id="u-org" type="text"
             placeholder="Company or institution"></div>
-        <div class="fg"><label class="fl">Password <span class="req">*</span></label><input class="fi" id="u-pw"
-            type="password" placeholder="Min. 8 characters"></div>
-        <div class="fg"><label class="fl">Role</label><select class="fsel" id="u-role">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select></div>
+        <div class="fg"><label class="fl">Password <span class="req" id="u-pw-req">*</span></label><input class="fi" id="u-pw"
+            type="password" placeholder="Min. 8 characters — leave blank to keep unchanged"></div>
       </div>
       <div class="mf"><button class="btn-o" onclick="CM('mUser')">Cancel</button><button class="btn-p"
           onclick="saveUser()"><i class="fas fa-save" style="font-size:11px"></i>Save</button></div>
@@ -2251,18 +2248,20 @@
 
     async function loadAllFromDB() {
       try {
-        const [issues, jobs, posts, contacts, apps] = await Promise.all([
+        const [issues, jobs, posts, contacts, apps, users] = await Promise.all([
           TicketsAPI.getAll(),
           JobsAPI.getAll(),
           BlogAPI.getAll(),
           ContactAPI.getAll(),
-          ApplicationsAPI.getAll()
+          ApplicationsAPI.getAll(),
+          HelpdeskUsersAPI.getAll()
         ]);
         _db.issues       = issues.data       || [];
         _db.jobs         = jobs.data         || [];
         _db.posts        = posts.data        || [];
         _db.contacts     = contacts.data     || [];
         _db.applications = apps.data         || [];
+        _db.users        = users.data        || [];
         updateBadges();
       } catch (e) {
         console.warn('loadAllFromDB error:', e.message);
@@ -2423,8 +2422,8 @@
       <td><span class="td-m">${i.ticket_number}</span></td>
       <td class="td-b" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.subject}</td>
       <td>${i.name || '—'}</td>
-      <td><span class="p p-${i.priority}">${cap(i.priority)}</span></td>
-      <td><span class="p p-${i.status.replace(' ', '-')}">${fmtS(i.status)}</span></td>
+      <td><span class="p ${priorityClass(i.priority)}">${cap(i.priority)}</span></td>
+      <td><span class="p ${statusPillClass(i.status)}">${fmtS(i.status)}</span></td>
       <td class="td-m">${fmtD(i.created_at)}</td>
     </tr>`).join('');
       updateBadges();
@@ -2450,8 +2449,8 @@
       <td><div class="td-b">${i.subject}</div><div style="font-size:12px;color:var(--txt3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.message}</div></td>
       <td style="font-size:12px;color:var(--txt3);white-space:nowrap">Helpdesk</td>
       <td class="td-m">${i.name || '—'}</td>
-      <td><span class="p p-${i.priority}">${cap(i.priority)}</span></td>
-      <td><span class="p p-${i.status.replace(' ', '-')}">${fmtS(i.status)}</span></td>
+      <td><span class="p ${priorityClass(i.priority)}">${cap(i.priority)}</span></td>
+      <td><span class="p ${statusPillClass(i.status)}">${fmtS(i.status)}</span></td>
       <td class="td-m">${fmtD(i.created_at)}</td>
       <td><div class="ar">
         <button class="ab view" onclick="viewIssue('${i.ticket_number}')" title="View & Edit"><i class="fas fa-eye"></i></button>
@@ -2460,62 +2459,54 @@
     </tr>`).join('');
     }
 
+    function parseTicketMessage(fullMessage) {
+      // Admin replies / user follow-ups are appended as plain text onto the
+      // message column (no separate replies table exists in the schema yet).
+      const parts = (fullMessage || '').split(/\n\n(?=\[(?:Admin Response|User Update)\]:)/);
+      const original = parts[0] || '';
+      const notes = parts.slice(1).map(p => {
+        const m = p.match(/^\[(Admin Response|User Update)\]:\s*([\s\S]*)$/);
+        return m ? { type: m[1], text: m[2] } : { type: 'Update', text: p };
+      });
+      return { original, notes };
+    }
+
     function viewIssue(id) {
-      const issues = S.g('zts_issues', []);
-      const users = S.g('zts_users', []);
-      const i = issues.find(x => x.id === id);
+      const i = _db.issues.find(x => x.ticket_number === id);
       if (!i) return;
       editIssueId = id;
-      const u = users.find(u => u.id === i.userId);
+
+      const { original, notes } = parseTicketMessage(i.message);
+      const lastAdminNote = [...notes].reverse().find(n => n.type === 'Admin Response');
 
       document.getElementById('mi-title').textContent = i.subject;
-      document.getElementById('mi-id').textContent = i.id;
-      document.getElementById('mi-cat').textContent = i.category + (i.subCategory ? ' — ' + i.subCategory : '');
-      document.getElementById('mi-user').textContent = u ? u.firstName + ' ' + u.lastName + ' (' + u.email + ')' : 'Unknown User';
-      document.getElementById('mi-date').textContent = fmtD(i.createdAt);
+      document.getElementById('mi-id').textContent = i.ticket_number;
+      document.getElementById('mi-cat').textContent = 'Helpdesk Ticket';
+      document.getElementById('mi-user').textContent = (i.name || 'Unknown User') + (i.email ? ' (' + i.email + ')' : '');
+      document.getElementById('mi-date').textContent = fmtD(i.created_at);
       document.getElementById('mi-st').value = i.status;
-      document.getElementById('mi-sv').value = i.severity;
-      document.getElementById('mi-desc').textContent = i.desc;
-      document.getElementById('mi-note').value = i.adminResponse || '';
+      document.getElementById('mi-sv').value = i.priority;
+      document.getElementById('mi-desc').textContent = original;
+      document.getElementById('mi-note').value = '';
+      document.getElementById('mi-note').placeholder = lastAdminNote
+        ? 'Last response: ' + lastAdminNote.text.slice(0, 80) + (lastAdminNote.text.length > 80 ? '…' : '')
+        : 'Add a response for the customer…';
 
-      // products
+      // products — not stored in the tickets table; hide the section gracefully
       const prodsEl = document.getElementById('mi-prods');
-      prodsEl.innerHTML = i.products && i.products.length
-        ? i.products.map(p => `<span class="prod-tag">${p}</span>`).join('')
-        : '<span style="font-size:13px;color:var(--txt3)">None specified</span>';
+      prodsEl.innerHTML = '<span style="font-size:13px;color:var(--txt3)">Not tracked separately for helpdesk tickets</span>';
 
-      // attachment
+      // attachment — not currently uploaded to the server; nothing to show
       const attWrap = document.getElementById('mi-attach-wrap');
       const attName = document.getElementById('mi-att-name');
-      const attPrev = document.getElementById('mi-attach-preview');
-      if (i.attachment) {
-        attName.textContent = i.attachment;
-        const ext = (i.attachment.split('.').pop() || '').toLowerCase();
-        const dataUrl = i.attachmentData || '';
-        attWrap.style.display = 'block';
-        if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
-          attPrev.innerHTML = dataUrl
-            ? `<img src="${dataUrl}" alt="attachment">`
-            : `<div style="padding:14px;font-size:13px;color:var(--txt3)"><i class="fas fa-image" style="margin-right:6px;color:var(--accent)"></i>${i.attachment} <em>(preview not available — file stored as name only)</em></div>`;
-        } else if (['mp4', 'mov', 'avi', 'webm'].includes(ext)) {
-          attPrev.innerHTML = dataUrl
-            ? `<video controls><source src="${dataUrl}">Your browser does not support video.</video>`
-            : `<div style="padding:14px;font-size:13px;color:var(--txt3)"><i class="fas fa-video" style="margin-right:6px;color:var(--accent)"></i>${i.attachment} <em>(preview not available)</em></div>`;
-        } else if (ext === 'pdf') {
-          attPrev.innerHTML = dataUrl
-            ? `<div class="pdf-link"><i class="fas fa-file-pdf"></i><a href="${dataUrl}" target="_blank">Open PDF: ${i.attachment}</a></div>`
-            : `<div class="pdf-link"><i class="fas fa-file-pdf"></i><div style="font-size:13px;color:var(--txt3)">${i.attachment} <em>(preview not available)</em></div></div>`;
-        } else {
-          attPrev.innerHTML = `<div class="pdf-link"><i class="fas fa-paperclip"></i><div style="font-size:13px;color:var(--txt3)">${i.attachment}</div></div>`;
-        }
-      } else {
-        attWrap.style.display = 'none';
-        attName.textContent = 'None';
-      }
+      attWrap.style.display = 'none';
+      attName.textContent = 'None';
 
-      // timeline
+      // timeline — built from created + any appended notes (exact per-note
+      // timestamps aren't stored separately in the current schema)
       const tl = document.getElementById('mi-tl');
-      const timeline = i.timeline || [{ event: 'Issue created', time: i.createdAt }];
+      const timeline = [{ event: 'Issue created', time: i.created_at }]
+        .concat(notes.map(n => ({ event: n.type === 'Admin Response' ? 'Admin replied' : 'User added an update', time: i.created_at })));
       tl.innerHTML = timeline.map(t => `<div class="tl-item"><div class="tl-dot"><i class="fas fa-circle" style="font-size:6px"></i></div><div><div class="tl-t">${t.event}</div><div class="tl-d">${fmtD(t.time)}</div></div></div>`).join('');
 
       OM('mIssue');
@@ -2540,25 +2531,23 @@
     ════════════════════════════════════════ */
     let editUserId = null;
     function renderUsers() {
-      const users = S.g('zts_users', []);
-      const issues = S.g('zts_issues', []);
+      const users = _db.users || [];
       const q = (document.getElementById('us-q')?.value || '').toLowerCase();
       let list = users;
-      if (q) list = list.filter(u => (u.firstName + ' ' + u.lastName).toLowerCase().includes(q) || u.email.toLowerCase().includes(q));
+      if (q) list = list.filter(u => (u.first_name + ' ' + u.last_name).toLowerCase().includes(q) || u.email.toLowerCase().includes(q));
       const tbl = document.getElementById('us-tbl');
       if (!list.length) { tbl.innerHTML = '<tr><td colspan="6" class="empty"><i class="fas fa-users"></i>No users</td></tr>'; return; }
       tbl.innerHTML = list.map(u => {
-        const cnt = issues.filter(i => i.userId === u.id).length;
-        const role = u.role || 'user';
+        const cnt = _db.issues.filter(i => (i.email || '').toLowerCase() === (u.email || '').toLowerCase()).length;
         return `<tr>
-      <td class="td-b">${u.firstName} ${u.lastName}</td>
+      <td class="td-b">${u.first_name} ${u.last_name}</td>
       <td class="td-m">${u.email}</td>
       <td class="td-m">${u.org || '—'}</td>
-      <td><span class="p p-${role === 'admin' ? 'ad' : 'c'}">${cap(role)}</span></td>
+      <td><span class="p p-c">Helpdesk User</span></td>
       <td style="text-align:center">${cnt}</td>
       <td><div class="ar">
-        <button class="ab" onclick="editUser('${u.id}')" title="Edit"><i class="fas fa-edit"></i></button>
-        <button class="ab del" onclick="askDelete('user','${u.id}','${u.firstName} ${u.lastName}')" title="Delete"><i class="fas fa-trash"></i></button>
+        <button class="ab" onclick="editUser(${u.id})" title="Edit"><i class="fas fa-edit"></i></button>
+        <button class="ab del" onclick="askDelete('user','${u.id}','${u.first_name} ${u.last_name}')" title="Delete"><i class="fas fa-trash"></i></button>
       </div></td>
     </tr>`;
       }).join('');
@@ -2568,48 +2557,46 @@
       editUserId = null;
       document.getElementById('mu-title').textContent = 'Add User';
       ['u-fn', 'u-ln', 'u-em', 'u-org', 'u-pw'].forEach(id => document.getElementById(id).value = '');
-      document.getElementById('u-role').value = 'user';
       OM('mUser');
     }
 
     function editUser(id) {
-      const u = S.g('zts_users', []).find(x => x.id === id);
+      const u = (_db.users || []).find(x => x.id === id);
       if (!u) return;
       editUserId = id;
       document.getElementById('mu-title').textContent = 'Edit User';
-      document.getElementById('u-fn').value = u.firstName;
-      document.getElementById('u-ln').value = u.lastName;
+      document.getElementById('u-fn').value = u.first_name;
+      document.getElementById('u-ln').value = u.last_name;
       document.getElementById('u-em').value = u.email;
       document.getElementById('u-org').value = u.org || '';
       document.getElementById('u-pw').value = '';
-      document.getElementById('u-role').value = u.role || 'user';
       OM('mUser');
     }
 
-    function saveUser() {
+    async function saveUser() {
       const fn = document.getElementById('u-fn').value.trim();
       const ln = document.getElementById('u-ln').value.trim();
       const em = document.getElementById('u-em').value.trim();
       const org = document.getElementById('u-org').value.trim();
       const pw = document.getElementById('u-pw').value;
-      const role = document.getElementById('u-role').value;
       if (!fn || !ln || !em) { showToast('Fill required fields'); return; }
-      const users = S.g('zts_users', []);
-      if (editUserId) {
-        const idx = users.findIndex(u => u.id === editUserId);
-        if (idx === -1) return;
-        users[idx] = { ...users[idx], firstName: fn, lastName: ln, email: em, org, role };
-        if (pw) users[idx].password = pw;
-      } else {
-        if (users.find(u => u.email === em)) { showToast('Email already exists'); return; }
-        if (!pw || pw.length < 8) { showToast('Password min 8 chars'); return; }
-        users.push({ id: 'usr_' + Date.now(), firstName: fn, lastName: ln, email: em, password: pw, org, role, avatar: '' });
+      if (!editUserId && (!pw || pw.length < 8)) { showToast('Password min 8 chars'); return; }
+      if (pw && pw.length > 0 && pw.length < 8) { showToast('Password min 8 chars'); return; }
+
+      try {
+        if (editUserId) {
+          await HelpdeskUsersAPI.update(editUserId, { first_name: fn, last_name: ln, email: em, org, password: pw || undefined });
+        } else {
+          await HelpdeskUsersAPI.create({ first_name: fn, last_name: ln, email: em, org, password: pw });
+        }
+        await loadAllFromDB();
+        CM('mUser');
+        renderUsers();
+        updateBadges();
+        showToast(editUserId ? 'User updated' : 'User added');
+      } catch (e) {
+        showToast('Error: ' + e.message);
       }
-      S.s('zts_users', users);
-      CM('mUser');
-      renderUsers();
-      updateBadges();
-      showToast(editUserId ? 'User updated' : 'User added');
     }
 
     /* ════════════════════════════════════════
@@ -2945,6 +2932,7 @@
         else if (type === 'job')    await JobsAPI.delete(id);
         else if (type === 'post')   await BlogAPI.delete(id);
         else if (type === 'application') await ApplicationsAPI.delete(id);
+        else if (type === 'user')   await HelpdeskUsersAPI.delete(id);
         // products still use localStorage (no DB table for AICTE products)
         else if (type === 'product') {
           S.s('admin_products', S.g('admin_products', []).filter(p => p.id !== id));
@@ -2954,6 +2942,7 @@
         if (type === 'issue') { renderIssues(); renderOverview(); }
         else if (type === 'job')  renderJobs();
         else if (type === 'post') renderBlog();
+        else if (type === 'user') renderUsers();
         updateBadges();
         showToast('Deleted');
       } catch (e) { showToast('Delete failed: ' + e.message); }
@@ -2970,7 +2959,9 @@
        UTILS
     ════════════════════════════════════════ */
     function fmtD(iso) { try { return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) } catch { return iso || '—' } }
-    function fmtS(s) { if (s === 'in-progress') return 'In Progress'; return s.charAt(0).toUpperCase() + s.slice(1); }
+    function fmtS(s) { if (s === 'in_progress') return 'In Progress'; return (s || '').charAt(0).toUpperCase() + (s || '').slice(1); }
+    function priorityClass(p) { return { low: 'p-lo', medium: 'p-me', high: 'p-hi', critical: 'p-hi' }[p] || 'p-lo'; }
+    function statusPillClass(s) { return { open: 'p-o', in_progress: 'p-ip', resolved: 'p-r', closed: 'p-c' }[s] || 'p-c'; }
     function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1) }
 
     let _tt;

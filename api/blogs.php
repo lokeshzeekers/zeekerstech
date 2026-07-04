@@ -81,6 +81,13 @@ if ($method === 'PUT') {
 
     if (!$title) respondError('Title is required');
 
+    // Check existence separately — UPDATE's affected-row count is 0 both when
+    // the row is missing AND when the new values are identical to the old ones,
+    // so it can't be used alone to detect "not found".
+    $exists = $db->prepare('SELECT id FROM blog_posts WHERE id = ?');
+    $exists->execute([$id]);
+    if (!$exists->fetch()) respondError('Post not found', 404);
+
     $stmt = $db->prepare(
         'UPDATE blog_posts
          SET title=?, content=?, author=?, category=?, image_url=?, published=?, updated_at=NOW()
@@ -88,7 +95,6 @@ if ($method === 'PUT') {
     );
     $stmt->execute([$title, $content, $author, $category, $image_url, $published ? 1 : 0, $id]);
 
-    if ($stmt->rowCount() === 0) respondError('Post not found or no change', 404);
     respond(['success' => true, 'message' => 'Post updated']);
 }
 

@@ -2,14 +2,19 @@
 // ─────────────────────────────────────────────────────────────
 //  Zeekers Technology Solutions — Helpdesk Tickets API
 //
-//  PUBLIC (user session token):
-//    GET  /api/tickets.php              → user's own tickets
+//  PUBLIC:
 //    POST /api/tickets.php              → create ticket
+//    GET  /api/tickets.php?email=...    → guest lookup by email (no login)
+//
+//  HELPDESK USER (user Bearer token):
+//    GET    /api/tickets.php            → my tickets (by token email)
+//    PUT    /api/tickets.php?id=ZTS-001 → update MY ticket (message/status=closed only)
+//    DELETE /api/tickets.php?id=ZTS-001 → delete MY ticket
 //
 //  ADMIN (admin Bearer token):
-//    GET  /api/tickets.php?all=1        → all tickets
-//    PUT  /api/tickets.php?id=ZTS-001   → update status/response
-//    DELETE /api/tickets.php?id=ZTS-001 → delete
+//    GET    /api/tickets.php?all=1      → all tickets
+//    PUT    /api/tickets.php?id=ZTS-001 → update any ticket (status/priority/response)
+//    DELETE /api/tickets.php?id=ZTS-001 → delete any ticket
 // ─────────────────────────────────────────────────────────────
 require_once __DIR__ . '/config.php';
 setHeaders();
@@ -17,6 +22,13 @@ setHeaders();
 $db     = getDB();
 $method = $_SERVER['REQUEST_METHOD'];
 $id     = $_GET['id'] ?? null;  // ticket_number e.g. ZTS-123456
+
+function findTicket(PDO $db, string $ticketNumber): ?array {
+    $stmt = $db->prepare('SELECT * FROM tickets WHERE ticket_number = ?');
+    $stmt->execute([$ticketNumber]);
+    $row = $stmt->fetch();
+    return $row ?: null;
+}
 
 // ── GET ──────────────────────────────────────────────────────
 if ($method === 'GET') {
@@ -26,7 +38,16 @@ if ($method === 'GET') {
         respond(['success' => true, 'data' => $stmt->fetchAll()]);
     }
 
-    // User: get their tickets by email (passed as query param)
+    // Logged-in helpdesk user: always use the email from their token,
+    // never trust a client-supplied email for this branch.
+    $payload = getBearerPayload();
+    if ($payload && ($payload['role'] ?? '') === 'user') {
+        $stmt = $db->prepare('SELECT * FROM tickets WHERE email = ? ORDER BY created_at DESC');
+        $stmt->execute([$payload['email']]);
+        respond(['success' => true, 'data' => $stmt->fetchAll()]);
+    }
+
+    // Guest/public: lookup by email query param (no login yet)
     $email = filter_var($_GET['email'] ?? '', FILTER_VALIDATE_EMAIL);
     if (!$email) respondError('Email required');
 
@@ -70,32 +91,54 @@ if ($method === 'POST') {
     ], 201);
 }
 
-// ── PUT (admin: update ticket) ────────────────────────────────
+// ── PUT (update) ────────────────────────────────────────────
 if ($method === 'PUT') {
-    requireAdminAuth();
+    $payload = requireAnyAuth();
     if (!$id) respondError('Ticket number required');
 
-    $input    = getInput();
-    $status   = sanitize($input['status'] ?? '');
-    $priority = sanitize($input['priority'] ?? '');
-    $response = $input['admin_response'] ?? null;
+    $ticket = findTicket($db, $id);
+    if (!$ticket) respondError('Ticket not found', 404);
 
-    // Build dynamic update
+    $isAdmin = ($payload['role'] ?? '') === 'admin';
+    $isOwner = ($payload['role'] ?? '') === 'user' && strcasecmp($payload['email'] ?? '', $ticket['email']) === 0;
+    if (!$isAdmin && !$isOwner) respondError('Unauthorized', 403);
+
+    $input  = getInput();
     $sets   = [];
     $params = [];
 
-    if ($status && in_array($status, ['open', 'in_progress', 'resolved', 'closed'])) {
-        $sets[] = 'status=?';
-        $params[] = $status;
-    }
-    if ($priority && in_array($priority, ['low', 'medium', 'high', 'critical'])) {
-        $sets[] = 'priority=?';
-        $params[] = $priority;
-    }
-    if ($response !== null) {
-        // Store admin response in message column with prefix (no extra column needed)
-        $sets[] = 'message=CONCAT(message, ?)';
-        $params[] = "\n\n[Admin Response]: " . $response;
+    if ($isAdmin) {
+        // Admin can change status, priority, and append an official response.
+        $status   = sanitize($input['status'] ?? '');
+        $priority = sanitize($input['priority'] ?? '');
+        $response = $input['admin_response'] ?? null;
+
+        if ($status && in_array($status, ['open', 'in_progress', 'resolved', 'closed'])) {
+            $sets[] = 'status=?';
+            $params[] = $status;
+        }
+        if ($priority && in_array($priority, ['low', 'medium', 'high', 'critical'])) {
+            $sets[] = 'priority=?';
+            $params[] = $priority;
+        }
+        if ($response !== null && trim($response) !== '') {
+            $sets[] = 'message=CONCAT(message, ?)';
+            $params[] = "\n\n[Admin Response]: " . sanitize($response);
+        }
+    } else {
+        // Ticket owner (helpdesk user): can add a follow-up message,
+        // or close their own ticket. Cannot touch priority or impersonate an admin response.
+        $followUp = $input['message'] ?? null;
+        $status   = sanitize($input['status'] ?? '');
+
+        if ($followUp !== null && trim($followUp) !== '') {
+            $sets[] = 'message=CONCAT(message, ?)';
+            $params[] = "\n\n[User Update]: " . sanitize($followUp);
+        }
+        if ($status === 'closed' && $ticket['status'] !== 'closed') {
+            $sets[] = 'status=?';
+            $params[] = 'closed';
+        }
     }
 
     if (empty($sets)) respondError('Nothing to update');
@@ -110,8 +153,15 @@ if ($method === 'PUT') {
 
 // ── DELETE ────────────────────────────────────────────────────
 if ($method === 'DELETE') {
-    requireAdminAuth();
+    $payload = requireAnyAuth();
     if (!$id) respondError('Ticket number required');
+
+    $ticket = findTicket($db, $id);
+    if (!$ticket) respondError('Ticket not found', 404);
+
+    $isAdmin = ($payload['role'] ?? '') === 'admin';
+    $isOwner = ($payload['role'] ?? '') === 'user' && strcasecmp($payload['email'] ?? '', $ticket['email']) === 0;
+    if (!$isAdmin && !$isOwner) respondError('Unauthorized', 403);
 
     $stmt = $db->prepare('DELETE FROM tickets WHERE ticket_number = ?');
     $stmt->execute([$id]);

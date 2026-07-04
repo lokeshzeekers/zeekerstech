@@ -613,6 +613,7 @@
                     body: JSON.stringify({ email, password: pass, action: 'login' })
                 });
                 localStorage.setItem('zts_session', JSON.stringify(res.user));
+                localStorage.setItem('zts_user_token', res.token);
                 window.location.href = 'helpdesk-dashboard.html';
             } catch (e) {
                 setLoading('loginBtn', false);
@@ -636,6 +637,7 @@
                     body: JSON.stringify({ first_name: first, last_name: last, email, password: pass, org, action: 'register' })
                 });
                 localStorage.setItem('zts_session', JSON.stringify(res.user));
+                localStorage.setItem('zts_user_token', res.token);
                 window.location.href = 'helpdesk-dashboard.html';
             } catch (e) {
                 setLoading('regBtn', false);

@@ -1838,6 +1838,13 @@
                 </div>
                 <div class="view-lbl" style="margin-bottom:8px">Activity Timeline</div>
                 <div class="tl-wrap" id="mod-tl"></div>
+                <div class="view-lbl" style="margin-bottom:8px;margin-top:14px">Add Update</div>
+                <textarea id="mod-followup" class="fta" placeholder="Add more information for the support team…" style="margin-bottom:10px"></textarea>
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                    <button class="btn-p" onclick="sendIssueUpdate()"><i class="fas fa-paper-plane" style="font-size:11px"></i>&nbsp;Send Update</button>
+                    <button class="btn-s" id="mod-close-btn" onclick="closeIssueTicket()"><i class="fas fa-check" style="font-size:11px"></i>&nbsp;Mark as Closed</button>
+                    <button class="btn-s" id="mod-delete-btn" style="margin-left:auto;color:#dc2626;border-color:#dc2626" onclick="deleteIssueTicket()"><i class="fas fa-trash" style="font-size:11px"></i>&nbsp;Delete Ticket</button>
+                </div>
             </div>
         </div>
     </div>
@@ -2081,7 +2088,7 @@
                         <div class="issue-filters">
                             <button class="if-btn active" onclick="filterIssues(this,'all')">All</button>
                             <button class="if-btn" onclick="filterIssues(this,'open')">Open</button>
-                            <button class="if-btn" onclick="filterIssues(this,'in-progress')">In Progress</button>
+                            <button class="if-btn" onclick="filterIssues(this,'in_progress')">In Progress</button>
                             <button class="if-btn" onclick="filterIssues(this,'resolved')">Resolved</button>
                         </div>
                         <button class="btn-p" style="padding:8px 18px;font-size:13px" onclick="navigate('dashboard')"><i
@@ -2174,13 +2181,14 @@
            STATE
         ════════════════════════════════════════ */
         let session = null, currentCat = '', currentSub = 'electrical', selectedProds = [], currentSev = 'Low', attachedFile = null, attachedDataUrl = null, issueFilter = 'all', PRODUCTS = {};
+        let myTickets = [];   // canonical ticket data, always sourced from the DB
 
         /* ════════════════════════════════════════
            INIT
         ════════════════════════════════════════ */
-        function init() {
+        async function init() {
             session = JSON.parse(localStorage.getItem('zts_session') || 'null');
-            if (!session) { window.location.href = 'helpdesk-login.html'; return; }
+            if (!session || !localStorage.getItem('zts_user_token')) { window.location.href = 'helpdesk-login.html'; return; }
 
             // Load products from admin sync (falls back to hardcoded if admin hasn't run yet)
             loadProducts();
@@ -2190,10 +2198,47 @@
             document.getElementById('topName').textContent = session.name.split(' ')[0];
             document.getElementById('welcomeName').textContent = session.name.split(' ')[0];
 
+            await refreshMyTickets();
             renderStats();
             renderIssueCount();
             navigate('dashboard');
         }
+
+        /* Pull this user's tickets straight from the DB (via their own Bearer token),
+           so status/priority/admin-response changes made on the admin side always show up.
+           Merges in the UI-only metadata (category, products, attachment) that the
+           current backend schema doesn't persist, keyed by ticket number. */
+        async function refreshMyTickets() {
+            const metaStore = S.g('zts_issue_meta', {});
+            try {
+                const res = await TicketsAPI.getMine();
+                myTickets = (res.data || []).map(t => {
+                    const meta = metaStore[t.ticket_number] || {};
+                    return {
+                        id: t.ticket_number,
+                        userId: session.userId,
+                        category: meta.category || 'Support Ticket',
+                        subCategory: meta.subCategory || '',
+                        products: meta.products || [],
+                        subject: t.subject,
+                        desc: t.message,
+                        severity: cap(t.priority),
+                        priority: t.priority,
+                        attachment: meta.attachment || '',
+                        attachmentData: meta.attachmentData || '',
+                        status: t.status,               // 'open' | 'in_progress' | 'resolved' | 'closed'
+                        createdAt: t.created_at,
+                    };
+                });
+            } catch (e) {
+                console.warn('Failed to load tickets from server:', e.message);
+                showToast('Could not load your tickets — check your connection');
+                myTickets = [];
+            }
+            return myTickets;
+        }
+
+        function cap(s) { return (s || '').charAt(0).toUpperCase() + (s || '').slice(1); }
 
         function loadProducts() {
             const stored = S.g('zts_products', null);
@@ -2243,7 +2288,7 @@
                 document.getElementById('panel-' + p).classList.toggle('active', p === page);
                 document.getElementById('nav-' + p).classList.toggle('active', p === page);
             });
-            if (page === 'issues') renderIssues();
+            if (page === 'issues') { refreshMyTickets().then(() => { renderIssues(); renderStats(); renderIssueCount(); }); }
             if (page === 'profile') loadProfile();
             closeSidebar();
         }
@@ -2254,12 +2299,12 @@
         /* ════════════════════════════════════════
            STATS
         ════════════════════════════════════════ */
-        function getMyIssues() { return S.g('zts_issues', []).filter(i => i.userId === session.userId); }
+        function getMyIssues() { return myTickets; }
         function renderStats() {
             const m = getMyIssues();
             document.getElementById('statTotal').textContent = m.length;
             document.getElementById('statOpen').textContent = m.filter(i => i.status === 'open').length;
-            document.getElementById('statIP').textContent = m.filter(i => i.status === 'in-progress').length;
+            document.getElementById('statIP').textContent = m.filter(i => i.status === 'in_progress').length;
             document.getElementById('statRes').textContent = m.filter(i => i.status === 'resolved').length;
         }
         function renderIssueCount() { document.getElementById('issueCount').textContent = getMyIssues().length; }
@@ -2410,22 +2455,20 @@
                 });
                 const ticketNum = res.ticket_number;
 
-                // Also keep local copy for instant UI update
-                const issue = {
-                    id: ticketNum, userId: session.userId,
+                // The current backend schema stores only name/email/subject/message/priority/status,
+                // so category, product tags, and the attachment preview are kept client-side,
+                // keyed by ticket number, and merged back in by refreshMyTickets().
+                const metaStore = S.g('zts_issue_meta', {});
+                metaStore[ticketNum] = {
                     category: currentCat === 'aicte' ? 'AICTE-IDEA Lab Equipment' : 'Industrial Products',
                     subCategory: currentCat === 'aicte' ? currentSub : '',
                     products: selectedProds.map(p => p.name),
-                    subject, desc, severity: currentSev,
                     attachment: attachedFile ? attachedFile.name : '',
-                    status: 'open', adminResponse: '',
-                    createdAt: new Date().toISOString(),
-                    timeline: [{ event: 'Issue created', time: new Date().toISOString() }]
+                    attachmentData: attachedDataUrl || ''
                 };
-                const issues = S.g('zts_issues', []);
-                issues.push(issue);
-                S.s('zts_issues', issues);
+                S.s('zts_issue_meta', metaStore);
 
+                await refreshMyTickets();
                 renderStats();
                 renderIssueCount();
                 document.getElementById('ticketIdText').textContent = ticketNum;
@@ -2478,9 +2521,9 @@
           <div class="im"><i class="fas fa-exclamation-circle"></i>${i.severity}</div>
           <div class="im"><i class="fas fa-calendar-alt"></i>${fmtD(i.createdAt)}</div>
         </div>
-        ${i.adminResponse ? `<div style="margin-top:8px;font-size:12px;color:#16a34a;display:flex;align-items:center;gap:5px"><i class="fas fa-comment-alt" style="font-size:10px"></i>Admin responded</div>` : ''}
+        ${i.desc.includes('[Admin Response]') ? `<div style="margin-top:8px;font-size:12px;color:#16a34a;display:flex;align-items:center;gap:5px"><i class="fas fa-comment-alt" style="font-size:10px"></i>Admin responded</div>` : ''}
       </div>
-      <span class="status-pill sp-${i.status}"><div class="sp-dot"></div>${fmtStatus(i.status)}</span>
+      <span class="status-pill sp-${statusClass(i.status)}"><div class="sp-dot"></div>${fmtStatus(i.status)}</span>
     </div>
   `).join('');
         }
@@ -2492,21 +2535,39 @@
             renderIssues();
         }
 
+        let currentOpenIssueId = null;
+
+        function parseDesc(fullMessage) {
+            // The backend appends "[Admin Response]: ..." / "[User Update]: ..." as plain
+            // text onto the message column (no separate reply table exists yet).
+            // Split those back out for display purposes.
+            const parts = (fullMessage || '').split(/\n\n(?=\[(?:Admin Response|User Update)\]:)/);
+            const original = parts[0] || '';
+            const notes = parts.slice(1).map(p => {
+                const m = p.match(/^\[(Admin Response|User Update)\]:\s*([\s\S]*)$/);
+                return m ? { type: m[1], text: m[2] } : { type: 'Update', text: p };
+            });
+            return { original, notes };
+        }
+
         function openIssue(id) {
-            const issues = S.g('zts_issues', []);
-            const i = issues.find(x => x.id === id);
+            const i = myTickets.find(x => x.id === id);
             if (!i) return;
+            currentOpenIssueId = id;
+
+            const { original, notes } = parseDesc(i.desc);
+            const lastAdminNote = [...notes].reverse().find(n => n.type === 'Admin Response');
 
             document.getElementById('mod-id').textContent = i.id;
             document.getElementById('mod-title').textContent = i.subject;
             document.getElementById('mod-cat').textContent = i.category + (i.subCategory ? ' — ' + i.subCategory : '');
             document.getElementById('mod-sev').textContent = i.severity;
             document.getElementById('mod-date').textContent = fmtD(i.createdAt);
-            document.getElementById('mod-desc').textContent = i.desc;
+            document.getElementById('mod-desc').textContent = original;
             document.getElementById('mod-att-name').textContent = i.attachment || 'None';
 
             // Status badge
-            document.getElementById('mod-status-wrap').innerHTML = `<span class="status-pill sp-${i.status}"><div class="sp-dot"></div>${fmtStatus(i.status)}</span>`;
+            document.getElementById('mod-status-wrap').innerHTML = `<span class="status-pill sp-${statusClass(i.status)}"><div class="sp-dot"></div>${fmtStatus(i.status)}</span>`;
 
             // Products
             const prodsEl = document.getElementById('mod-prods');
@@ -2540,22 +2601,73 @@
                 attWrap.style.display = 'none';
             }
 
-            // Admin reply
+            // Admin reply (most recent)
             const replyWrap = document.getElementById('mod-reply-wrap');
-            if (i.adminResponse) {
+            if (lastAdminNote) {
                 replyWrap.style.display = 'block';
-                document.getElementById('mod-reply').textContent = i.adminResponse;
+                document.getElementById('mod-reply').textContent = lastAdminNote.text;
             } else {
                 replyWrap.style.display = 'none';
             }
 
-            // Timeline
+            // Timeline (built from created + any admin/user notes, since exact per-note
+            // timestamps aren't stored separately in the current schema)
             const tl = document.getElementById('mod-tl');
-            const timeline = i.timeline || [{ event: 'Issue created', time: i.createdAt }];
+            const timeline = [{ event: 'Issue created', time: i.createdAt }]
+                .concat(notes.map(n => ({ event: n.type === 'Admin Response' ? 'Support team replied' : 'You added an update', time: i.createdAt })));
             tl.innerHTML = timeline.map(t => `<div class="tl-row"><div class="tl-dot"><i class="fas fa-circle" style="font-size:6px"></i></div><div><div class="tl-t">${t.event}</div><div class="tl-d">${fmtD(t.time)}</div></div></div>`).join('');
+
+            document.getElementById('mod-followup').value = '';
+            document.getElementById('mod-close-btn').style.display = i.status === 'closed' ? 'none' : '';
 
             document.getElementById('issueModal').classList.add('open');
             document.body.style.overflow = 'hidden';
+        }
+
+        async function sendIssueUpdate() {
+            const text = document.getElementById('mod-followup').value.trim();
+            if (!text) { showToast('Type an update before sending'); return; }
+            try {
+                await TicketsAPI.update(currentOpenIssueId, { message: text });
+                showToast('Update sent');
+                await refreshMyTickets();
+                openIssue(currentOpenIssueId);
+                renderIssues();
+            } catch (e) {
+                showToast('Failed to send update: ' + e.message);
+            }
+        }
+
+        async function closeIssueTicket() {
+            if (!confirm('Mark this ticket as closed?')) return;
+            try {
+                await TicketsAPI.update(currentOpenIssueId, { status: 'closed' });
+                showToast('Ticket closed');
+                await refreshMyTickets();
+                openIssue(currentOpenIssueId);
+                renderIssues();
+                renderStats();
+            } catch (e) {
+                showToast('Failed to close ticket: ' + e.message);
+            }
+        }
+
+        async function deleteIssueTicket() {
+            if (!confirm('Delete this ticket permanently? This cannot be undone.')) return;
+            try {
+                await TicketsAPI.delete(currentOpenIssueId);
+                const metaStore = S.g('zts_issue_meta', {});
+                delete metaStore[currentOpenIssueId];
+                S.s('zts_issue_meta', metaStore);
+                showToast('Ticket deleted');
+                closeModal();
+                await refreshMyTickets();
+                renderIssues();
+                renderStats();
+                renderIssueCount();
+            } catch (e) {
+                showToast('Failed to delete ticket: ' + e.message);
+            }
         }
 
         function closeModal() {
@@ -2572,18 +2684,18 @@
            PROFILE
         ════════════════════════════════════════ */
         function loadProfile() {
-            const users = S.g('zts_users', []);
-            const u = users.find(x => x.id === session.userId);
-            if (!u) return;
+            // session (from login) is the source of truth — it comes straight from the DB.
+            const [firstName, ...rest] = (session.name || '').split(' ');
+            const lastName = rest.join(' ');
             const inits = getInits(session.name);
             document.getElementById('pfAv').textContent = inits;
-            document.getElementById('pfName').textContent = u.firstName + ' ' + u.lastName;
-            document.getElementById('pfEmail').textContent = u.email;
-            document.getElementById('pfOrg').textContent = u.org || '—';
-            document.getElementById('pfFirst').value = u.firstName;
-            document.getElementById('pfLast').value = u.lastName;
-            document.getElementById('pfEmailEdit').value = u.email;
-            document.getElementById('pfOrgEdit').value = u.org || '';
+            document.getElementById('pfName').textContent = session.name;
+            document.getElementById('pfEmail').textContent = session.email;
+            document.getElementById('pfOrg').textContent = session.org || '—';
+            document.getElementById('pfFirst').value = firstName || '';
+            document.getElementById('pfLast').value = lastName || '';
+            document.getElementById('pfEmailEdit').value = session.email;
+            document.getElementById('pfOrgEdit').value = session.org || '';
             const mine = getMyIssues();
             document.getElementById('pfTotal').textContent = mine.length;
             document.getElementById('pfRes').textContent = mine.filter(i => i.status === 'resolved').length;
@@ -2596,53 +2708,66 @@
             document.getElementById('pf-' + tab).classList.add('active');
         }
 
-        function saveProfile() {
-            const users = S.g('zts_users', []);
-            const idx = users.findIndex(u => u.id === session.userId);
-            if (idx === -1) return;
-            users[idx].firstName = document.getElementById('pfFirst').value.trim() || users[idx].firstName;
-            users[idx].lastName = document.getElementById('pfLast').value.trim() || users[idx].lastName;
-            users[idx].email = document.getElementById('pfEmailEdit').value.trim() || users[idx].email;
-            users[idx].org = document.getElementById('pfOrgEdit').value.trim();
-            S.s('zts_users', users);
-            session.name = users[idx].firstName + ' ' + users[idx].lastName;
-            session.email = users[idx].email;
-            localStorage.setItem('zts_session', JSON.stringify(session));
-            document.getElementById('topName').textContent = users[idx].firstName;
-            document.getElementById('topAvatar').textContent = getInits(session.name);
-            loadProfile();
-            const b = document.getElementById('profileSaved');
-            b.classList.add('show');
-            setTimeout(() => b.classList.remove('show'), 3000);
+        async function saveProfile() {
+            const first = document.getElementById('pfFirst').value.trim();
+            const last = document.getElementById('pfLast').value.trim();
+            const email = document.getElementById('pfEmailEdit').value.trim();
+            const org = document.getElementById('pfOrgEdit').value.trim();
+            if (!first || !last || !email) { showToast('First name, last name and email are required'); return; }
+
+            try {
+                const res = await HelpdeskAuthAPI.updateProfile({ first_name: first, last_name: last, email, org });
+                session = res.user;
+                localStorage.setItem('zts_session', JSON.stringify(session));
+                localStorage.setItem('zts_user_token', res.token);  // token identity may change if email changed
+                document.getElementById('topName').textContent = first;
+                document.getElementById('topAvatar').textContent = getInits(session.name);
+                document.getElementById('welcomeName').textContent = first;
+                loadProfile();
+                const b = document.getElementById('profileSaved');
+                b.classList.add('show');
+                setTimeout(() => b.classList.remove('show'), 3000);
+            } catch (e) {
+                showToast('Failed to update profile: ' + e.message);
+            }
         }
 
-        function changePassword() {
+        async function changePassword() {
             const cur = document.getElementById('pwCur').value;
             const nw = document.getElementById('pwNew').value;
             const cf = document.getElementById('pwCon').value;
             const errEl = document.getElementById('pwErr');
             errEl.classList.remove('show');
-            const users = S.g('zts_users', []);
-            const u = users.find(x => x.id === session.userId);
-            if (!u || u.password !== cur) { errEl.querySelector('span').textContent = 'Current password is incorrect.'; errEl.classList.add('show'); return; }
+
+            if (!cur) { errEl.querySelector('span').textContent = 'Enter your current password.'; errEl.classList.add('show'); return; }
             if (nw.length < 8) { errEl.querySelector('span').textContent = 'New password must be at least 8 characters.'; errEl.classList.add('show'); return; }
             if (nw !== cf) { errEl.querySelector('span').textContent = 'Passwords do not match.'; errEl.classList.add('show'); return; }
-            u.password = nw;
-            S.s('zts_users', users);
-            ['pwCur', 'pwNew', 'pwCon'].forEach(id => document.getElementById(id).value = '');
-            const b = document.getElementById('pwSaved');
-            b.classList.add('show');
-            setTimeout(() => b.classList.remove('show'), 3000);
+
+            try {
+                await HelpdeskAuthAPI.changePassword(cur, nw);
+                ['pwCur', 'pwNew', 'pwCon'].forEach(id => document.getElementById(id).value = '');
+                const b = document.getElementById('pwSaved');
+                b.classList.add('show');
+                setTimeout(() => b.classList.remove('show'), 3000);
+            } catch (e) {
+                errEl.querySelector('span').textContent = e.message || 'Could not update password.';
+                errEl.classList.add('show');
+            }
         }
 
         /* ════════════════════════════════════════
            UTILS
         ════════════════════════════════════════ */
         function fmtD(iso) { try { return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) } catch { return iso || '—' } }
-        function fmtStatus(s) { if (s === 'in-progress') return 'In Progress'; return s.charAt(0).toUpperCase() + s.slice(1); }
+        function fmtStatus(s) { if (s === 'in_progress') return 'In Progress'; return (s || '').charAt(0).toUpperCase() + (s || '').slice(1); }
+        function statusClass(s) { return (s || 'open').replace('_', '-'); }
         function getInits(n) { return (n || 'U').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase(); }
 
-        function doLogout() { localStorage.removeItem('zts_session'); window.location.href = 'helpdesk-login.html'; }
+        function doLogout() {
+            localStorage.removeItem('zts_session');
+            localStorage.removeItem('zts_user_token');
+            window.location.href = 'helpdesk-login.html';
+        }
 
         let _tt;
         function showToast(msg) {

@@ -83,12 +83,34 @@ function base64url_decode(string $data): string {
 }
 
 // ─── Auth middleware ─────────────────────────────────────────
+
+// Reads the Authorization header, if any, without forcing an error.
+// Returns the decoded JWT payload, or null if absent/invalid/expired.
+function getBearerPayload(): ?array {
+    $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? ($_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '');
+    if (!str_starts_with($auth, 'Bearer ')) return null;
+    return jwtDecode(substr($auth, 7));
+}
+
 function requireAdminAuth(): array {
-    $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-    if (!str_starts_with($auth, 'Bearer ')) respondError('Unauthorized', 401);
-    $token = substr($auth, 7);
-    $payload = jwtDecode($token);
+    $payload = getBearerPayload();
     if (!$payload || ($payload['role'] ?? '') !== 'admin') respondError('Unauthorized', 401);
+    return $payload;
+}
+
+// Requires a logged-in helpdesk portal user (role=user).
+function requireUserAuth(): array {
+    $payload = getBearerPayload();
+    if (!$payload || ($payload['role'] ?? '') !== 'user') respondError('Unauthorized', 401);
+    return $payload;
+}
+
+// Requires either an admin or a helpdesk user token; returns the payload.
+function requireAnyAuth(): array {
+    $payload = getBearerPayload();
+    if (!$payload || !in_array($payload['role'] ?? '', ['admin', 'user'], true)) {
+        respondError('Unauthorized', 401);
+    }
     return $payload;
 }
 

@@ -115,4 +115,75 @@ if ($action === 'register') {
     ], 201);
 }
 
-respondError('Invalid action. Use login or register.');
+// ── UPDATE PROFILE (name / org) ─────────────────────────────────
+if ($action === 'update-profile') {
+    $payload = requireUserAuth();
+
+    $first = sanitize($input['first_name'] ?? '');
+    $last  = sanitize($input['last_name'] ?? '');
+    $org   = sanitize($input['org'] ?? '');
+    $email = filter_var($input['email'] ?? '', FILTER_VALIDATE_EMAIL);
+
+    if (!$first) respondError('First name is required');
+    if (!$last)  respondError('Last name is required');
+    if (!$email) respondError('Valid email is required');
+
+    // If the email is changing, make sure it isn't already taken by someone else.
+    if (strcasecmp($email, $payload['email']) !== 0) {
+        $check = $db->prepare('SELECT id FROM helpdesk_users WHERE email = ? AND id != ? LIMIT 1');
+        $check->execute([$email, $payload['id']]);
+        if ($check->fetch()) respondError('An account with this email already exists');
+    }
+
+    $stmt = $db->prepare('UPDATE helpdesk_users SET first_name=?, last_name=?, org=?, email=? WHERE id=?');
+    $stmt->execute([$first, $last, $org, $email, $payload['id']]);
+
+    // Re-issue the token in case the email (used as the identity claim) changed.
+    $token = jwtEncode([
+        'id'    => $payload['id'],
+        'email' => $email,
+        'role'  => 'user',
+        'exp'   => time() + 86400 * 30
+    ]);
+
+    respond([
+        'success' => true,
+        'token'   => $token,
+        'user'    => [
+            'userId' => $payload['id'],
+            'name'   => "$first $last",
+            'email'  => $email,
+            'org'    => $org,
+            'avatar' => '',
+            'token'  => $token
+        ]
+    ]);
+}
+
+// ── CHANGE PASSWORD ──────────────────────────────────────────
+if ($action === 'change-password') {
+    $payload = requireUserAuth();
+
+    $current = $input['current_password'] ?? '';
+    $new     = $input['new_password'] ?? '';
+
+    if (!$current) respondError('Current password is required');
+    if (strlen($new) < 8) respondError('New password must be at least 8 characters');
+
+    $stmt = $db->prepare('SELECT * FROM helpdesk_users WHERE id = ? LIMIT 1');
+    $stmt->execute([$payload['id']]);
+    $user = $stmt->fetch();
+    if (!$user) respondError('Account not found', 404);
+
+    if (!password_verify($current, $user['password_hash'])) {
+        respondError('Current password is incorrect', 401);
+    }
+
+    $hash = password_hash($new, PASSWORD_DEFAULT);
+    $upd = $db->prepare('UPDATE helpdesk_users SET password_hash=? WHERE id=?');
+    $upd->execute([$hash, $payload['id']]);
+
+    respond(['success' => true, 'message' => 'Password updated successfully']);
+}
+
+respondError('Invalid action. Use login, register, update-profile, or change-password.');

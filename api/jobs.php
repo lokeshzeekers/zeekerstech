@@ -81,13 +81,19 @@ if ($method === 'PUT') {
 
     if (!$title) respondError('Title is required');
 
+    // Check existence separately — UPDATE's affected-row count is 0 both when
+    // the row is missing AND when the new values are identical to the old ones,
+    // so it can't be used alone to detect "not found".
+    $exists = $db->prepare('SELECT id FROM jobs WHERE id = ?');
+    $exists->execute([$id]);
+    if (!$exists->fetch()) respondError('Job not found', 404);
+
     $stmt = $db->prepare(
         'UPDATE jobs SET title=?, department=?, location=?, type=?, description=?, requirements=?, active=?
          WHERE id=?'
     );
     $stmt->execute([$title, $department, $location, $type, $description, $requirements, $active ? 1 : 0, $id]);
 
-    if ($stmt->rowCount() === 0) respondError('Job not found or no change', 404);
     respond(['success' => true, 'message' => 'Job updated']);
 }
 
@@ -98,7 +104,7 @@ if ($method === 'DELETE') {
 
     $stmt = $db->prepare('DELETE FROM jobs WHERE id = ?');
     $stmt->execute([$id]);
-
+    // DELETE's rowCount is a reliable existence check (unlike UPDATE's).
     if ($stmt->rowCount() === 0) respondError('Job not found', 404);
     respond(['success' => true, 'message' => 'Job deleted']);
 }
