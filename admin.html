@@ -573,6 +573,10 @@
       margin-bottom: 20px
     }
 
+    .sr-3 {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
     .sc {
       background: var(--bg);
       border: 1px solid var(--line);
@@ -582,7 +586,8 @@
       align-items: center;
       gap: 11px;
       transition: all .25s;
-      cursor: default
+      cursor: default;
+      min-width: 0
     }
 
     .sc:hover {
@@ -638,7 +643,8 @@
     .sc-l {
       font-size: 11px;
       color: var(--txt3);
-      margin-top: 2px
+      margin-top: 2px;
+      overflow-wrap: break-word
     }
 
     /* TABLE CARD */
@@ -1603,6 +1609,16 @@
       .sr {
         grid-template-columns: 1fr 1fr
       }
+
+      .sr-3 {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:420px) {
+      .sr-3 {
+        grid-template-columns: 1fr
+      }
     }
 
     @media(max-width:780px) {
@@ -1788,7 +1804,7 @@
               </div>
             </div>
           </div>
-          <div class="sr" style="grid-template-columns:repeat(3,1fr)">
+          <div class="sr sr-3">
             <div class="sc">
               <div class="sc-ic pu"><i class="fas fa-users"></i></div>
               <div>
