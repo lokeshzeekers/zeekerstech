@@ -4,6 +4,32 @@
 Options -Indexes
 DirectoryIndex index.php
 
+# ── Request size limits ───────────────────────────────────────
+# Tickets/blog posts can include a base64-encoded image/attachment up to
+# ~7MB in the JSON body. Some hosts' PHP defaults (post_max_size ~2-8MB)
+# or a WAF/ModSecurity default request-body cap (often as low as 128KB)
+# will reject that with a 413 well before it reaches our own app-level
+# size checks. Raise both here defensively; harmless if a directive/
+# module isn't available since php_value/IfModule failures here won't
+# break the rest of the site (Apache just ignores unknown directives
+# inside an unmatched IfModule, and a stray unsupported php_value only
+# fails that one line under mod_php — under most PHP-FPM setups these
+# are simply ignored rather than fatal).
+<IfModule mod_php.c>
+    php_value upload_max_filesize 12M
+    php_value post_max_size 12M
+    php_value max_execution_time 60
+</IfModule>
+<IfModule mod_security.c>
+    SecRequestBodyLimit 13000000
+    SecRequestBodyNoFilesLimit 13000000
+</IfModule>
+<IfModule mod_security2.c>
+    SecRequestBodyLimit 13000000
+    SecRequestBodyNoFilesLimit 13000000
+</IfModule>
+LimitRequestBody 13000000
+
 # ── CORS preflight ────────────────────────────────────────────
 <IfModule mod_headers.c>
     Header always set Access-Control-Allow-Origin "*"

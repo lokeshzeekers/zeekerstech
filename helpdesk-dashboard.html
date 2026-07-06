@@ -364,7 +364,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: all .25s
+            transition: all .25s;
+            min-width: 0
         }
 
         .sc:hover {
@@ -415,7 +416,8 @@
         .sc-l {
             font-size: 11px;
             color: var(--txt3);
-            margin-top: 3px
+            margin-top: 3px;
+            overflow-wrap: break-word
         }
 
         /* SECTION CARD */
@@ -1867,7 +1869,23 @@
 
         @media(max-width:480px) {
             .stats-row {
-                grid-template-columns: 1fr 1fr
+                grid-template-columns: 1fr 1fr;
+                gap: 10px
+            }
+
+            .sc {
+                padding: 12px 14px;
+                gap: 10px
+            }
+
+            .sc-ic {
+                width: 36px;
+                height: 36px;
+                font-size: 15px
+            }
+
+            .sc-n {
+                font-size: 19px
             }
 
             .steps {
@@ -2488,22 +2506,66 @@
             init();
         });
 
-        function handleFile(file) {
+        function readAsDataUrl(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = () => reject(new Error('Could not read file'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Downscales + re-compresses an image client-side before upload. Phone
+        // camera photos are often several MB at full resolution, which can hit
+        // server-side request-size limits (a common cause of HTTP 413 on shared
+        // hosting) even when the file "looks small" in the picker. Capping the
+        // longest edge and re-encoding as JPEG keeps the upload compact while
+        // still being clearly viewable in the ticket.
+        function compressImage(file, maxDim = 1280, quality = 0.8) {
+            return new Promise((resolve, reject) => {
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => {
+                    URL.revokeObjectURL(url);
+                    let { width, height } = img;
+                    if (width > maxDim || height > maxDim) {
+                        if (width >= height) { height = Math.round(height * (maxDim / width)); width = maxDim; }
+                        else { width = Math.round(width * (maxDim / height)); height = maxDim; }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+                img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not read image')); };
+                img.src = url;
+            });
+        }
+
+        async function handleFile(file) {
             const ext = file.name.split('.').pop().toLowerCase();
             const ok = ['pdf', 'png', 'jpg', 'jpeg', 'mp4', 'mov', 'avi'];
             if (file.size > 5 * 1024 * 1024) { showToast('File too large — max 5 MB'); return; }
             if (!ok.includes(ext)) { showToast('Invalid file type'); return; }
             attachedFile = file;
-            // Read as base64 so it can be stored and previewed
-            const reader = new FileReader();
-            reader.onload = e => {
-                attachedDataUrl = e.target.result;
-                document.getElementById('fileDrop').style.display = 'none';
-                document.getElementById('filePreview').style.display = 'flex';
-                document.getElementById('filePreviewName').textContent = file.name;
-                document.getElementById('filePreviewSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
-            };
-            reader.readAsDataURL(file);
+
+            const isImage = ['png', 'jpg', 'jpeg'].includes(ext);
+            try {
+                attachedDataUrl = isImage ? await compressImage(file) : await readAsDataUrl(file);
+            } catch (e) {
+                console.warn('Compression failed, using original file:', e.message);
+                attachedDataUrl = await readAsDataUrl(file);
+            }
+
+            document.getElementById('fileDrop').style.display = 'none';
+            document.getElementById('filePreview').style.display = 'flex';
+            document.getElementById('filePreviewName').textContent = file.name;
+            // Show the size that will actually be uploaded (post-compression), not the original file size
+            const base64Len = attachedDataUrl.length - attachedDataUrl.indexOf(',') - 1;
+            const uploadBytes = Math.round(base64Len * 0.75);
+            document.getElementById('filePreviewSize').textContent = (uploadBytes / 1024).toFixed(1) + ' KB';
         }
 
         function removeFile() {
