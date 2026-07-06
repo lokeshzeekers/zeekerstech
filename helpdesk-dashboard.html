@@ -2291,8 +2291,8 @@
             session = JSON.parse(localStorage.getItem('zts_session') || 'null');
             if (!session || !localStorage.getItem('zts_user_token')) { window.location.href = 'helpdesk-login.html'; return; }
 
-            // Load products from admin sync (falls back to hardcoded if admin hasn't run yet)
-            loadProducts();
+            // Load the AICTE/industrial product catalog from the database
+            await loadProducts();
 
             const initials = getInits(session.name);
             document.getElementById('topAvatar').textContent = initials;
@@ -2345,43 +2345,18 @@
 
         function cap(s) { return (s || '').charAt(0).toUpperCase() + (s || '').slice(1); }
 
-        function loadProducts() {
-            const stored = S.g('zts_products', null);
-            if (stored && stored.aicte) {
-                PRODUCTS = stored;
-            } else {
-                // fallback defaults
-                // PRODUCTS = {
-                //     aicte: {
-                //         electrical: [
-                //             { id: 'el1', name: '3D Printer', sub: 'FDM / SLA additive manufacturing' },
-                //             { id: 'el2', name: 'Laser Cutting Machine', sub: 'Precision cutting & engraving' },
-                //             { id: 'el3', name: 'CNC Router', sub: 'Multi-purpose fabrication routing' },
-                //             { id: 'el4', name: 'Oscilloscope', sub: 'Waveform analysis & testing' },
-                //             { id: 'el5', name: 'Electronics Workstation', sub: 'Power supply, soldering, components' },
-                //             { id: 'el6', name: 'PCB Milling Machine', sub: 'Circuit board prototyping' },
-                //         ],
-                //         mandatory: [
-                //             { id: 'mq1', name: 'IoT Development Kit', sub: 'Arduino, Raspberry Pi, ESP32 modules' },
-                //             { id: 'mq2', name: 'Robotics Kit', sub: 'Modular robotics & mechatronics' },
-                //             { id: 'mq3', name: 'AI Workstation', sub: 'GPU-accelerated ML system' },
-                //             { id: 'mq4', name: '3D Scanner', sub: 'High-precision object capture' },
-                //             { id: 'mq5', name: 'Drone / UAV', sub: 'Custom UAV for research' },
-                //         ],
-                //         optional: [
-                //             { id: 'op1', name: 'VR Headset', sub: 'Immersive simulation & training' },
-                //             { id: 'op2', name: 'Filament / Resin', sub: '3D printing consumables' },
-                //             { id: 'op3', name: 'Electronic Components', sub: 'Resistors, capacitors, ICs etc.' },
-                //         ]
-                //     },
-                //     industrial: [
-                //         { id: 'p1', name: 'ZTS AI Smart Welding Helmet', sub: 'Real-time arc monitoring & safety' },
-                //         { id: 'p2', name: 'WeldSense Analytics Platform', sub: 'Cloud weld quality dashboard' },
-                //         { id: 'p3', name: 'ZeeIoT Industrial Gateway', sub: 'Edge IoT device — IP67 rated' },
-                //         { id: 'p4', name: 'SmartArc Weld Controller', sub: 'Adaptive arc parameter control' },
-                //         { id: 'p5', name: 'ZTS Predictive QA Module', sub: 'AI defect prediction engine' },
-                //     ]
-                // };
+        async function loadProducts() {
+            try {
+                const res = await ProductsAPI.getAll();
+                const obj = { aicte: { electrical: [], mandatory: [], optional: [] }, industrial: [] };
+                (res.data || []).forEach(p => {
+                    if (p.category === 'industrial') obj.industrial.push({ id: p.id, name: p.name, sub: p.sub });
+                    else if (obj.aicte[p.category]) obj.aicte[p.category].push({ id: p.id, name: p.name, sub: p.sub });
+                });
+                PRODUCTS = obj;
+            } catch (e) {
+                console.warn('Failed to load products:', e.message);
+                PRODUCTS = { aicte: { electrical: [], mandatory: [], optional: [] }, industrial: [] };
             }
         }
 
@@ -2426,7 +2401,7 @@
             btn.disabled = false;
         }
 
-        function goStep(n) {
+        async function goStep(n) {
             if (n === 2 && !currentCat) return;
             if (n === 3 && selectedProds.length === 0) { showToast('Select at least one product'); return; }
             [1, 2, 3, 4].forEach(s => {
@@ -2437,8 +2412,8 @@
                 else { el.classList.remove('active', 'done'); }
             });
             if (n === 2) {
-                // reload products from localStorage each time (picks up admin changes)
-                loadProducts();
+                // reload products from the database each time (picks up admin changes)
+                await loadProducts();
                 document.getElementById('aicteSection').style.display = currentCat === 'aicte' ? 'block' : 'none';
                 document.getElementById('industrialSection').style.display = currentCat === 'industrial' ? 'block' : 'none';
                 if (currentCat === 'aicte') renderAicteProds(currentSub);

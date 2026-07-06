@@ -125,6 +125,14 @@ const AdminsAPI = {
     delete: (id)           => apiFetch(`admins.php?id=${id}`, { method: 'DELETE', tokenScope: 'admin' }),
 };
 
+// ─── Lab Products Catalog (AICTE lab + industrial equipment) ──
+const ProductsAPI = {
+    getAll: ()             => apiFetch('products.php'),
+    create: (data)         => apiFetch('products.php', { method: 'POST', tokenScope: 'admin', body: JSON.stringify(data) }),
+    update: (id, data)     => apiFetch(`products.php?id=${id}`, { method: 'PUT', tokenScope: 'admin', body: JSON.stringify(data) }),
+    delete: (id)           => apiFetch(`products.php?id=${id}`, { method: 'DELETE', tokenScope: 'admin' }),
+};
+
 // ─── Helpdesk Portal Users (admin management of public accounts) ─
 const HelpdeskUsersAPI = {
     getAll: ()             => apiFetch('helpdesk-users.php', { tokenScope: 'admin' }),

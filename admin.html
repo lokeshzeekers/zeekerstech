@@ -2353,17 +2353,18 @@
        DEFAULT DATA SEEDING
     ════════════════════════════════════════ */
     /* ── DB cache for admin panel ── */
-    let _db = { issues: [], users: [], jobs: [], posts: [], contacts: [], applications: [] };
+    let _db = { issues: [], users: [], jobs: [], posts: [], contacts: [], applications: [], products: [] };
 
     async function loadAllFromDB() {
       try {
-        const [issues, jobs, posts, contacts, apps, users] = await Promise.all([
+        const [issues, jobs, posts, contacts, apps, users, products] = await Promise.all([
           TicketsAPI.getAll(),
           JobsAPI.getAll(),
           BlogAPI.getAll(),
           ContactAPI.getAll(),
           ApplicationsAPI.getAll(),
-          HelpdeskUsersAPI.getAll()
+          HelpdeskUsersAPI.getAll(),
+          ProductsAPI.getAll()
         ]);
         _db.issues       = issues.data       || [];
         _db.jobs         = jobs.data         || [];
@@ -2371,74 +2372,12 @@
         _db.contacts     = contacts.data     || [];
         _db.applications = apps.data         || [];
         _db.users        = users.data        || [];
+        _db.products     = products.data     || [];
         updateBadges();
       } catch (e) {
         console.warn('loadAllFromDB error:', e.message);
       }
     }
-
-    function seedDefaults() {
-      // products
-      if (!localStorage.getItem('admin_products')) {
-        const prods = [
-          { id: 'el1', name: '3D Printer', sub: 'FDM / SLA additive manufacturing', cat: 'electrical' },
-          { id: 'el2', name: 'Laser Cutting Machine', sub: 'Precision cutting & engraving', cat: 'electrical' },
-          { id: 'el3', name: 'CNC Router', sub: 'Multi-purpose fabrication routing', cat: 'electrical' },
-          { id: 'el4', name: 'Oscilloscope', sub: 'Waveform analysis & testing', cat: 'electrical' },
-          { id: 'el5', name: 'Electronics Workstation', sub: 'Power supply, soldering, components', cat: 'electrical' },
-          { id: 'el6', name: 'PCB Milling Machine', sub: 'Circuit board prototyping', cat: 'electrical' },
-          { id: 'mq1', name: 'IoT Development Kit', sub: 'Arduino, Raspberry Pi, ESP32 modules', cat: 'mandatory' },
-          { id: 'mq2', name: 'Robotics Kit', sub: 'Modular robotics & mechatronics', cat: 'mandatory' },
-          { id: 'mq3', name: 'AI Workstation', sub: 'GPU-accelerated ML system', cat: 'mandatory' },
-          { id: 'mq4', name: '3D Scanner', sub: 'High-precision object capture', cat: 'mandatory' },
-          { id: 'mq5', name: 'Drone / UAV', sub: 'Custom UAV for research', cat: 'mandatory' },
-          { id: 'op1', name: 'VR Headset', sub: 'Immersive simulation & training', cat: 'optional' },
-          { id: 'op2', name: 'Filament / Resin', sub: '3D printing consumables', cat: 'optional' },
-          { id: 'op3', name: 'Electronic Components', sub: 'Resistors, capacitors, ICs etc.', cat: 'optional' },
-          { id: 'p1', name: 'ZTS AI Smart Welding Helmet', sub: 'Real-time arc monitoring & safety', cat: 'industrial' },
-          { id: 'p2', name: 'WeldSense Analytics Platform', sub: 'Cloud weld quality dashboard', cat: 'industrial' },
-          { id: 'p3', name: 'ZeeIoT Industrial Gateway', sub: 'Edge IoT device — IP67 rated', cat: 'industrial' },
-          { id: 'p4', name: 'SmartArc Weld Controller', sub: 'Adaptive arc parameter control', cat: 'industrial' },
-          { id: 'p5', name: 'ZTS Predictive QA Module', sub: 'AI defect prediction engine', cat: 'industrial' },
-        ];
-        S.s('admin_products', prods);
-      }
-      // jobs
-      if (!localStorage.getItem('admin_jobs')) {
-        const jobs = [
-          { id: 'j1', title: 'Senior Embedded Systems Engineer', dept: 'engineering', type: 'Full-time', location: 'Coimbatore, TN', exp: '3–6 years', desc: 'Lead firmware development for AI-integrated weld monitoring hardware.', tags: ['C/C++', 'ARM Cortex', 'FreeRTOS'], isNew: true, status: 'active' },
-          { id: 'j2', title: 'AI / ML Engineer — Industrial', dept: 'ai', type: 'Full-time', location: 'Coimbatore, TN', exp: '2–5 years', desc: 'Build ML models for real-time weld quality prediction.', tags: ['Python', 'TensorFlow', 'PyTorch'], isNew: true, status: 'active' },
-          { id: 'j3', title: 'IoT Platform Engineer', dept: 'engineering', type: 'Full-time', location: 'Coimbatore, TN', exp: '2–4 years', desc: 'Design and maintain the ZeeIoT cloud platform.', tags: ['Node.js', 'MQTT', 'OPC-UA'], isNew: false, status: 'active' },
-          { id: 'j4', title: 'R&D Engineering Intern', dept: 'internship', type: 'Internship (3–6 months)', location: 'Coimbatore, TN', exp: 'Fresher', desc: 'Work on real R&D projects alongside ZTS engineers.', tags: ['C/C++', 'Python'], isNew: true, status: 'active' },
-        ];
-        S.s('admin_jobs', jobs);
-      }
-      // seed demo user
-      if (!localStorage.getItem('zts_users')) {
-        S.s('zts_users', [{ id: 'usr_demo', firstName: 'Demo', lastName: 'User', email: 'demo@zeekers.com', password: 'demo1234', org: 'Zeekers Technology', avatar: '' }]);
-      }
-      syncAll();
-    }
-
-    function syncAll() {
-      syncProducts();
-      syncJobs();
-      syncBlog();
-      updateBadges();
-    }
-
-    function syncProducts() {
-      const prods = S.g('admin_products', []);
-      const obj = { aicte: { electrical: [], mandatory: [], optional: [] }, industrial: [] };
-      prods.forEach(p => {
-        if (p.cat === 'industrial') obj.industrial.push({ id: p.id, name: p.name, sub: p.sub });
-        else if (obj.aicte[p.cat]) obj.aicte[p.cat].push({ id: p.id, name: p.name, sub: p.sub });
-      });
-      S.s('zts_products', obj);
-    }
-
-    function syncJobs()  { /* no-op — jobs now live in MySQL */ }
-    function syncBlog()  { /* no-op — posts now live in MySQL */ }
 
     function updateBadges() {
       document.getElementById('nb-is').textContent = _db.issues.length;
@@ -2739,18 +2678,18 @@
     ════════════════════════════════════════ */
     let editProdId = null;
     function renderProds() {
-      const prods = S.g('admin_products', []);
+      const prods = _db.products || [];
       const cf = document.getElementById('pr-cat')?.value || 'all';
-      let list = cf === 'all' ? prods : prods.filter(p => p.cat === cf);
+      let list = cf === 'all' ? prods : prods.filter(p => p.category === cf);
       const tbl = document.getElementById('pr-tbl');
       const catMap = { electrical: 'AICTE — Electrical', mandatory: 'AICTE — Mandatory', optional: 'AICTE — Optional', industrial: 'Industrial' };
       if (!list.length) { tbl.innerHTML = '<tr><td colspan="4" class="empty"><i class="fas fa-boxes"></i>No products</td></tr>'; return; }
       tbl.innerHTML = list.map(p => `<tr>
     <td class="td-b">${p.name}</td>
-    <td><span class="p p-o">${catMap[p.cat] || p.cat}</span></td>
+    <td><span class="p p-o">${catMap[p.category] || p.category}</span></td>
     <td class="td-m">${p.sub || '—'}</td>
     <td><div class="ar">
-      <button class="ab" onclick="editProd('${p.id}')" title="Edit"><i class="fas fa-edit"></i></button>
+      <button class="ab" onclick="editProd(${p.id})" title="Edit"><i class="fas fa-edit"></i></button>
       <button class="ab del" onclick="askDelete('product','${p.id}','${p.name}')" title="Delete"><i class="fas fa-trash"></i></button>
     </div></td>
   </tr>`).join('');
@@ -2765,33 +2704,29 @@
     }
 
     function editProd(id) {
-      const p = S.g('admin_products', []).find(x => x.id === id);
+      const p = (_db.products || []).find(x => x.id === id);
       if (!p) return;
       editProdId = id;
       document.getElementById('mp-title').textContent = 'Edit Product';
       document.getElementById('p-name').value = p.name;
       document.getElementById('p-sub').value = p.sub || '';
-      document.getElementById('p-cat').value = p.cat;
+      document.getElementById('p-cat').value = p.category;
       OM('mProd');
     }
 
-    function saveProd() {
+    async function saveProd() {
       const name = document.getElementById('p-name').value.trim();
       const sub = document.getElementById('p-sub').value.trim();
-      const cat = document.getElementById('p-cat').value;
+      const category = document.getElementById('p-cat').value;
       if (!name) { showToast('Name required'); return; }
-      const prods = S.g('admin_products', []);
-      if (editProdId) {
-        const idx = prods.findIndex(p => p.id === editProdId);
-        if (idx !== -1) prods[idx] = { ...prods[idx], name, sub, cat };
-      } else {
-        prods.push({ id: 'prd_' + Date.now(), name, sub, cat });
-      }
-      S.s('admin_products', prods);
-      syncProducts();
-      CM('mProd');
-      renderProds();
-      showToast(editProdId ? 'Product updated' : 'Product added — synced to helpdesk');
+      try {
+        if (editProdId) await ProductsAPI.update(editProdId, { name, sub, category });
+        else            await ProductsAPI.create({ name, sub, category });
+        await loadAllFromDB();
+        CM('mProd');
+        renderProds();
+        showToast(editProdId ? 'Product updated' : 'Product added — synced to helpdesk');
+      } catch (e) { showToast('Error: ' + e.message); }
     }
 
     /* ════════════════════════════════════════
@@ -3084,16 +3019,13 @@
         else if (type === 'post')   await BlogAPI.delete(id);
         else if (type === 'application') await ApplicationsAPI.delete(id);
         else if (type === 'user')   await HelpdeskUsersAPI.delete(id);
-        // products still use localStorage (no DB table for AICTE products)
-        else if (type === 'product') {
-          S.s('admin_products', S.g('admin_products', []).filter(p => p.id !== id));
-          syncProducts(); renderProds(); showToast('Deleted'); return;
-        }
+        else if (type === 'product') await ProductsAPI.delete(id);
         await loadAllFromDB();
         if (type === 'issue') { renderIssues(); renderOverview(); }
         else if (type === 'job')  renderJobs();
         else if (type === 'post') renderBlog();
         else if (type === 'user') renderUsers();
+        else if (type === 'product') renderProds();
         updateBadges();
         showToast('Deleted');
       } catch (e) { showToast('Delete failed: ' + e.message); }

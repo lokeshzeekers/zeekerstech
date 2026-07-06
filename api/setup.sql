@@ -32,6 +32,17 @@ CREATE TABLE IF NOT EXISTS jobs (
   created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
+-- AICTE-IDEA Lab / Industrial Products Catalog
+-- (used in the helpdesk "Affected Products" picker; category is one of
+--  'electrical', 'mandatory', 'optional' (AICTE lab equipment) or 'industrial')
+CREATE TABLE IF NOT EXISTS lab_products (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  name         VARCHAR(255) NOT NULL,
+  sub          VARCHAR(255) DEFAULT '',
+  category     VARCHAR(50)  NOT NULL DEFAULT 'electrical',
+  created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Job Applications
 CREATE TABLE IF NOT EXISTS applications (
   id           INT AUTO_INCREMENT PRIMARY KEY,
