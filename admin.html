@@ -1516,6 +1516,53 @@
       box-shadow: 0 0 0 3px rgba(255, 107, 43, .07)
     }
 
+    /* conversation thread */
+    .chat-thread {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    .chat-msg {
+      border-radius: var(--r);
+      padding: 10px 14px;
+      max-width: 85%;
+    }
+    .chat-msg.from-user {
+      background: var(--bg2);
+      border: 1.5px solid var(--line);
+      align-self: flex-start;
+    }
+    .chat-msg.from-admin {
+      background: rgba(255, 107, 43, .07);
+      border: 1.5px solid rgba(255, 107, 43, .25);
+      align-self: flex-end;
+    }
+    .chat-msg-meta {
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--txt3);
+    }
+    .chat-msg.from-admin .chat-msg-meta { color: var(--accent); }
+    .chat-msg-meta .t { font-weight: 400; opacity: .8; }
+    .chat-msg-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink);
+      white-space: pre-wrap;
+    }
+    .chat-empty {
+      font-size: 13px;
+      color: var(--txt3);
+      padding: 8px 0;
+    }
+
     /* toast */
     .toast {
       position: fixed;
@@ -2019,11 +2066,11 @@
           <div class="attach-preview" id="mi-attach-preview"></div>
         </div>
         <div class="fg" style="margin-bottom:14px">
-          <div class="view-section-title">Activity Timeline</div>
-          <div class="tl-wrap" id="mi-tl"></div>
+          <div class="view-section-title">Conversation</div>
+          <div class="chat-thread" id="mi-chat"></div>
         </div>
         <div class="fg">
-          <div class="view-section-title">Admin Note / Response</div>
+          <div class="view-section-title">Reply to Customer</div>
           <textarea class="admin-note-area" id="mi-note"
             placeholder="Add internal note or response to user…"></textarea>
         </div>
@@ -2192,8 +2239,16 @@
         <div class="f2">
           <div class="fg"><label class="fl">Read Time</label><input class="fi" id="b-rt" type="text"
               placeholder="e.g. 5 min read"></div>
-          <div class="fg"><label class="fl">Icon (Font Awesome class)</label><input class="fi" id="b-ic" type="text"
-              placeholder="e.g. fa-microchip"></div>
+          <div class="fg"><label class="fl">Cover Image</label>
+            <input class="fi" id="b-img-file" type="file" accept="image/*" onchange="handleBlogImage(this.files[0])">
+          </div>
+        </div>
+        <div class="fg" id="b-img-preview-wrap" style="display:none;margin-bottom:14px">
+          <label class="fl">Preview</label>
+          <div style="position:relative;display:inline-block">
+            <img id="b-img-preview" src="" alt="Cover preview" style="max-width:220px;max-height:140px;border-radius:var(--r);border:1.5px solid var(--line);display:block">
+            <button type="button" class="btn-o" style="position:absolute;top:6px;right:6px;padding:4px 8px;font-size:11px" onclick="removeBlogImage()"><i class="fas fa-times"></i></button>
+          </div>
         </div>
         <div class="fg"><label class="fl">Publish Status</label>
           <div class="tgl-row"><label class="tgl"><input type="checkbox" id="b-pub" checked>
@@ -2412,7 +2467,7 @@
       document.getElementById('ov-o').textContent = issues.filter(i => i.status === 'open').length;
       document.getElementById('ov-h').textContent = issues.filter(i => i.priority === 'high').length;
       document.getElementById('ov-r').textContent = issues.filter(i => i.status === 'resolved').length;
-      document.getElementById('ov-u').textContent = 0;
+      document.getElementById('ov-u').textContent = _db.users.length;
       document.getElementById('ov-j').textContent = jobs.filter(j => j.active).length;
       document.getElementById('ov-b').textContent = posts.filter(p => p.published).length;
       const recent = [...issues].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
@@ -2459,25 +2514,12 @@
     </tr>`).join('');
     }
 
-    function parseTicketMessage(fullMessage) {
-      // Admin replies / user follow-ups are appended as plain text onto the
-      // message column (no separate replies table exists in the schema yet).
-      const parts = (fullMessage || '').split(/\n\n(?=\[(?:Admin Response|User Update)\]:)/);
-      const original = parts[0] || '';
-      const notes = parts.slice(1).map(p => {
-        const m = p.match(/^\[(Admin Response|User Update)\]:\s*([\s\S]*)$/);
-        return m ? { type: m[1], text: m[2] } : { type: 'Update', text: p };
-      });
-      return { original, notes };
-    }
+    function fmtTime(iso) { try { return new Date(iso).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) } catch { return iso || '' } }
 
     function viewIssue(id) {
       const i = _db.issues.find(x => x.ticket_number === id);
       if (!i) return;
       editIssueId = id;
-
-      const { original, notes } = parseTicketMessage(i.message);
-      const lastAdminNote = [...notes].reverse().find(n => n.type === 'Admin Response');
 
       document.getElementById('mi-title').textContent = i.subject;
       document.getElementById('mi-id').textContent = i.ticket_number;
@@ -2486,11 +2528,9 @@
       document.getElementById('mi-date').textContent = fmtD(i.created_at);
       document.getElementById('mi-st').value = i.status;
       document.getElementById('mi-sv').value = i.priority;
-      document.getElementById('mi-desc').textContent = original;
+      document.getElementById('mi-desc').textContent = i.message;
       document.getElementById('mi-note').value = '';
-      document.getElementById('mi-note').placeholder = lastAdminNote
-        ? 'Last response: ' + lastAdminNote.text.slice(0, 80) + (lastAdminNote.text.length > 80 ? '…' : '')
-        : 'Add a response for the customer…';
+      document.getElementById('mi-note').placeholder = 'Add a response for the customer…';
 
       // products
       let products = [];
@@ -2529,12 +2569,21 @@
         attName.textContent = 'None';
       }
 
-      // timeline — built from created + any appended notes (exact per-note
-      // timestamps aren't stored separately in the current schema)
-      const tl = document.getElementById('mi-tl');
-      const timeline = [{ event: 'Issue created', time: i.created_at }]
-        .concat(notes.map(n => ({ event: n.type === 'Admin Response' ? 'Admin replied' : 'User added an update', time: i.created_at })));
-      tl.innerHTML = timeline.map(t => `<div class="tl-item"><div class="tl-dot"><i class="fas fa-circle" style="font-size:6px"></i></div><div><div class="tl-t">${t.event}</div><div class="tl-d">${fmtD(t.time)}</div></div></div>`).join('');
+      // conversation — every reply from both sides, in order, with real timestamps
+      const chatEl = document.getElementById('mi-chat');
+      const replies = i.replies || [];
+      if (!replies.length) {
+        chatEl.innerHTML = '<div class="chat-empty">No replies yet.</div>';
+      } else {
+        chatEl.innerHTML = replies.map(r => {
+          const isAdmin = r.sender_type === 'admin';
+          const label = isAdmin ? 'Support Team (You)' : (r.sender_name || 'Customer');
+          return `<div class="chat-msg ${isAdmin ? 'from-admin' : 'from-user'}">
+            <div class="chat-msg-meta"><span>${label}</span><span class="t">${fmtTime(r.created_at)}</span></div>
+            <div class="chat-msg-text">${(r.message || '').replace(/</g, '&lt;')}</div>
+          </div>`;
+        }).join('');
+      }
 
       OM('mIssue');
     }
@@ -2546,10 +2595,15 @@
       try {
         await TicketsAPI.update(editIssueId, { status: newStatus, priority, admin_response: note });
         await loadAllFromDB();
-        CM('mIssue');
         renderIssues();
         renderOverview();
-        showToast('Issue updated');
+        if (note) {
+          // Stay in the modal and refresh the thread so a reply feels like a live chat.
+          viewIssue(editIssueId);
+        } else {
+          CM('mIssue');
+        }
+        showToast(note ? 'Reply sent' : 'Issue updated');
       } catch (e) { showToast('Error: ' + e.message); }
     }
 
@@ -2740,7 +2794,7 @@
       document.getElementById('j-e').value = j.experience || '';
       document.getElementById('j-desc').value = j.description;
       document.getElementById('j-st').value = j.active ? 'active' : 'paused';
-      document.getElementById('j-new').checked = false;
+      document.getElementById('j-new').checked = !!j.is_new;
       renderTagUI('j-tw', 'j-ti', jTagList, 'j');
       OM('mJob');
     }
@@ -2759,7 +2813,8 @@
         experience:   document.getElementById('j-e').value.trim(),
         description:  desc,
         requirements: jTagList.join(', '),
-        active
+        active,
+        is_new:       document.getElementById('j-new').checked
       };
       try {
         if (editJobId) await JobsAPI.update(editJobId, payload);
@@ -2816,13 +2871,35 @@
   </tr>`).join('');
     }
 
+    let bImageDataUrl = '';
+
+    function handleBlogImage(file) {
+      if (!file) return;
+      if (!file.type.startsWith('image/')) { showToast('Please choose an image file'); return; }
+      if (file.size > 5 * 1024 * 1024) { showToast('Image is too large (max 5MB)'); return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        bImageDataUrl = e.target.result;
+        document.getElementById('b-img-preview').src = bImageDataUrl;
+        document.getElementById('b-img-preview-wrap').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeBlogImage() {
+      bImageDataUrl = '';
+      document.getElementById('b-img-file').value = '';
+      document.getElementById('b-img-preview-wrap').style.display = 'none';
+    }
+
     function openBlog() {
       editPostId = null; bTagList = [];
       document.getElementById('mb-title').textContent = 'Write New Post';
-      ['b-t', 'b-au', 'b-ex', 'b-co', 'b-rt', 'b-ic'].forEach(id => document.getElementById(id).value = '');
+      ['b-t', 'b-au', 'b-ex', 'b-co', 'b-rt'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('b-cat').value = 'ai';
       document.getElementById('b-pub').checked = true;
       document.getElementById('bec').textContent = '0';
+      removeBlogImage();
       renderTagUI('b-tw', 'b-ti', bTagList, 'b');
       OM('mBlog');
     }
@@ -2838,7 +2915,14 @@
       document.getElementById('b-ex').value = (p.content || '').replace(/<[^>]*>/g,'').substring(0, 160);
       document.getElementById('b-co').value = p.content || '';
       document.getElementById('b-rt').value = '5 min read';
-      document.getElementById('b-ic').value = '';
+      document.getElementById('b-img-file').value = '';
+      if (p.image_url) {
+        bImageDataUrl = p.image_url;
+        document.getElementById('b-img-preview').src = p.image_url;
+        document.getElementById('b-img-preview-wrap').style.display = 'block';
+      } else {
+        removeBlogImage();
+      }
       document.getElementById('b-pub').checked = !!p.published;
       document.getElementById('bec').textContent = 0;
       renderTagUI('b-tw', 'b-ti', bTagList, 'b');
@@ -2850,30 +2934,15 @@
       const excerpt = document.getElementById('b-ex').value.trim();
       const content = document.getElementById('b-co').value.trim();
       if (!title || !excerpt || !content) { showToast('Fill title, excerpt, and content'); return; }
-      const posts = S.g('admin_posts', []);
       const author = document.getElementById('b-au').value.trim() || 'Zeekers Team';
-      const authorInit = author.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
       const pub = forcePublish || document.getElementById('b-pub').checked;
-      const catLabel = { ai: 'AI & Machine Learning', iot: 'IoT & Connectivity', welding: 'Welding Technology', automation: 'Automation', education: 'STEM & Education', rnd: 'R&D Insights' };
       const cat = document.getElementById('b-cat').value;
-      const data = {
-        title, cat, catLabel: catLabel[cat] || cat, author, authorInit,
-        excerpt,
-        article: content,
-        read: document.getElementById('b-rt').value.trim() || '5 min read',
-        icon: 'fa-' + (document.getElementById('b-ic').value.replace(/^fa-/, '') || 'pen-nib'),
-        tags: [...bTagList],
-        status: pub ? 'published' : 'draft',
-        featured: false,
-        date: new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
-        createdAt: new Date().toISOString(),
-      };
       const payload = {
         title,
         content,
         author,
         category: cat,
-        image_url: '',
+        image_url: bImageDataUrl || '',
         published: pub ? 1 : 0
       };
       try {

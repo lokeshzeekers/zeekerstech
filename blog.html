@@ -160,6 +160,7 @@
             <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
             <div class="modal-hero-img" id="modalHeroImg">
                 <i class="fas fa-microchip" id="modalHeroIcon"></i>
+                <img id="modalHeroPhoto" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover">
             </div>
             <div class="modal-content">
                 <div class="modal-tags" id="modalTags"></div>
@@ -858,6 +859,7 @@ ${topic}`
                         date: formatDate(p.created_at),
                         read: '5 min read',
                         icon: 'fa-pen-nib',
+                        image: p.image_url || '',
                         featured: false,
                         tags: [],
                         article: buildArticleHTML(p.content || '')
@@ -960,8 +962,10 @@ ${topic}`
                     const card = document.createElement('div');
                     card.className = 'post-card';
                     card.innerHTML = `
-      <div class="post-card-img">
-        <i class="fas ${post.icon || 'fa-pen-nib'} post-card-img-icon"></i>
+      <div class="post-card-img"${post.image ? ` style="padding:0;overflow:hidden"` : ''}>
+        ${post.image
+          ? `<img src="${post.image}" alt="${post.title.replace(/"/g, '&quot;')}" style="width:100%;height:100%;object-fit:cover">`
+          : `<i class="fas ${post.icon || 'fa-pen-nib'} post-card-img-icon"></i>`}
         <div class="post-card-img-badge">${post.catLabel}</div>
       </div>
       <div class="post-card-body">
@@ -1005,7 +1009,18 @@ ${topic}`
                 const post = posts.find(p => String(p.id) === String(id));
                 if (!post) return;
 
-                document.getElementById('modalHeroIcon').className = `fas ${post.icon || 'fa-pen-nib'}`;
+                const heroIcon = document.getElementById('modalHeroIcon');
+                const heroPhoto = document.getElementById('modalHeroPhoto');
+                if (post.image) {
+                    heroPhoto.src = post.image;
+                    heroPhoto.alt = post.title || '';
+                    heroPhoto.style.display = 'block';
+                    heroIcon.style.display = 'none';
+                } else {
+                    heroPhoto.style.display = 'none';
+                    heroIcon.style.display = '';
+                    heroIcon.className = `fas ${post.icon || 'fa-pen-nib'}`;
+                }
 
                 document.getElementById('modalTags').innerHTML =
                     (post.tags || []).map(t => `<div class="modal-tag">${t}</div>`).join('');

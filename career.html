@@ -954,7 +954,7 @@
                             desc: j.description || '',
                             tags: j.requirements ? j.requirements.split(',').map(r => r.trim()) : [],
                             status: j.active ? 'active' : 'inactive',
-                            isNew: false
+                            isNew: !!Number(j.is_new)
                         }));
                         return _apiJobs;
                     }

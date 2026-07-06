@@ -31,6 +31,9 @@ function ensureJobColumns(PDO $db): void {
     if (!in_array('experience', $existing, true)) {
         $db->exec("ALTER TABLE jobs ADD COLUMN `experience` VARCHAR(100) DEFAULT ''");
     }
+    if (!in_array('is_new', $existing, true)) {
+        $db->exec("ALTER TABLE jobs ADD COLUMN `is_new` TINYINT(1) DEFAULT 0");
+    }
 }
 ensureJobColumns($db);
 
@@ -68,14 +71,15 @@ if ($method === 'POST') {
     $description  = $input['description'] ?? '';
     $requirements = $input['requirements'] ?? '';
     $active       = (bool)($input['active'] ?? true);
+    $isNew        = (bool)($input['is_new'] ?? false);
 
     if (!$title) respondError('Title is required');
 
     $stmt = $db->prepare(
-        'INSERT INTO jobs (title, department, location, type, experience, description, requirements, active)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        'INSERT INTO jobs (title, department, location, type, experience, description, requirements, active, is_new)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
-    $stmt->execute([$title, $department, $location, $type, $experience, $description, $requirements, $active ? 1 : 0]);
+    $stmt->execute([$title, $department, $location, $type, $experience, $description, $requirements, $active ? 1 : 0, $isNew ? 1 : 0]);
     $newId = $db->lastInsertId();
 
     respond(['success' => true, 'id' => $newId, 'message' => 'Job created'], 201);
@@ -95,6 +99,7 @@ if ($method === 'PUT') {
     $description  = $input['description'] ?? '';
     $requirements = $input['requirements'] ?? '';
     $active       = (bool)($input['active'] ?? true);
+    $isNew        = (bool)($input['is_new'] ?? false);
 
     if (!$title) respondError('Title is required');
 
@@ -106,10 +111,10 @@ if ($method === 'PUT') {
     if (!$exists->fetch()) respondError('Job not found', 404);
 
     $stmt = $db->prepare(
-        'UPDATE jobs SET title=?, department=?, location=?, type=?, experience=?, description=?, requirements=?, active=?
+        'UPDATE jobs SET title=?, department=?, location=?, type=?, experience=?, description=?, requirements=?, active=?, is_new=?
          WHERE id=?'
     );
-    $stmt->execute([$title, $department, $location, $type, $experience, $description, $requirements, $active ? 1 : 0, $id]);
+    $stmt->execute([$title, $department, $location, $type, $experience, $description, $requirements, $active ? 1 : 0, $isNew ? 1 : 0, $id]);
 
     respond(['success' => true, 'message' => 'Job updated']);
 }

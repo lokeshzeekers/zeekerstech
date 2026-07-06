@@ -19,6 +19,20 @@ $db     = getDB();
 $method = $_SERVER['REQUEST_METHOD'];
 $id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
+// image_url was defined as TEXT (64KB limit), which is too small for an
+// embedded cover-image data URL. Widen it once, idempotently.
+function ensureBlogColumns(PDO $db): void {
+    static $checked = false;
+    if ($checked) return;
+    $checked = true;
+
+    $col = $db->query("SHOW COLUMNS FROM blog_posts LIKE 'image_url'")->fetch();
+    if ($col && stripos($col['Type'], 'longtext') === false) {
+        $db->exec('ALTER TABLE blog_posts MODIFY COLUMN image_url LONGTEXT');
+    }
+}
+ensureBlogColumns($db);
+
 // ── GET ──────────────────────────────────────────────────────
 if ($method === 'GET') {
     // Single post
@@ -51,10 +65,16 @@ if ($method === 'POST') {
     $content   = $input['content'] ?? '';
     $author    = sanitize($input['author'] ?? 'Zeekers Team');
     $category  = sanitize($input['category'] ?? 'rnd');
-    $image_url = sanitize($input['image_url'] ?? '');
+    $image_url = $input['image_url'] ?? '';
     $published = (bool)($input['published'] ?? false);
 
     if (!$title) respondError('Title is required');
+
+    // Cover image is stored inline as a data URL. Cap the size so a large
+    // photo can't blow past the DB's max packet size or PHP's post limits.
+    if ($image_url && strlen($image_url) > 7 * 1024 * 1024) {
+        respondError('Cover image is too large (max 5MB). Please use a smaller image.');
+    }
 
     $stmt = $db->prepare(
         'INSERT INTO blog_posts (title, content, author, category, image_url, published)
@@ -76,10 +96,14 @@ if ($method === 'PUT') {
     $content   = $input['content'] ?? '';
     $author    = sanitize($input['author'] ?? '');
     $category  = sanitize($input['category'] ?? '');
-    $image_url = sanitize($input['image_url'] ?? '');
+    $image_url = $input['image_url'] ?? '';
     $published = (bool)($input['published'] ?? false);
 
     if (!$title) respondError('Title is required');
+
+    if ($image_url && strlen($image_url) > 7 * 1024 * 1024) {
+        respondError('Cover image is too large (max 5MB). Please use a smaller image.');
+    }
 
     // Check existence separately — UPDATE's affected-row count is 0 both when
     // the row is missing AND when the new values are identical to the old ones,

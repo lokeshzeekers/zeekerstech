@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   content    TEXT,
   author     VARCHAR(100)  DEFAULT 'Zeekers Team',
   category   VARCHAR(100)  DEFAULT 'rnd',
-  image_url  TEXT,
+  image_url  LONGTEXT,
   published  TINYINT(1)    DEFAULT 0,
   created_at TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   description  TEXT,
   requirements TEXT,
   active       TINYINT(1)   DEFAULT 1,
+  is_new       TINYINT(1)   DEFAULT 0,
   created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -73,6 +74,17 @@ CREATE TABLE IF NOT EXISTS tickets (
   attachment_name VARCHAR(255) DEFAULT '',
   attachment_data LONGTEXT NULL,
   created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Ticket conversation thread (admin replies + user follow-ups)
+CREATE TABLE IF NOT EXISTS ticket_replies (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  ticket_number VARCHAR(20) NOT NULL,
+  sender_type   VARCHAR(20) NOT NULL,
+  sender_name   VARCHAR(255) DEFAULT '',
+  message       TEXT NOT NULL,
+  created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+  INDEX (ticket_number)
 );
 
 -- Helpdesk Users (public portal login)

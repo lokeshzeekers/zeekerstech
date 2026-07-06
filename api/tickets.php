@@ -46,6 +46,21 @@ function ensureTicketColumns(PDO $db): void {
             $db->exec("ALTER TABLE tickets ADD COLUMN `$name` $definition");
         }
     }
+
+    // Replies used to be concatenated as plain text onto the message column,
+    // which meant neither side ever saw a proper threaded/timestamped
+    // conversation. A real table fixes that.
+    $db->exec("
+        CREATE TABLE IF NOT EXISTS ticket_replies (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            ticket_number VARCHAR(20) NOT NULL,
+            sender_type VARCHAR(20) NOT NULL,
+            sender_name VARCHAR(255) DEFAULT '',
+            message TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            INDEX (ticket_number)
+        )
+    ");
 }
 ensureTicketColumns($db);
 
@@ -56,12 +71,29 @@ function findTicket(PDO $db, string $ticketNumber): ?array {
     return $row ?: null;
 }
 
+// Attaches a 'replies' array (chronological, oldest first) to each ticket row.
+function attachReplies(PDO $db, array $tickets): array {
+    if (empty($tickets)) return $tickets;
+    $numbers = array_column($tickets, 'ticket_number');
+    $placeholders = implode(',', array_fill(0, count($numbers), '?'));
+    $stmt = $db->prepare("SELECT * FROM ticket_replies WHERE ticket_number IN ($placeholders) ORDER BY created_at ASC");
+    $stmt->execute($numbers);
+    $byTicket = [];
+    foreach ($stmt->fetchAll() as $r) {
+        $byTicket[$r['ticket_number']][] = $r;
+    }
+    foreach ($tickets as &$t) {
+        $t['replies'] = $byTicket[$t['ticket_number']] ?? [];
+    }
+    return $tickets;
+}
+
 // ── GET ──────────────────────────────────────────────────────
 if ($method === 'GET') {
     if (isset($_GET['all'])) {
         requireAdminAuth();
         $stmt = $db->query('SELECT * FROM tickets ORDER BY created_at DESC');
-        respond(['success' => true, 'data' => $stmt->fetchAll()]);
+        respond(['success' => true, 'data' => attachReplies($db, $stmt->fetchAll())]);
     }
 
     // Logged-in helpdesk user: always use the email from their token,
@@ -70,7 +102,7 @@ if ($method === 'GET') {
     if ($payload && ($payload['role'] ?? '') === 'user') {
         $stmt = $db->prepare('SELECT * FROM tickets WHERE email = ? ORDER BY created_at DESC');
         $stmt->execute([$payload['email']]);
-        respond(['success' => true, 'data' => $stmt->fetchAll()]);
+        respond(['success' => true, 'data' => attachReplies($db, $stmt->fetchAll())]);
     }
 
     // Guest/public: lookup by email query param (no login yet)
@@ -79,7 +111,7 @@ if ($method === 'GET') {
 
     $stmt = $db->prepare('SELECT * FROM tickets WHERE email = ? ORDER BY created_at DESC');
     $stmt->execute([$email]);
-    respond(['success' => true, 'data' => $stmt->fetchAll()]);
+    respond(['success' => true, 'data' => attachReplies($db, $stmt->fetchAll())]);
 }
 
 // ── POST (create ticket) ──────────────────────────────────────
@@ -146,12 +178,13 @@ if ($method === 'PUT') {
     $isOwner = ($payload['role'] ?? '') === 'user' && strcasecmp($payload['email'] ?? '', $ticket['email']) === 0;
     if (!$isAdmin && !$isOwner) respondError('Unauthorized', 403);
 
-    $input  = getInput();
-    $sets   = [];
-    $params = [];
+    $input   = getInput();
+    $sets    = [];
+    $params  = [];
+    $didReply = false;
 
     if ($isAdmin) {
-        // Admin can change status, priority, and append an official response.
+        // Admin can change status, priority, and post an official reply.
         $status   = sanitize($input['status'] ?? '');
         $priority = sanitize($input['priority'] ?? '');
         $response = $input['admin_response'] ?? null;
@@ -165,8 +198,9 @@ if ($method === 'PUT') {
             $params[] = $priority;
         }
         if ($response !== null && trim($response) !== '') {
-            $sets[] = 'message=CONCAT(message, ?)';
-            $params[] = "\n\n[Admin Response]: " . sanitize($response);
+            $reply = $db->prepare('INSERT INTO ticket_replies (ticket_number, sender_type, sender_name, message) VALUES (?, ?, ?, ?)');
+            $reply->execute([$id, 'admin', 'Support Team', sanitize($response)]);
+            $didReply = true;
         }
     } else {
         // Ticket owner (helpdesk user): can add a follow-up message,
@@ -175,8 +209,9 @@ if ($method === 'PUT') {
         $status   = sanitize($input['status'] ?? '');
 
         if ($followUp !== null && trim($followUp) !== '') {
-            $sets[] = 'message=CONCAT(message, ?)';
-            $params[] = "\n\n[User Update]: " . sanitize($followUp);
+            $reply = $db->prepare('INSERT INTO ticket_replies (ticket_number, sender_type, sender_name, message) VALUES (?, ?, ?, ?)');
+            $reply->execute([$id, 'user', $ticket['name'], sanitize($followUp)]);
+            $didReply = true;
         }
         if ($status === 'closed' && $ticket['status'] !== 'closed') {
             $sets[] = 'status=?';
@@ -184,12 +219,14 @@ if ($method === 'PUT') {
         }
     }
 
-    if (empty($sets)) respondError('Nothing to update');
+    if (empty($sets) && !$didReply) respondError('Nothing to update');
 
-    $params[] = $id;
-    $sql = 'UPDATE tickets SET ' . implode(', ', $sets) . ' WHERE ticket_number=?';
-    $stmt = $db->prepare($sql);
-    $stmt->execute($params);
+    if (!empty($sets)) {
+        $params[] = $id;
+        $sql = 'UPDATE tickets SET ' . implode(', ', $sets) . ' WHERE ticket_number=?';
+        $stmt = $db->prepare($sql);
+        $stmt->execute($params);
+    }
 
     respond(['success' => true, 'message' => 'Ticket updated']);
 }

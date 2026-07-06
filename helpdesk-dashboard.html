@@ -1194,6 +1194,51 @@
             line-height: 1.6
         }
 
+        /* CONVERSATION THREAD */
+        .chat-thread {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .chat-msg {
+            border-radius: var(--r);
+            padding: 10px 14px;
+            max-width: 85%;
+        }
+        .chat-msg.from-user {
+            background: #eff6ff;
+            border: 1px solid rgba(37, 99, 235, .18);
+            align-self: flex-end;
+        }
+        .chat-msg.from-admin {
+            background: #f0fdf4;
+            border: 1px solid rgba(34, 197, 94, .2);
+            align-self: flex-start;
+        }
+        .chat-msg-meta {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .chat-msg.from-user .chat-msg-meta { color: #1d4ed8; }
+        .chat-msg.from-admin .chat-msg-meta { color: #16a34a; }
+        .chat-msg-meta .t { font-weight: 400; opacity: .75; }
+        .chat-msg-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--txt2);
+            white-space: pre-wrap;
+        }
+        .chat-empty {
+            font-size: 13px;
+            color: var(--txt3);
+            padding: 8px 0;
+        }
+
         /* EMPTY STATE */
         .empty {
             text-align: center;
@@ -1830,14 +1875,8 @@
                     <div class="view-lbl" style="margin-bottom:8px">Attachment</div>
                     <div class="attach-view" id="mod-attach"></div>
                 </div>
-                <div id="mod-reply-wrap" style="display:none;margin-bottom:14px">
-                    <div class="view-lbl" style="margin-bottom:8px">Admin Response</div>
-                    <div class="admin-reply"><i class="fas fa-comment-alt"></i>
-                        <div class="admin-reply-text" id="mod-reply"></div>
-                    </div>
-                </div>
-                <div class="view-lbl" style="margin-bottom:8px">Activity Timeline</div>
-                <div class="tl-wrap" id="mod-tl"></div>
+                <div class="view-lbl" style="margin-bottom:8px">Conversation</div>
+                <div class="chat-thread" id="mod-chat"></div>
                 <div class="view-lbl" style="margin-bottom:8px;margin-top:14px">Add Update</div>
                 <textarea id="mod-followup" class="fta" placeholder="Add more information for the support team…" style="margin-bottom:10px"></textarea>
                 <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -2231,6 +2270,7 @@
                         attachmentData: t.attachment_data || meta.attachmentData || '',
                         status: t.status,               // 'open' | 'in_progress' | 'resolved' | 'closed'
                         createdAt: t.created_at,
+                        replies: t.replies || [],
                     };
                 });
             } catch (e) {
@@ -2520,7 +2560,7 @@
           <div class="im"><i class="fas fa-exclamation-circle"></i>${i.severity}</div>
           <div class="im"><i class="fas fa-calendar-alt"></i>${fmtD(i.createdAt)}</div>
         </div>
-        ${i.desc.includes('[Admin Response]') ? `<div style="margin-top:8px;font-size:12px;color:#16a34a;display:flex;align-items:center;gap:5px"><i class="fas fa-comment-alt" style="font-size:10px"></i>Admin responded</div>` : ''}
+        ${(i.replies || []).some(r => r.sender_type === 'admin') ? `<div style="margin-top:8px;font-size:12px;color:#16a34a;display:flex;align-items:center;gap:5px"><i class="fas fa-comment-alt" style="font-size:10px"></i>Admin responded</div>` : ''}
       </div>
       <span class="status-pill sp-${statusClass(i.status)}"><div class="sp-dot"></div>${fmtStatus(i.status)}</span>
     </div>
@@ -2536,33 +2576,19 @@
 
         let currentOpenIssueId = null;
 
-        function parseDesc(fullMessage) {
-            // The backend appends "[Admin Response]: ..." / "[User Update]: ..." as plain
-            // text onto the message column (no separate reply table exists yet).
-            // Split those back out for display purposes.
-            const parts = (fullMessage || '').split(/\n\n(?=\[(?:Admin Response|User Update)\]:)/);
-            const original = parts[0] || '';
-            const notes = parts.slice(1).map(p => {
-                const m = p.match(/^\[(Admin Response|User Update)\]:\s*([\s\S]*)$/);
-                return m ? { type: m[1], text: m[2] } : { type: 'Update', text: p };
-            });
-            return { original, notes };
-        }
+        function fmtTime(iso) { try { return new Date(iso).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) } catch { return iso || '' } }
 
         function openIssue(id) {
             const i = myTickets.find(x => x.id === id);
             if (!i) return;
             currentOpenIssueId = id;
 
-            const { original, notes } = parseDesc(i.desc);
-            const lastAdminNote = [...notes].reverse().find(n => n.type === 'Admin Response');
-
             document.getElementById('mod-id').textContent = i.id;
             document.getElementById('mod-title').textContent = i.subject;
             document.getElementById('mod-cat').textContent = i.category + (i.subCategory ? ' — ' + i.subCategory : '');
             document.getElementById('mod-sev').textContent = i.severity;
             document.getElementById('mod-date').textContent = fmtD(i.createdAt);
-            document.getElementById('mod-desc').textContent = original;
+            document.getElementById('mod-desc').textContent = i.desc;
             document.getElementById('mod-att-name').textContent = i.attachment || 'None';
 
             // Status badge
@@ -2600,21 +2626,21 @@
                 attWrap.style.display = 'none';
             }
 
-            // Admin reply (most recent)
-            const replyWrap = document.getElementById('mod-reply-wrap');
-            if (lastAdminNote) {
-                replyWrap.style.display = 'block';
-                document.getElementById('mod-reply').textContent = lastAdminNote.text;
+            // Conversation — every reply from both sides, in order, with real timestamps
+            const chatEl = document.getElementById('mod-chat');
+            const replies = i.replies || [];
+            if (!replies.length) {
+                chatEl.innerHTML = '<div class="chat-empty">No replies yet. The support team will respond here.</div>';
             } else {
-                replyWrap.style.display = 'none';
+                chatEl.innerHTML = replies.map(r => {
+                    const isAdmin = r.sender_type === 'admin';
+                    const label = isAdmin ? 'Support Team' : 'You';
+                    return `<div class="chat-msg ${isAdmin ? 'from-admin' : 'from-user'}">
+                        <div class="chat-msg-meta"><span>${label}</span><span class="t">${fmtTime(r.created_at)}</span></div>
+                        <div class="chat-msg-text">${(r.message || '').replace(/</g, '&lt;')}</div>
+                    </div>`;
+                }).join('');
             }
-
-            // Timeline (built from created + any admin/user notes, since exact per-note
-            // timestamps aren't stored separately in the current schema)
-            const tl = document.getElementById('mod-tl');
-            const timeline = [{ event: 'Issue created', time: i.createdAt }]
-                .concat(notes.map(n => ({ event: n.type === 'Admin Response' ? 'Support team replied' : 'You added an update', time: i.createdAt })));
-            tl.innerHTML = timeline.map(t => `<div class="tl-row"><div class="tl-dot"><i class="fas fa-circle" style="font-size:6px"></i></div><div><div class="tl-t">${t.event}</div><div class="tl-d">${fmtD(t.time)}</div></div></div>`).join('');
 
             document.getElementById('mod-followup').value = '';
             document.getElementById('mod-close-btn').style.display = i.status === 'closed' ? 'none' : '';
