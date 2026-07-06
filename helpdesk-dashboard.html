@@ -54,7 +54,8 @@
             color: var(--ink);
             display: flex;
             flex-direction: column;
-            min-height: 100vh
+            min-height: 100vh;
+            overflow-x: hidden
         }
 
         /* TOPBAR */
@@ -1205,6 +1206,8 @@
             border-radius: var(--r);
             padding: 10px 14px;
             max-width: 85%;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         .chat-msg.from-user {
             background: #eff6ff;
@@ -1221,8 +1224,9 @@
             font-weight: 600;
             margin-bottom: 4px;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
-            gap: 10px;
+            gap: 4px 10px;
         }
         .chat-msg.from-user .chat-msg-meta { color: #1d4ed8; }
         .chat-msg.from-admin .chat-msg-meta { color: #16a34a; }
@@ -1825,6 +1829,42 @@
             }
         }
 
+        @media(max-width:600px) {
+            .topbar {
+                padding: 0 10px
+            }
+
+            .tb-div,
+            .tb-tag,
+            .tb-logo-suffix {
+                display: none
+            }
+
+            .tb-name {
+                display: none
+            }
+
+            .tb-user {
+                padding: 5px
+            }
+
+            .tb-left,
+            .tb-right {
+                gap: 8px
+            }
+        }
+
+        @media(max-width:380px) {
+            .tb-out-txt {
+                display: none
+            }
+
+            .tb-out {
+                padding: 8px;
+                border-radius: 50%
+            }
+        }
+
         @media(max-width:480px) {
             .stats-row {
                 grid-template-columns: 1fr 1fr
@@ -1892,7 +1932,7 @@
     <header class="topbar">
         <div class="tb-left">
             <button class="mob-btn" id="mobBtn"><i class="fas fa-bars"></i></button>
-            <a href="#" class="tb-logo">Zeekers<span>.</span> Helpdesk</a>
+            <a href="#" class="tb-logo">Zeekers<span>.</span> <span class="tb-logo-suffix">Helpdesk</span></a>
             <div class="tb-div"></div>
             <div class="tb-tag">Support Portal</div>
         </div>
@@ -1901,7 +1941,7 @@
                 <div class="tb-av" id="topAvatar">U</div>
                 <div class="tb-name" id="topName">User</div>
             </div>
-            <button class="tb-out" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
+            <button class="tb-out" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i><span class="tb-out-txt">Logout</span></button>
         </div>
     </header>
 

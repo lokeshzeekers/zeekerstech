@@ -1529,6 +1529,8 @@
       border-radius: var(--r);
       padding: 10px 14px;
       max-width: 85%;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
     .chat-msg.from-user {
       background: var(--bg2);
@@ -1545,8 +1547,9 @@
       font-weight: 700;
       margin-bottom: 4px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
-      gap: 10px;
+      gap: 4px 10px;
       color: var(--txt3);
     }
     .chat-msg.from-admin .chat-msg-meta { color: var(--accent); }
@@ -1630,6 +1633,41 @@
       }
     }
 
+    @media(max-width:600px) {
+      .topbar {
+        padding: 0 10px
+      }
+
+      .tb-sep,
+      .tb-badge {
+        display: none
+      }
+
+      .tb-user {
+        padding: 5px
+      }
+
+      .tb-name {
+        display: none
+      }
+
+      .tb-l,
+      .tb-r {
+        gap: 8px
+      }
+    }
+
+    @media(max-width:380px) {
+      .tb-out-txt {
+        display: none
+      }
+
+      .tb-out {
+        padding: 8px;
+        border-radius: 50%
+      }
+    }
+
     @media(max-width:480px) {
       .sr {
         grid-template-columns: 1fr
@@ -1681,7 +1719,7 @@
           <div class="tb-av">AD</div>
           <div class="tb-name">Administrator</div>
         </div>
-        <button class="tb-out" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
+        <button class="tb-out" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i><span class="tb-out-txt">Logout</span></button>
       </div>
     </header>
 
