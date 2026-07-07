@@ -1775,6 +1775,15 @@
           <div class="nav" id="n-bl" onclick="go('bl')"><i class="fas fa-pen-nib"></i>Blog<span class="nb"
               id="nb-bl">0</span></div>
         </div>
+        <div class="sb-sec">
+          <div class="sb-lbl">Leads &amp; Messages</div>
+          <div class="nav" id="n-msg" onclick="go('msg')"><i class="fas fa-envelope"></i>Messages<span class="nb"
+              id="nb-msg">0</span></div>
+          <div class="nav" id="n-app" onclick="go('app')"><i class="fas fa-file-alt"></i>Applications<span class="nb"
+              id="nb-app">0</span></div>
+          <div class="nav" id="n-ld" onclick="go('ld')"><i class="fas fa-download"></i>Brochure Leads<span class="nb g"
+              id="nb-ld">0</span></div>
+        </div>
         <div class="sb-foot">Zeekers Admin v1.0</div>
       </aside>
 
@@ -2074,11 +2083,253 @@
           </div>
         </div>
 
+        <!-- MESSAGES (contact form: General Enquiry, Request Demo, Blog Article Submission) -->
+        <div class="pnl" id="pnl-msg">
+          <div class="ph">
+            <div>
+              <div class="ph-kick">Leads &amp; Messages</div>
+              <div class="ph-title">Messages</div>
+              <div class="ph-desc">General enquiries, demo requests, and blog article submissions from the contact form.</div>
+            </div>
+          </div>
+          <div class="tc">
+            <div class="toolbar">
+              <div class="sw"><i class="fas fa-search"></i><input class="si" id="msg-q"
+                  placeholder="Search name, email, or subject…" oninput="renderMessages()"></div>
+              <select class="fs" id="msg-st" onchange="renderMessages()">
+                <option value="all">All Status</option>
+                <option value="unread">Unread</option>
+                <option value="read">Read</option>
+                <option value="replied">Replied</option>
+              </select>
+            </div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="msg-tbl"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- APPLICATIONS (career page + open application form) -->
+        <div class="pnl" id="pnl-app">
+          <div class="ph">
+            <div>
+              <div class="ph-kick">Leads &amp; Messages</div>
+              <div class="ph-title">Applications</div>
+              <div class="ph-desc">Job applications submitted for a specific role, plus open/general applications.</div>
+            </div>
+          </div>
+          <div class="tc">
+            <div class="toolbar">
+              <div class="sw"><i class="fas fa-search"></i><input class="si" id="app-q"
+                  placeholder="Search name, email, or role…" oninput="renderApplications()"></div>
+              <select class="fs" id="app-st" onchange="renderApplications()">
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="reviewing">Reviewing</option>
+                <option value="shortlisted">Shortlisted</option>
+                <option value="rejected">Rejected</option>
+                <option value="hired">Hired</option>
+              </select>
+            </div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Applicant</th>
+                    <th>Contact</th>
+                    <th>Position</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="app-tbl"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- BROCHURE LEADS (products page + AICTE lab page) -->
+        <div class="pnl" id="pnl-ld">
+          <div class="ph">
+            <div>
+              <div class="ph-kick">Leads &amp; Messages</div>
+              <div class="ph-title">Brochure Leads</div>
+              <div class="ph-desc">People who downloaded a product brochure or the AICTE-IDEA Lab brochure.</div>
+            </div>
+          </div>
+          <div class="tc">
+            <div class="toolbar">
+              <div class="sw"><i class="fas fa-search"></i><input class="si" id="ld-q"
+                  placeholder="Search name, email, or product…" oninput="renderLeads()"></div>
+              <select class="fs" id="ld-ty" onchange="renderLeads()">
+                <option value="all">All Types</option>
+                <option value="product">Product Page</option>
+                <option value="lab">AICTE Lab Page</option>
+              </select>
+            </div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Product</th>
+                    <th>Purpose</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="ld-tbl"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
 
   <!-- ══ MODALS ═════════════════════════════════ -->
+
+  <!-- MESSAGE VIEW -->
+  <div class="mw" id="mMsg">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-t" id="msg-title">Message</div>
+          <div class="mh-sub" id="msg-date"></div>
+        </div><button class="mx" onclick="CM('mMsg')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="mb">
+        <div class="view-meta-grid">
+          <div class="vm-item">
+            <div class="vm-lbl">From</div>
+            <div class="vm-val" id="msg-from">—</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-lbl">Contact</div>
+            <div class="vm-val" id="msg-contact">—</div>
+          </div>
+        </div>
+        <div class="view-section-title" style="margin:14px 0 8px">Message</div>
+        <div class="view-desc" id="msg-body"></div>
+        <div class="fg" style="margin-top:16px">
+          <label class="fl">Status</label>
+          <select class="fsel" id="msg-status">
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
+            <option value="replied">Replied</option>
+          </select>
+        </div>
+      </div>
+      <div class="mf">
+        <button class="btn-o" onclick="CM('mMsg')">Close</button>
+        <button class="btn-p" onclick="saveMsgStatus()"><i class="fas fa-save" style="font-size:11px"></i>Update
+          Status</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION VIEW -->
+  <div class="mw" id="mApp">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-t" id="app-title">Application</div>
+          <div class="mh-sub" id="app-date"></div>
+        </div><button class="mx" onclick="CM('mApp')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="mb">
+        <div class="view-meta-grid">
+          <div class="vm-item">
+            <div class="vm-lbl">Applicant</div>
+            <div class="vm-val" id="app-from">—</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-lbl">Position</div>
+            <div class="vm-val" id="app-position">—</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-lbl">Contact</div>
+            <div class="vm-val" id="app-contact">—</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-lbl">Resume</div>
+            <div class="vm-val" id="app-resume">—</div>
+          </div>
+        </div>
+        <div class="view-section-title" style="margin:14px 0 8px">Cover Letter / Message</div>
+        <div class="view-desc" id="app-body"></div>
+        <div class="fg" style="margin-top:16px">
+          <label class="fl">Status</label>
+          <select class="fsel" id="app-status">
+            <option value="pending">Pending</option>
+            <option value="reviewing">Reviewing</option>
+            <option value="shortlisted">Shortlisted</option>
+            <option value="rejected">Rejected</option>
+            <option value="hired">Hired</option>
+          </select>
+        </div>
+      </div>
+      <div class="mf">
+        <button class="btn-o" onclick="CM('mApp')">Close</button>
+        <button class="btn-p" onclick="saveAppStatus()"><i class="fas fa-save" style="font-size:11px"></i>Update
+          Status</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROCHURE LEAD VIEW -->
+  <div class="mw" id="mLead">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-t" id="ld-title">Brochure Lead</div>
+          <div class="mh-sub" id="ld-date"></div>
+        </div><button class="mx" onclick="CM('mLead')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="mb">
+        <div class="view-meta-grid">
+          <div class="vm-item">
+            <div class="vm-lbl">Name</div>
+            <div class="vm-val" id="ld-from">—</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-lbl">Contact</div>
+            <div class="vm-val" id="ld-contact">—</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-lbl">Product</div>
+            <div class="vm-val" id="ld-product">—</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-lbl">Page</div>
+            <div class="vm-val" id="ld-type">—</div>
+          </div>
+        </div>
+        <div class="view-section-title" style="margin:14px 0 8px">Purpose</div>
+        <div class="view-desc" id="ld-body"></div>
+      </div>
+      <div class="mf">
+        <button class="btn-o" onclick="CM('mLead')">Close</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ISSUE VIEW+EDIT -->
   <div class="mw" id="mIssue">
@@ -2368,18 +2619,19 @@
        DEFAULT DATA SEEDING
     ════════════════════════════════════════ */
     /* ── DB cache for admin panel ── */
-    let _db = { issues: [], users: [], jobs: [], posts: [], contacts: [], applications: [], products: [] };
+    let _db = { issues: [], users: [], jobs: [], posts: [], contacts: [], applications: [], products: [], leads: [] };
 
     async function loadAllFromDB() {
       try {
-        const [issues, jobs, posts, contacts, apps, users, products] = await Promise.all([
+        const [issues, jobs, posts, contacts, apps, users, products, leads] = await Promise.all([
           TicketsAPI.getAll(),
           JobsAPI.getAll(),
           BlogAPI.getAll(),
           ContactAPI.getAll(),
           ApplicationsAPI.getAll(),
           HelpdeskUsersAPI.getAll(),
-          ProductsAPI.getAll()
+          ProductsAPI.getAll(),
+          BrochureAPI.getAll()
         ]);
         _db.issues       = issues.data       || [];
         _db.jobs         = jobs.data         || [];
@@ -2388,6 +2640,7 @@
         _db.applications = apps.data         || [];
         _db.users        = users.data        || [];
         _db.products     = products.data     || [];
+        _db.leads        = leads.data        || [];
         updateBadges();
       } catch (e) {
         console.warn('loadAllFromDB error:', e.message);
@@ -2399,6 +2652,9 @@
       document.getElementById('nb-us').textContent = _db.users.length;
       document.getElementById('nb-ca').textContent = _db.jobs.filter(j => j.active).length;
       document.getElementById('nb-bl').textContent = _db.posts.filter(p => p.published).length;
+      document.getElementById('nb-msg').textContent = _db.contacts.filter(c => c.status === 'unread' || !c.status).length;
+      document.getElementById('nb-app').textContent = _db.applications.filter(a => a.status === 'pending' || !a.status).length;
+      document.getElementById('nb-ld').textContent = _db.leads.length;
     }
 
     /* ════════════════════════════════════════
@@ -2448,7 +2704,7 @@
     /* ════════════════════════════════════════
        NAVIGATION
     ════════════════════════════════════════ */
-    const pages = ['ov', 'is', 'us', 'pr', 'ca', 'bl'];
+    const pages = ['ov', 'is', 'us', 'pr', 'ca', 'bl', 'msg', 'app', 'ld'];
     async function go(p) {
       pages.forEach(x => {
         document.getElementById('pnl-' + x).classList.toggle('on', x === p);
@@ -2457,7 +2713,7 @@
       closeSB();
       // Refresh DB data, then render
       try { await loadAllFromDB(); } catch(e) { console.warn('DB load failed:', e.message); }
-      const renders = { ov: renderOverview, is: renderIssues, us: renderUsers, pr: renderProds, ca: renderJobs, bl: renderBlog };
+      const renders = { ov: renderOverview, is: renderIssues, us: renderUsers, pr: renderProds, ca: renderJobs, bl: renderBlog, msg: renderMessages, app: renderApplications, ld: renderLeads };
       if (renders[p]) renders[p]();
     }
 
@@ -2973,6 +3229,157 @@
     }
 
     /* ════════════════════════════════════════
+       MESSAGES (contact form: enquiry / demo / article)
+    ════════════════════════════════════════ */
+    function renderMessages() {
+      const q = (document.getElementById('msg-q')?.value || '').toLowerCase();
+      const sf = document.getElementById('msg-st')?.value || 'all';
+      let list = _db.contacts;
+      if (sf !== 'all') list = list.filter(m => (m.status || 'unread') === sf);
+      if (q) list = list.filter(m => (m.name || '').toLowerCase().includes(q) || (m.email || '').toLowerCase().includes(q) || (m.subject || '').toLowerCase().includes(q));
+      list = [...list].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      const tbl = document.getElementById('msg-tbl');
+      if (!list.length) { tbl.innerHTML = '<tr><td colspan="7" class="empty"><i class="fas fa-envelope"></i>No messages</td></tr>'; return; }
+      tbl.innerHTML = list.map(m => `<tr>
+    <td class="td-b">${m.name}</td>
+    <td class="td-m">${m.email}${m.phone ? '<br>' + m.phone : ''}</td>
+    <td class="td-m">${m.subject || '—'}</td>
+    <td><div class="td-m" style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.message || ''}</div></td>
+    <td><span class="p ${statusPillClass(m.status === 'replied' ? 'resolved' : (m.status === 'read' ? 'in_progress' : 'open'))}">${cap(m.status || 'unread')}</span></td>
+    <td class="td-m">${fmtD(m.created_at)}</td>
+    <td><div class="ar">
+      <button class="ab" onclick="viewMsg(${m.id})" title="View"><i class="fas fa-eye"></i></button>
+      <button class="ab del" onclick="askDelete('message','${m.id}','this message')" title="Delete"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+    }
+
+    let curMsgId = null;
+    function viewMsg(id) {
+      const m = _db.contacts.find(x => x.id === id);
+      if (!m) return;
+      curMsgId = id;
+      document.getElementById('msg-title').textContent = m.subject || 'Message';
+      document.getElementById('msg-date').textContent = fmtD(m.created_at);
+      document.getElementById('msg-from').textContent = m.name;
+      document.getElementById('msg-contact').textContent = m.email + (m.phone ? ' · ' + m.phone : '');
+      document.getElementById('msg-body').textContent = m.message || '';
+      document.getElementById('msg-status').value = m.status || 'unread';
+      OM('mMsg');
+      // Viewing marks it read automatically, same as opening an email
+      if ((m.status || 'unread') === 'unread') {
+        ContactAPI.updateStatus(id, 'read').then(() => { loadAllFromDB().then(() => { renderMessages(); updateBadges(); }); }).catch(() => {});
+      }
+    }
+
+    async function saveMsgStatus() {
+      const status = document.getElementById('msg-status').value;
+      try {
+        await ContactAPI.updateStatus(curMsgId, status);
+        await loadAllFromDB();
+        CM('mMsg');
+        renderMessages();
+        updateBadges();
+        showToast('Status updated');
+      } catch (e) { showToast('Error: ' + e.message); }
+    }
+
+    /* ════════════════════════════════════════
+       APPLICATIONS (career page + open application)
+    ════════════════════════════════════════ */
+    function renderApplications() {
+      const q = (document.getElementById('app-q')?.value || '').toLowerCase();
+      const sf = document.getElementById('app-st')?.value || 'all';
+      let list = _db.applications;
+      if (sf !== 'all') list = list.filter(a => (a.status || 'pending') === sf);
+      if (q) list = list.filter(a => (a.name || '').toLowerCase().includes(q) || (a.email || '').toLowerCase().includes(q) || (a.job_title || '').toLowerCase().includes(q));
+      list = [...list].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      const tbl = document.getElementById('app-tbl');
+      if (!list.length) { tbl.innerHTML = '<tr><td colspan="6" class="empty"><i class="fas fa-file-alt"></i>No applications</td></tr>'; return; }
+      const stMap = { pending: 'p-o', reviewing: 'p-ip', shortlisted: 'p-r', hired: 'p-r', rejected: 'p-c' };
+      tbl.innerHTML = list.map(a => `<tr>
+    <td class="td-b">${a.name}</td>
+    <td class="td-m">${a.email}${a.phone ? '<br>' + a.phone : ''}</td>
+    <td class="td-m">${a.job_title || 'Open Application'}</td>
+    <td><span class="p ${stMap[a.status] || 'p-o'}">${cap(a.status || 'pending')}</span></td>
+    <td class="td-m">${fmtD(a.created_at)}</td>
+    <td><div class="ar">
+      <button class="ab" onclick="viewApp(${a.id})" title="View"><i class="fas fa-eye"></i></button>
+      <button class="ab del" onclick="askDelete('application','${a.id}','this application')" title="Delete"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+    }
+
+    let curAppId = null;
+    function viewApp(id) {
+      const a = _db.applications.find(x => x.id === id);
+      if (!a) return;
+      curAppId = id;
+      document.getElementById('app-title').textContent = a.name;
+      document.getElementById('app-date').textContent = fmtD(a.created_at);
+      document.getElementById('app-from').textContent = a.name;
+      document.getElementById('app-position').textContent = a.job_title || 'Open Application';
+      document.getElementById('app-contact').textContent = a.email + (a.phone ? ' · ' + a.phone : '');
+      document.getElementById('app-resume').innerHTML = a.resume_url
+        ? `<a href="${a.resume_url}" target="_blank" style="color:var(--accent)">View Resume</a>`
+        : 'Not provided';
+      document.getElementById('app-body').textContent = a.cover_letter || 'No cover letter provided.';
+      document.getElementById('app-status').value = a.status || 'pending';
+      OM('mApp');
+    }
+
+    async function saveAppStatus() {
+      const status = document.getElementById('app-status').value;
+      try {
+        await ApplicationsAPI.updateStatus(curAppId, status);
+        await loadAllFromDB();
+        CM('mApp');
+        renderApplications();
+        updateBadges();
+        showToast('Status updated');
+      } catch (e) { showToast('Error: ' + e.message); }
+    }
+
+    /* ════════════════════════════════════════
+       BROCHURE LEADS (products page + AICTE lab page)
+    ════════════════════════════════════════ */
+    function renderLeads() {
+      const q = (document.getElementById('ld-q')?.value || '').toLowerCase();
+      const tf = document.getElementById('ld-ty')?.value || 'all';
+      let list = _db.leads;
+      if (tf !== 'all') list = list.filter(l => l.type === tf);
+      if (q) list = list.filter(l => (l.name || '').toLowerCase().includes(q) || (l.email || '').toLowerCase().includes(q) || (l.product || '').toLowerCase().includes(q));
+      list = [...list].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      const tbl = document.getElementById('ld-tbl');
+      if (!list.length) { tbl.innerHTML = '<tr><td colspan="7" class="empty"><i class="fas fa-download"></i>No brochure leads yet</td></tr>'; return; }
+      tbl.innerHTML = list.map(l => `<tr>
+    <td class="td-b">${l.name}</td>
+    <td class="td-m">${l.email}<br>${l.mobile}</td>
+    <td><span class="p p-o">${l.product}</span></td>
+    <td><div class="td-m" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.purpose || ''}</div></td>
+    <td class="td-m">${l.type === 'lab' ? 'AICTE Lab' : 'Product'}</td>
+    <td class="td-m">${fmtD(l.created_at)}</td>
+    <td><div class="ar">
+      <button class="ab" onclick="viewLead(${l.id})" title="View"><i class="fas fa-eye"></i></button>
+      <button class="ab del" onclick="askDelete('lead','${l.id}','this lead')" title="Delete"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+    }
+
+    function viewLead(id) {
+      const l = _db.leads.find(x => x.id === id);
+      if (!l) return;
+      document.getElementById('ld-title').textContent = l.name;
+      document.getElementById('ld-date').textContent = fmtD(l.created_at);
+      document.getElementById('ld-from').textContent = l.name;
+      document.getElementById('ld-contact').textContent = l.email + ' · ' + l.mobile;
+      document.getElementById('ld-product').textContent = l.product;
+      document.getElementById('ld-type').textContent = l.type === 'lab' ? 'AICTE-IDEA Lab Page' : 'Products Page';
+      document.getElementById('ld-body').textContent = l.purpose || '';
+      OM('mLead');
+    }
+
+    /* ════════════════════════════════════════
        TAGS UI
     ════════════════════════════════════════ */
     function addTag(e, prefix) {
@@ -3035,12 +3442,17 @@
         else if (type === 'application') await ApplicationsAPI.delete(id);
         else if (type === 'user')   await HelpdeskUsersAPI.delete(id);
         else if (type === 'product') await ProductsAPI.delete(id);
+        else if (type === 'message') await ContactAPI.delete(id);
+        else if (type === 'lead')    await BrochureAPI.delete(id);
         await loadAllFromDB();
         if (type === 'issue') { renderIssues(); renderOverview(); }
         else if (type === 'job')  renderJobs();
         else if (type === 'post') renderBlog();
         else if (type === 'user') renderUsers();
         else if (type === 'product') renderProds();
+        else if (type === 'application') renderApplications();
+        else if (type === 'message') renderMessages();
+        else if (type === 'lead') renderLeads();
         updateBadges();
         showToast('Deleted');
       } catch (e) { showToast('Delete failed: ' + e.message); }

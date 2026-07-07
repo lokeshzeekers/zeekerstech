@@ -115,6 +115,8 @@ const TicketsAPI = {
 // ─── Brochure Downloads ──────────────────────────────────────
 const BrochureAPI = {
     submit: (data)         => apiFetch('brochure.php', { method: 'POST', body: JSON.stringify(data) }),
+    getAll: ()             => apiFetch('brochure.php', { tokenScope: 'admin' }),
+    delete: (id)           => apiFetch(`brochure.php?id=${id}`, { method: 'DELETE', tokenScope: 'admin' }),
 };
 
 // ─── Admins (admin-panel login accounts) ──────────────────────

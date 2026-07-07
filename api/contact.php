@@ -43,27 +43,6 @@ if ($method === 'POST') {
     );
     $stmt->execute([$name, $email, $phone, $subject, $message]);
 
-    $isDemo = stripos($subject, 'demo') !== false;
-    $isArticle = stripos($subject, 'article') !== false;
-    $heading = $isDemo ? '🖥️ New Product Demo Request' : ($isArticle ? '📝 New Blog Article Submission' : '✉️ New Contact Enquiry');
-    $subtitle = $isArticle
-        ? 'Someone pitched an article idea for the ZTS Blog'
-        : 'Someone submitted the contact form on zeekerstechnology.com';
-
-    sendLeadEmail(
-        "New Contact Form Submission — $subject",
-        $heading,
-        $subtitle,
-        [
-            'Name'    => $name,
-            'Email'   => "<a href='mailto:$email' style='color:#ff6b2b'>$email</a>",
-            'Phone'   => $phone ? "<a href='tel:$phone' style='color:#ff6b2b'>$phone</a>" : null,
-            'Subject' => $subject,
-            'Message' => nl2br($message),
-        ],
-        $email
-    );
-
     respond(['success' => true, 'message' => 'Message sent successfully'], 201);
 }
 
