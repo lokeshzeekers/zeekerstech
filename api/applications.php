@@ -59,6 +59,30 @@ if ($method === 'POST') {
     );
     $stmt->execute([$job_id ?: null, $name, $email, $phone, $resume_url, $cover_letter]);
 
+    // Look up the job title for context (job_id is null/0 for an open/general application)
+    $jobTitle = 'Open Application (no specific role selected)';
+    if ($job_id) {
+        $jobStmt = $db->prepare('SELECT title FROM jobs WHERE id = ?');
+        $jobStmt->execute([$job_id]);
+        $job = $jobStmt->fetch();
+        if ($job) $jobTitle = $job['title'];
+    }
+
+    sendLeadEmail(
+        "New Job Application — $jobTitle",
+        '💼 New Job Application',
+        'Someone applied for a role on zeekerstechnology.com/career',
+        [
+            'Applicant' => $name,
+            'Email'     => "<a href='mailto:$email' style='color:#ff6b2b'>$email</a>",
+            'Phone'     => $phone ? "<a href='tel:$phone' style='color:#ff6b2b'>$phone</a>" : null,
+            'Position'  => $jobTitle,
+            'Resume'    => $resume_url ? "<a href='$resume_url' target='_blank' style='color:#ff6b2b'>View Resume</a>" : null,
+            'Cover Letter / Message' => $cover_letter ? nl2br($cover_letter) : null,
+        ],
+        $email
+    );
+
     respond(['success' => true, 'message' => 'Application submitted successfully'], 201);
 }
 

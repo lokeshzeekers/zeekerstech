@@ -531,7 +531,7 @@
 
             });
 
-        function submitArticle() {
+        async function submitArticle() {
 
             const name = document.getElementById("cname").value.trim();
             const mobile = document.getElementById("cmobile").value.trim();
@@ -542,6 +542,19 @@
             if (!name || !mobile || !email || !topic) {
                 alert("Please fill all mandatory fields.");
                 return;
+            }
+
+            // Save + email the team (best-effort — don't block the WhatsApp flow below if this fails)
+            try {
+                await ContactAPI.submit({
+                    name,
+                    email,
+                    phone: mobile,
+                    subject: `Blog Article Submission — ${category}`,
+                    message: topic
+                });
+            } catch (e) {
+                console.warn('Article submission email failed:', e.message);
             }
 
             const message = encodeURIComponent(

@@ -50,61 +50,26 @@ $stmt = $db->prepare(
 $stmt->execute([$name, $mobile, $email, $product, $purpose, $type]);
 
 // ── Send email notification ───────────────────────────────────
-$to      = 'contact@zeekerstechnology.com'; // ← your email
 $subject = ($type === 'lab')
     ? "New AICTE-IDEA Lab Brochure Download — $name"
     : "New Product Brochure Download — $product by $name";
 
 $typeLabel = ($type === 'lab') ? 'AICTE-IDEA Lab Brochure' : 'Product Brochure';
 
-$body = "
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset='utf-8'>
-<style>
-  body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
-  .wrap { max-width: 560px; margin: 30px auto; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
-  .header { background: linear-gradient(135deg, #ff6b2b, #ff8c00); padding: 28px 32px; }
-  .header h2 { color: #fff; margin: 0; font-size: 20px; }
-  .header p  { color: rgba(255,255,255,.85); margin: 6px 0 0; font-size: 13px; }
-  .body { padding: 28px 32px; }
-  .row { display: flex; border-bottom: 1px solid #f0f0f0; padding: 10px 0; }
-  .row:last-child { border-bottom: none; }
-  .label { color: #888; font-size: 12px; width: 130px; flex-shrink: 0; padding-top: 2px; }
-  .value { color: #222; font-size: 14px; font-weight: 500; }
-  .badge { display: inline-block; background: #fff3ec; color: #ff6b2b; border: 1px solid #ffd5bc; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-  .footer { background: #fafafa; padding: 14px 32px; font-size: 11px; color: #aaa; border-top: 1px solid #eee; }
-</style>
-</head>
-<body>
-<div class='wrap'>
-  <div class='header'>
-    <h2>📥 New $typeLabel Lead</h2>
-    <p>Someone downloaded a brochure from zeekerstechnology.com</p>
-  </div>
-  <div class='body'>
-    <div class='row'><span class='label'>Name</span><span class='value'>$name</span></div>
-    <div class='row'><span class='label'>Email</span><span class='value'><a href='mailto:$email' style='color:#ff6b2b'>$email</a></span></div>
-    <div class='row'><span class='label'>Mobile</span><span class='value'><a href='tel:$mobile' style='color:#ff6b2b'>$mobile</a></span></div>
-    <div class='row'><span class='label'>Product / Brochure</span><span class='value'><span class='badge'>$product</span></span></div>
-    <div class='row'><span class='label'>Purpose</span><span class='value'>$purpose</span></div>
-    <div class='row'><span class='label'>Type</span><span class='value'>" . ucfirst($type) . " Page</span></div>
-    <div class='row'><span class='label'>Time</span><span class='value'>" . date('d M Y, h:i A') . " IST</span></div>
-  </div>
-  <div class='footer'>Zeekers Technology Solutions · zeekerstechnology.com · Auto-generated lead notification</div>
-</div>
-</body>
-</html>
-";
-
-$headers  = "MIME-Version: 1.0\r\n";
-$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-$headers .= "From: Zeekers Website <noreply@zeekerstechnology.com>\r\n";
-$headers .= "Reply-To: $email\r\n";
-$headers .= "X-Mailer: PHP/" . phpversion();
-
-$sent = mail($to, $subject, $body, $headers);
+$sent = sendLeadEmail(
+    $subject,
+    "📥 New $typeLabel Lead",
+    'Someone downloaded a brochure from zeekerstechnology.com',
+    [
+        'Name'               => $name,
+        'Email'              => "<a href='mailto:$email' style='color:#ff6b2b'>$email</a>",
+        'Mobile'             => "<a href='tel:$mobile' style='color:#ff6b2b'>$mobile</a>",
+        'Product / Brochure' => "<span style='display:inline-block;background:#fff3ec;color:#ff6b2b;border:1px solid #ffd5bc;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600'>$product</span>",
+        'Purpose'            => $purpose,
+        'Type'               => ucfirst($type) . ' Page',
+    ],
+    $email
+);
 
 // ── Return brochure file path ────────────────────────────────
 $brochureMap = [
