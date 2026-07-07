@@ -2622,39 +2622,44 @@
     let _db = { issues: [], users: [], jobs: [], posts: [], contacts: [], applications: [], products: [], leads: [] };
 
     async function loadAllFromDB() {
-      try {
-        const [issues, jobs, posts, contacts, apps, users, products, leads] = await Promise.all([
-          TicketsAPI.getAll(),
-          JobsAPI.getAll(),
-          BlogAPI.getAll(),
-          ContactAPI.getAll(),
-          ApplicationsAPI.getAll(),
-          HelpdeskUsersAPI.getAll(),
-          ProductsAPI.getAll(),
-          BrochureAPI.getAll()
-        ]);
-        _db.issues       = issues.data       || [];
-        _db.jobs         = jobs.data         || [];
-        _db.posts        = posts.data        || [];
-        _db.contacts     = contacts.data     || [];
-        _db.applications = apps.data         || [];
-        _db.users        = users.data        || [];
-        _db.products     = products.data     || [];
-        _db.leads        = leads.data        || [];
-        updateBadges();
-      } catch (e) {
-        console.warn('loadAllFromDB error:', e.message);
-      }
+      // Promise.allSettled (not Promise.all) — a single endpoint failing
+      // (e.g. a stale deploy, a transient network blip) must never blank
+      // out every other section of the dashboard.
+      const specs = [
+        ['issues',       () => TicketsAPI.getAll()],
+        ['jobs',         () => JobsAPI.getAll()],
+        ['posts',        () => BlogAPI.getAll()],
+        ['contacts',     () => ContactAPI.getAll()],
+        ['applications', () => ApplicationsAPI.getAll()],
+        ['users',        () => HelpdeskUsersAPI.getAll()],
+        ['products',     () => ProductsAPI.getAll()],
+        ['leads',        () => BrochureAPI.getAll()],
+      ];
+      const results = await Promise.allSettled(specs.map(([, fn]) => fn()));
+      results.forEach((res, i) => {
+        const key = specs[i][0];
+        if (res.status === 'fulfilled') {
+          _db[key] = res.value.data || [];
+        } else {
+          console.warn(`loadAllFromDB: ${key} failed —`, res.reason?.message || res.reason);
+        }
+      });
+      updateBadges();
+    }
+
+    function setBadge(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
     }
 
     function updateBadges() {
-      document.getElementById('nb-is').textContent = _db.issues.length;
-      document.getElementById('nb-us').textContent = _db.users.length;
-      document.getElementById('nb-ca').textContent = _db.jobs.filter(j => j.active).length;
-      document.getElementById('nb-bl').textContent = _db.posts.filter(p => p.published).length;
-      document.getElementById('nb-msg').textContent = _db.contacts.filter(c => c.status === 'unread' || !c.status).length;
-      document.getElementById('nb-app').textContent = _db.applications.filter(a => a.status === 'pending' || !a.status).length;
-      document.getElementById('nb-ld').textContent = _db.leads.length;
+      setBadge('nb-is', _db.issues.length);
+      setBadge('nb-us', _db.users.length);
+      setBadge('nb-ca', _db.jobs.filter(j => j.active).length);
+      setBadge('nb-bl', _db.posts.filter(p => p.published).length);
+      setBadge('nb-msg', _db.contacts.filter(c => c.status === 'unread' || !c.status).length);
+      setBadge('nb-app', _db.applications.filter(a => a.status === 'pending' || !a.status).length);
+      setBadge('nb-ld', _db.leads.length);
     }
 
     /* ════════════════════════════════════════
