@@ -18,6 +18,25 @@ $db     = getDB();
 $method = $_SERVER['REQUEST_METHOD'];
 $id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
+// resume_url was TEXT (64KB limit) and there was no dedicated filename
+// column; widen it and add resume_name so the actual uploaded file
+// (as a data URL) and its original filename can both be stored.
+function ensureApplicationColumns(PDO $db): void {
+    static $checked = false;
+    if ($checked) return;
+    $checked = true;
+
+    $cols = $db->query('SHOW COLUMNS FROM applications')->fetchAll(PDO::FETCH_COLUMN);
+    if (!in_array('resume_name', $cols, true)) {
+        $db->exec("ALTER TABLE applications ADD COLUMN `resume_name` VARCHAR(255) DEFAULT ''");
+    }
+    $urlCol = $db->query("SHOW COLUMNS FROM applications LIKE 'resume_url'")->fetch();
+    if ($urlCol && stripos($urlCol['Type'], 'longtext') === false) {
+        $db->exec('ALTER TABLE applications MODIFY COLUMN resume_url LONGTEXT');
+    }
+}
+ensureApplicationColumns($db);
+
 // ── GET (admin) ───────────────────────────────────────────────
 if ($method === 'GET') {
     requireAdminAuth();
@@ -48,16 +67,23 @@ if ($method === 'POST') {
     $email        = filter_var($input['email'] ?? '', FILTER_VALIDATE_EMAIL);
     $phone        = sanitize($input['phone'] ?? '');
     $cover_letter = sanitize($input['cover_letter'] ?? '');
-    $resume_url   = sanitize($input['resume_url'] ?? '');
+    $resume_name  = sanitize($input['resume_name'] ?? '');
+    $resume_url   = $input['resume_url'] ?? ''; // data URL — not run through sanitize() to avoid touching base64 content
 
     if (!$name)  respondError('Name is required');
     if (!$email) respondError('Valid email is required');
 
+    // The resume is stored inline as a data URL. Cap the size so a large
+    // file can't blow past the DB's max packet size or PHP's post limits.
+    if ($resume_url && strlen($resume_url) > 7 * 1024 * 1024) {
+        respondError('Resume file is too large (max 5MB). Please attach a smaller file.');
+    }
+
     $stmt = $db->prepare(
-        'INSERT INTO applications (job_id, name, email, phone, resume_url, cover_letter)
-         VALUES (?, ?, ?, ?, ?, ?)'
+        'INSERT INTO applications (job_id, name, email, phone, resume_name, resume_url, cover_letter)
+         VALUES (?, ?, ?, ?, ?, ?, ?)'
     );
-    $stmt->execute([$job_id ?: null, $name, $email, $phone, $resume_url, $cover_letter]);
+    $stmt->execute([$job_id ?: null, $name, $email, $phone, $resume_name, $resume_url, $cover_letter]);
 
     respond(['success' => true, 'message' => 'Application submitted successfully'], 201);
 }

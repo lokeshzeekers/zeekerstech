@@ -1064,6 +1064,9 @@
                 document.getElementById('modalJobLocation').textContent = job.location || '';
                 document.getElementById('modalJobType').textContent = job.type || '';
                 document.getElementById('modalJobDept').textContent = job.dept || '';
+                resetApplyForm();
+                const btn = document.querySelector('.btn-submit');
+                if (btn) { btn.disabled = false; btn.textContent = 'Submit Application'; }
                 document.getElementById('modalForm').style.display = '';
                 document.getElementById('modalSuccess').classList.remove('show');
                 const modal = document.getElementById('applyModal');
@@ -1076,6 +1079,27 @@
             function closeModal() {
                 document.getElementById('applyModal').classList.remove('open');
                 document.body.style.overflow = '';
+                resetApplyForm();
+            }
+
+            function readAsDataUrl(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.onerror = () => reject(new Error('Could not read file'));
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            function resetApplyForm() {
+                ['fname', 'femail', 'fphone', 'fmsg'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                const fileInput = document.getElementById('fileInput');
+                if (fileInput) fileInput.value = '';
+                const fileName = document.getElementById('fileName');
+                if (fileName) { fileName.textContent = ''; fileName.style.display = 'none'; }
             }
 
             async function submitApplication() {
@@ -1087,16 +1111,32 @@
                     alert('Please fill in your name, email, and motivation message.');
                     return;
                 }
+
+                const fileInput = document.getElementById('fileInput');
+                const file = fileInput && fileInput.files[0];
+                if (file && file.size > 5 * 1024 * 1024) {
+                    alert('Resume file is too large — max 5MB.');
+                    return;
+                }
+
                 const btn = document.querySelector('.btn-submit');
                 if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
                 try {
+                    let resume_name = '', resume_url = '';
+                    if (file) {
+                        resume_name = file.name;
+                        resume_url = await readAsDataUrl(file);
+                    }
+
                     // Get job_id from modal header (stored in data attr when openApply called)
                     const jobId = parseInt(document.getElementById('applyModal').dataset.jobId || 0);
                     await ApplicationsAPI.submit({
                         job_id: jobId,
                         name, email, phone,
-                        cover_letter: msg
+                        cover_letter: msg,
+                        resume_name, resume_url
                     });
+                    resetApplyForm();
                     document.getElementById('modalForm').style.display = 'none';
                     document.getElementById('modalSuccess').classList.add('show');
                 } catch (e) {
