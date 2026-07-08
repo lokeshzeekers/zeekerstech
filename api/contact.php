@@ -17,6 +17,18 @@ $db     = getDB();
 $method = $_SERVER['REQUEST_METHOD'];
 $id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
+function ensureContactColumns(PDO $db): void {
+    static $checked = false;
+    if ($checked) return;
+    $checked = true;
+
+    $existing = $db->query('SHOW COLUMNS FROM contacts')->fetchAll(PDO::FETCH_COLUMN);
+    if (!in_array('organization', $existing, true)) {
+        $db->exec("ALTER TABLE contacts ADD COLUMN `organization` VARCHAR(255) DEFAULT ''");
+    }
+}
+ensureContactColumns($db);
+
 // ── GET (admin) ───────────────────────────────────────────────
 if ($method === 'GET') {
     requireAdminAuth();
@@ -28,20 +40,21 @@ if ($method === 'GET') {
 if ($method === 'POST') {
     $input = getInput();
 
-    $name    = sanitize($input['name'] ?? '');
-    $email   = filter_var($input['email'] ?? '', FILTER_VALIDATE_EMAIL);
-    $phone   = sanitize($input['phone'] ?? '');
-    $subject = sanitize($input['subject'] ?? 'General Enquiry');
-    $message = sanitize($input['message'] ?? '');
+    $name         = sanitize($input['name'] ?? '');
+    $email        = filter_var($input['email'] ?? '', FILTER_VALIDATE_EMAIL);
+    $phone        = sanitize($input['phone'] ?? '');
+    $organization = sanitize($input['organization'] ?? '');
+    $subject      = sanitize($input['subject'] ?? 'General Enquiry');
+    $message      = sanitize($input['message'] ?? '');
 
     if (!$name)    respondError('Name is required');
     if (!$email)   respondError('Valid email is required');
     if (!$message) respondError('Message is required');
 
     $stmt = $db->prepare(
-        'INSERT INTO contacts (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)'
+        'INSERT INTO contacts (name, email, phone, organization, subject, message) VALUES (?, ?, ?, ?, ?, ?)'
     );
-    $stmt->execute([$name, $email, $phone, $subject, $message]);
+    $stmt->execute([$name, $email, $phone, $organization, $subject, $message]);
 
     respond(['success' => true, 'message' => 'Message sent successfully'], 201);
 }

@@ -2225,6 +2225,10 @@
             <div class="vm-lbl">Contact</div>
             <div class="vm-val" id="msg-contact">—</div>
           </div>
+          <div class="vm-item">
+            <div class="vm-lbl">Organisation</div>
+            <div class="vm-val" id="msg-org">—</div>
+          </div>
         </div>
         <div class="view-section-title" style="margin:14px 0 8px">Message</div>
         <div class="view-desc" id="msg-body"></div>
@@ -3246,7 +3250,7 @@
       const tbl = document.getElementById('msg-tbl');
       if (!list.length) { tbl.innerHTML = '<tr><td colspan="7" class="empty"><i class="fas fa-envelope"></i>No messages</td></tr>'; return; }
       tbl.innerHTML = list.map(m => `<tr>
-    <td class="td-b">${m.name}</td>
+    <td><div class="td-b">${m.name}</div>${m.organization ? `<div class="td-m">${m.organization}</div>` : ''}</td>
     <td class="td-m">${m.email}${m.phone ? '<br>' + m.phone : ''}</td>
     <td class="td-m">${m.subject || '—'}</td>
     <td><div class="td-m" style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.message || ''}</div></td>
@@ -3268,6 +3272,7 @@
       document.getElementById('msg-date').textContent = fmtD(m.created_at);
       document.getElementById('msg-from').textContent = m.name;
       document.getElementById('msg-contact').textContent = m.email + (m.phone ? ' · ' + m.phone : '');
+      document.getElementById('msg-org').textContent = m.organization || '—';
       document.getElementById('msg-body').textContent = m.message || '';
       document.getElementById('msg-status').value = m.status || 'unread';
       OM('mMsg');

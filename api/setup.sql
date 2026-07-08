@@ -59,14 +59,15 @@ CREATE TABLE IF NOT EXISTS applications (
 
 -- Contact Messages
 CREATE TABLE IF NOT EXISTS contacts (
-  id         INT AUTO_INCREMENT PRIMARY KEY,
-  name       VARCHAR(255),
-  email      VARCHAR(255),
-  phone      VARCHAR(20),
-  subject    VARCHAR(255),
-  message    TEXT,
-  status     VARCHAR(50)  DEFAULT 'unread',
-  created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  name         VARCHAR(255),
+  email        VARCHAR(255),
+  phone        VARCHAR(20),
+  organization VARCHAR(255) DEFAULT '',
+  subject      VARCHAR(255),
+  message      TEXT,
+  status       VARCHAR(50)  DEFAULT 'unread',
+  created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Helpdesk Tickets

@@ -919,17 +919,24 @@
                 const activePanel = document.querySelector('.form-panel.active');
                 if (!activePanel) return;
 
-                const nameEl    = activePanel.querySelector('input[type="text"]');
-                const emailEl   = activePanel.querySelector('input[type="email"]');
-                const phoneEl   = activePanel.querySelector('input[type="tel"]');
-                const subjectEl = activePanel.querySelector('select, input[placeholder*="subject"], input[placeholder*="Subject"]');
-                const msgEl     = activePanel.querySelector('textarea');
+                // Both panels have exactly two type="text" inputs, in this fixed
+                // order: [Full Name, Organisation/Company]. querySelector() alone
+                // only grabs the first, which is why the organization field was
+                // being silently dropped before.
+                const textInputs = activePanel.querySelectorAll('input[type="text"]');
+                const nameEl  = textInputs[0];
+                const orgEl   = textInputs[1];
+                const emailEl = activePanel.querySelector('input[type="email"]');
+                const phoneEl = activePanel.querySelector('input[type="tel"]');
+                const subjectEl = activePanel.querySelector('select');
+                const msgEl   = activePanel.querySelector('textarea');
 
-                const name    = nameEl  ? nameEl.value.trim()  : '';
-                const email   = emailEl ? emailEl.value.trim() : '';
-                const phone   = phoneEl ? phoneEl.value.trim() : '';
-                const subject = subjectEl ? subjectEl.value.trim() : activePanel.id === 'tab-demo' ? 'Product Demo Request' : 'General Enquiry';
-                const message = msgEl   ? msgEl.value.trim()   : '';
+                const name         = nameEl  ? nameEl.value.trim()  : '';
+                const organization = orgEl   ? orgEl.value.trim()   : '';
+                const email        = emailEl ? emailEl.value.trim() : '';
+                const phone        = phoneEl ? phoneEl.value.trim() : '';
+                const subject      = subjectEl ? subjectEl.value.trim() : activePanel.id === 'tab-demo' ? 'Product Demo Request' : 'General Enquiry';
+                const message      = msgEl   ? msgEl.value.trim()   : '';
 
                 if (!name || !email || !message) {
                     alert('Please fill in your name, email, and message.');
@@ -944,7 +951,7 @@
                 }
 
                 try {
-                    await ContactAPI.submit({ name, email, phone, subject, message });
+                    await ContactAPI.submit({ name, email, phone, organization, subject, message });
                     clearPanelFields(activePanel);
                     document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
                     const success = document.getElementById('formSuccess');
