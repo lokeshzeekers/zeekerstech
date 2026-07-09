@@ -74,6 +74,17 @@ const ApplicationsAPI = {
     getOne: (id)           => apiFetch(`applications.php?id=${id}`, { tokenScope: 'admin' }),
     updateStatus: (id, st) => apiFetch(`applications.php?id=${id}`, { method: 'PUT', tokenScope: 'admin', body: JSON.stringify({ status: st }) }),
     delete: (id)           => apiFetch(`applications.php?id=${id}`, { method: 'DELETE', tokenScope: 'admin' }),
+    // Real multipart file upload — saved to disk server-side, returns a
+    // small URL string instead of embedding the file as base64 in JSON
+    // (which was hitting a request-body-size limit on this host).
+    uploadResume: async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(`${API_BASE}/upload-resume.php`, { method: 'POST', body: formData });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        return data;
+    },
 };
 
 // ─── Contact ─────────────────────────────────────────────────

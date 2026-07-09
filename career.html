@@ -724,7 +724,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Your JS -->
-        <script src="/assets/js/api.js?v=3"></script>
+        <script src="/assets/js/api.js?v=4"></script>
         <script type="module" src="/src/js/main.js"></script>
 
         <script>
@@ -1082,15 +1082,6 @@
                 resetApplyForm();
             }
 
-            function readAsDataUrl(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = e => resolve(e.target.result);
-                    reader.onerror = () => reject(new Error('Could not read file'));
-                    reader.readAsDataURL(file);
-                });
-            }
-
             function resetApplyForm() {
                 ['fname', 'femail', 'fphone', 'fmsg'].forEach(id => {
                     const el = document.getElementById(id);
@@ -1124,8 +1115,12 @@
                 try {
                     let resume_name = '', resume_url = '';
                     if (file) {
-                        resume_name = file.name;
-                        resume_url = await readAsDataUrl(file);
+                        // Real file upload (saved to disk, returns a small URL) —
+                        // avoids embedding the file as base64 in the JSON body,
+                        // which could hit a request-size limit on some hosts.
+                        const uploaded = await ApplicationsAPI.uploadResume(file);
+                        resume_name = uploaded.name;
+                        resume_url = uploaded.url;
                     }
 
                     // Get job_id from modal header (stored in data attr when openApply called)
