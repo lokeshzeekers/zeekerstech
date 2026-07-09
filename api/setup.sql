@@ -50,6 +50,8 @@ CREATE TABLE IF NOT EXISTS applications (
   name         VARCHAR(255),
   email        VARCHAR(255),
   phone        VARCHAR(20),
+  experience   VARCHAR(50)  DEFAULT '',
+  linkedin_url VARCHAR(500) DEFAULT '',
   resume_name  VARCHAR(255) DEFAULT '',
   resume_url   LONGTEXT,
   cover_letter TEXT,

@@ -30,6 +30,12 @@ function ensureApplicationColumns(PDO $db): void {
     if (!in_array('resume_name', $cols, true)) {
         $db->exec("ALTER TABLE applications ADD COLUMN `resume_name` VARCHAR(255) DEFAULT ''");
     }
+    if (!in_array('experience', $cols, true)) {
+        $db->exec("ALTER TABLE applications ADD COLUMN `experience` VARCHAR(50) DEFAULT ''");
+    }
+    if (!in_array('linkedin_url', $cols, true)) {
+        $db->exec("ALTER TABLE applications ADD COLUMN `linkedin_url` VARCHAR(500) DEFAULT ''");
+    }
     $urlCol = $db->query("SHOW COLUMNS FROM applications LIKE 'resume_url'")->fetch();
     if ($urlCol && stripos($urlCol['Type'], 'longtext') === false) {
         $db->exec('ALTER TABLE applications MODIFY COLUMN resume_url LONGTEXT');
@@ -66,6 +72,8 @@ if ($method === 'POST') {
     $name         = sanitize($input['name'] ?? '');
     $email        = filter_var($input['email'] ?? '', FILTER_VALIDATE_EMAIL);
     $phone        = sanitize($input['phone'] ?? '');
+    $experience   = sanitize($input['experience'] ?? '');
+    $linkedin_url = trim($input['linkedin_url'] ?? '');
     $cover_letter = sanitize($input['cover_letter'] ?? '');
     $resume_name  = sanitize($input['resume_name'] ?? '');
     $resume_url   = $input['resume_url'] ?? ''; // data URL — not run through sanitize() to avoid touching base64 content
@@ -80,10 +88,10 @@ if ($method === 'POST') {
     }
 
     $stmt = $db->prepare(
-        'INSERT INTO applications (job_id, name, email, phone, resume_name, resume_url, cover_letter)
-         VALUES (?, ?, ?, ?, ?, ?, ?)'
+        'INSERT INTO applications (job_id, name, email, phone, experience, linkedin_url, resume_name, resume_url, cover_letter)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
-    $stmt->execute([$job_id ?: null, $name, $email, $phone, $resume_name, $resume_url, $cover_letter]);
+    $stmt->execute([$job_id ?: null, $name, $email, $phone, $experience, $linkedin_url, $resume_name, $resume_url, $cover_letter]);
 
     respond(['success' => true, 'message' => 'Application submitted successfully'], 201);
 }

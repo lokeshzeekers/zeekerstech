@@ -1083,10 +1083,12 @@
             }
 
             function resetApplyForm() {
-                ['fname', 'femail', 'fphone', 'fmsg'].forEach(id => {
+                ['fname', 'femail', 'fphone', 'fmsg', 'flink'].forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.value = '';
                 });
+                const exp = document.getElementById('fexp');
+                if (exp) exp.selectedIndex = 0;
                 const fileInput = document.getElementById('fileInput');
                 if (fileInput) fileInput.value = '';
                 const fileName = document.getElementById('fileName');
@@ -1098,6 +1100,8 @@
                 const email = document.getElementById('femail').value.trim();
                 const msg = document.getElementById('fmsg').value.trim();
                 const phone = document.getElementById('fphone') ? document.getElementById('fphone').value.trim() : '';
+                const experience = document.getElementById('fexp') ? document.getElementById('fexp').value.trim() : '';
+                const linkedin_url = document.getElementById('flink') ? document.getElementById('flink').value.trim() : '';
                 if (!name || !email || !msg) {
                     alert('Please fill in your name, email, and motivation message.');
                     return;
@@ -1128,6 +1132,7 @@
                     await ApplicationsAPI.submit({
                         job_id: jobId,
                         name, email, phone,
+                        experience, linkedin_url,
                         cover_letter: msg,
                         resume_name, resume_url
                     });
