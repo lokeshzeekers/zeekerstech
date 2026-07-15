@@ -32,8 +32,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <!-- GOOGLE FONTS -->
-    <link
-        rel="stylesheet">
+    <link rel="stylesheet">
 
 </head>
 
@@ -75,27 +74,14 @@
             </div>
             <div class="desktop-nav">
                 <ul>
-
-                    <li><a href="index.html">Home</a></li>
-
-                    <!-- ABOUT -->
-                    <li><a href="about.html">About</a></li>
-
-                    <!-- PRODUCTS -->
-                    <li><a href="products.html">Products</a></li>
-
-                    <!-- AICTE -->
-                    <li><a href="lab.html">AICTE Lab</a></li>
-
-                    <li><a href="#" class="active">Blog</a></li>
-
-                    <!-- CAREERS -->
-                    <li><a href="career.html">Careers</a></li>
-
-                    <li><a href="contact.html">Contact</a></li>
-
-                    <li><a href="helpdesk-login.html">Helpdesk</a></li>
-
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/products">Products</a></li>
+                    <li><a href="/lab">AICTE Lab</a></li>
+                    <li><a href="/blog" class="active">Blog</a></li>
+                    <li><a href="/career">Careers</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/helpdesk-login">Helpdesk</a></li>
                 </ul>
             </div>
             <div class="menu-toggle" id="menuToggle">
@@ -108,23 +94,13 @@
     <div class="overlay" id="overlay"></div>
     <nav class="side-menu" id="sideMenu">
         <ul class="menu">
-
-            <li><a href="index.html">Home</a></li>
-
-            <li><a href="about.html">About</a></li>
-
-            <li><a href="products.html">Products</a></li>
-
-            <!-- AICTE -->
-            <li><a href="lab.html">AICTE Lab</a></li>
-
-            <li><a href="#" class="active">Blog</a></li>
-
-            <!-- CAREERS -->
-            <li><a href="career.html">Careers</a></li>
-
-            <li><a href="contact.html">Contact</a></li>
-
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/lab">AICTE Lab</a></li>
+            <li><a href="/blog" class="active">Blog</a></li>
+            <li><a href="/career">Careers</a></li>
+            <li><a href="/contact">Contact</a></li>
         </ul>
         <div class="side-contact">
 
@@ -405,7 +381,8 @@
             <div class="container-align">
                 <div class="cta-inner">
                     <div class="cta-text">
-                        <h2 style="color:white; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,sans-serif;">
+                        <h2
+                            style="color:white; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,sans-serif;">
                             Have a Story or Research to Share?
                         </h2>
                         <p style="color:rgba(255,255,255,0.85);">
@@ -995,8 +972,8 @@ ${topic}`
                     card.innerHTML = `
       <div class="post-card-img"${post.image ? ` style="padding:0;overflow:hidden"` : ''}>
         ${post.image
-          ? `<img src="${post.image}" alt="${post.title.replace(/"/g, '&quot;')}" style="width:100%;height:100%;object-fit:cover">`
-          : `<i class="fas ${post.icon || 'fa-pen-nib'} post-card-img-icon"></i>`}
+                            ? `<img src="${post.image}" alt="${post.title.replace(/"/g, '&quot;')}" style="width:100%;height:100%;object-fit:cover">`
+                            : `<i class="fas ${post.icon || 'fa-pen-nib'} post-card-img-icon"></i>`}
         <div class="post-card-img-badge">${post.catLabel}</div>
       </div>
       <div class="post-card-body">

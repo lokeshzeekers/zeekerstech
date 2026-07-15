@@ -32,8 +32,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <!-- GOOGLE FONTS -->
-    <link
-        rel="stylesheet">
+    <link rel="stylesheet">
 
 </head>
 
@@ -75,27 +74,14 @@
             </div>
             <div class="desktop-nav">
                 <ul>
-
-                    <li><a href="index.html">Home</a></li>
-
-                    <!-- ABOUT -->
-                    <li><a href="about.html">About</a></li>
-
-                    <!-- PRODUCTS -->
-                    <li><a href="products.html">Products</a></li>
-
-                    <!-- AICTE -->
-                    <li><a href="lab.html">AICTE Lab</a></li>
-
-                    <li><a href="blog.html">Blog</a></li>
-
-                    <!-- CAREERS -->
-                    <li><a href="career.html">Careers</a></li>
-
-                    <li><a href="#" class="active">Contact</a></li>
-
-                    <li><a href="helpdesk-login.html">Helpdesk</a></li>
-
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/products">Products</a></li>
+                    <li><a href="/lab">AICTE Lab</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/career">Careers</a></li>
+                    <li><a href="/contact" class="active">Contact</a></li>
+                    <li><a href="/helpdesk-login">Helpdesk</a></li>
                 </ul>
             </div>
             <div class="menu-toggle" id="menuToggle">
@@ -108,23 +94,13 @@
     <div class="overlay" id="overlay"></div>
     <nav class="side-menu" id="sideMenu">
         <ul class="menu">
-
-            <li><a href="index.html">Home</a></li>
-
-            <li><a href="about.html">About</a></li>
-
-            <li><a href="products.html">Products</a></li>
-
-            <!-- AICTE -->
-            <li><a href="lab.html">AICTE Lab</a></li>
-
-            <li><a href="blog.html">Blog</a></li>
-
-            <!-- CAREERS -->
-            <li><a href="career.html">Careers</a></li>
-
-            <li><a href="#" class="active">Contact</a></li>
-
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/lab">AICTE Lab</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/career">Careers</a></li>
+            <li><a href="/contact" class="active">Contact</a></li>
         </ul>
         <div class="side-contact">
 
@@ -924,19 +900,19 @@
                 // only grabs the first, which is why the organization field was
                 // being silently dropped before.
                 const textInputs = activePanel.querySelectorAll('input[type="text"]');
-                const nameEl  = textInputs[0];
-                const orgEl   = textInputs[1];
+                const nameEl = textInputs[0];
+                const orgEl = textInputs[1];
                 const emailEl = activePanel.querySelector('input[type="email"]');
                 const phoneEl = activePanel.querySelector('input[type="tel"]');
                 const subjectEl = activePanel.querySelector('select');
-                const msgEl   = activePanel.querySelector('textarea');
+                const msgEl = activePanel.querySelector('textarea');
 
-                const name         = nameEl  ? nameEl.value.trim()  : '';
-                const organization = orgEl   ? orgEl.value.trim()   : '';
-                const email        = emailEl ? emailEl.value.trim() : '';
-                const phone        = phoneEl ? phoneEl.value.trim() : '';
-                const subject      = subjectEl ? subjectEl.value.trim() : activePanel.id === 'tab-demo' ? 'Product Demo Request' : 'General Enquiry';
-                const message      = msgEl   ? msgEl.value.trim()   : '';
+                const name = nameEl ? nameEl.value.trim() : '';
+                const organization = orgEl ? orgEl.value.trim() : '';
+                const email = emailEl ? emailEl.value.trim() : '';
+                const phone = phoneEl ? phoneEl.value.trim() : '';
+                const subject = subjectEl ? subjectEl.value.trim() : activePanel.id === 'tab-demo' ? 'Product Demo Request' : 'General Enquiry';
+                const message = msgEl ? msgEl.value.trim() : '';
 
                 if (!name || !email || !message) {
                     alert('Please fill in your name, email, and message.');
