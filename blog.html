@@ -1042,6 +1042,9 @@ ${topic}`
                 const post = posts.find(p => String(p.id) === String(id));
                 if (!post) return;
 
+                console.log("Post:", post);
+                console.log("post.image =", post.image);
+
                 const heroIcon = document.getElementById('modalHeroIcon');
                 const heroPhoto = document.getElementById('modalHeroPhoto');
                 if (post.image) {
