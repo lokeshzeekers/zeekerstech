@@ -292,7 +292,7 @@
             <!-- FEATURED POST -->
             <div class="featured-post" id="featuredPost" onclick="openPost(0)">
                 <div class="featured-img">
-                    <img src="assets/images/blog.jpg" alt="ZweldMET AI Smart Welding Helmet" class="featured-image">
+                    <img src="/assets/images/blog.jpg" alt="ZweldMET AI Smart Welding Helmet" class="featured-image">
                 </div>
                 <div class="featured-body">
                     <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
@@ -374,7 +374,7 @@
                 </a>
 
                 <div class="qr-box">
-                    <img src="images/whatsapp-qr.png" alt="WhatsApp QR">
+                    <img src="/assets/images/whatsapp-qr.png" alt="WhatsApp QR">
                 </div>
 
             </div>
@@ -1045,23 +1045,14 @@ ${topic}`
                 const heroIcon = document.getElementById('modalHeroIcon');
                 const heroPhoto = document.getElementById('modalHeroPhoto');
                 if (post.image) {
-                    //fixed image for the featured post
-                    if (String(post.id) === "0") {
-                        heroPhoto.src = "assets/images/blog.jpg";
-                    } else {
-                        heroPhoto.src = post.image;
-                    }
-
+                    heroPhoto.src = post.image;
                     heroPhoto.alt = post.title || '';
                     heroPhoto.style.display = 'block';
                     heroIcon.style.display = 'none';
-
                 } else {
-
                     heroPhoto.style.display = 'none';
                     heroIcon.style.display = '';
                     heroIcon.className = `fas ${post.icon || 'fa-pen-nib'}`;
-
                 }
 
                 document.getElementById('modalTags').innerHTML =
