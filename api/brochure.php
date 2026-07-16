@@ -76,6 +76,7 @@ if ($method === 'POST') {
         'ASSET TRACKING'   => 'brochures/Asset-Tracking.pdf',
         'ZEEBOT'           => 'brochures/ZEEBOT.pdf',
         'AICTE IDEA Lab'   => 'brochures/AICTE-LAB.pdf',
+        'AISECURITY'       => 'brochures/AI-Industrial-Security.pdf',
     ];
 
     $file = $brochureMap[$product] ?? null;
