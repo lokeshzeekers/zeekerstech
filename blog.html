@@ -820,7 +820,7 @@ ${topic}`
                 id: 0,
                 cat: 'welding',
                 catLabel: 'AI Welding',
-                image: 'assets/images/blog.jpg',
+                image: '/assets/images/blog.jpg',
                 title: 'How AI-Powered Welding Helmets Are Redefining Worker Safety',
                 excerpt: 'Developed by Zeekers Technology Solutions Pvt. Ltd. with support from Garden Reach Shipbuilders & Engineers Limited (GRSE), ZweldMET is an AI-powered Smart Welding Helmet designed to provide intelligent welding path guidance and real-time welding parameter monitoring for modern industrial applications.',
                 author: 'Zeekers R&D Team',
@@ -1040,13 +1040,12 @@ ${topic}`
                 const posts = await getAllPosts();
                 // id may be number (featured) or string ('db_xxx')
                 const post = posts.find(p => String(p.id) === String(id));
-                console.log(post);
-                console.log("Image:", post.image);
                 if (!post) return;
 
                 const heroIcon = document.getElementById('modalHeroIcon');
                 const heroPhoto = document.getElementById('modalHeroPhoto');
                 if (post.image) {
+                    console.log(post.image);
                     heroPhoto.src = post.image;
                     heroPhoto.alt = post.title || '';
                     heroPhoto.style.display = 'block';
