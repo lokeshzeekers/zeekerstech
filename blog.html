@@ -1040,6 +1040,8 @@ ${topic}`
                 const posts = await getAllPosts();
                 // id may be number (featured) or string ('db_xxx')
                 const post = posts.find(p => String(p.id) === String(id));
+                console.log(post);
+                console.log("Image:", post.image);
                 if (!post) return;
 
                 const heroIcon = document.getElementById('modalHeroIcon');
