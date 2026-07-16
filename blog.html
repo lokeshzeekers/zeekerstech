@@ -1045,15 +1045,23 @@ ${topic}`
                 const heroIcon = document.getElementById('modalHeroIcon');
                 const heroPhoto = document.getElementById('modalHeroPhoto');
                 if (post.image) {
-                    console.log(post.image);
-                    heroPhoto.src = post.image;
+                    //fixed image for the featured post
+                    if (String(post.id) === "0") {
+                        heroPhoto.src = "assets/images/blog.jpg";
+                    } else {
+                        heroPhoto.src = post.image;
+                    }
+
                     heroPhoto.alt = post.title || '';
                     heroPhoto.style.display = 'block';
                     heroIcon.style.display = 'none';
+
                 } else {
+
                     heroPhoto.style.display = 'none';
                     heroIcon.style.display = '';
                     heroIcon.className = `fas ${post.icon || 'fa-pen-nib'}`;
+
                 }
 
                 document.getElementById('modalTags').innerHTML =
