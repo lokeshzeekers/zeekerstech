@@ -902,13 +902,21 @@
                 const emailEl = activePanel.querySelector('input[type="email"]');
                 const phoneEl = activePanel.querySelector('input[type="tel"]');
                 const subjectEl = activePanel.querySelector('select');
+                const inquiryBtn = activePanel.querySelector('.inquiry-grid .inquiry-btn.selected');
                 const msgEl = activePanel.querySelector('textarea');
 
                 const name = nameEl ? nameEl.value.trim() : '';
                 const organization = orgEl ? orgEl.value.trim() : '';
                 const email = emailEl ? emailEl.value.trim() : '';
                 const phone = phoneEl ? phoneEl.value.trim() : '';
-                const subject = subjectEl ? subjectEl.value.trim() : activePanel.id === 'tab-demo' ? 'Product Demo Request' : 'General Enquiry';
+                let subject;
+                if (subjectEl) {
+                    subject = subjectEl.value.trim();
+                } else if (inquiryBtn) {
+                    subject = inquiryBtn.textContent.trim();
+                } else {
+                    subject = activePanel.id === 'tab-demo' ? 'Product Demo Request' : 'General Enquiry';
+                }
                 const message = msgEl ? msgEl.value.trim() : '';
 
                 if (!name || !email || !message) {
