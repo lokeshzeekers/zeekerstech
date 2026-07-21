@@ -2178,7 +2178,7 @@
               <select class="fs" id="ld-ty" onchange="renderLeads()">
                 <option value="all">All Types</option>
                 <option value="product">Product Page</option>
-                <option value="lab">AICTE Lab Page</option>
+                <option value="lab">Education Page</option>
               </select>
             </div>
             <div style="overflow-x:auto">
@@ -3387,7 +3387,7 @@
     <td class="td-m">${l.email}<br>${l.mobile}</td>
     <td><span class="p p-o">${l.product}</span></td>
     <td><div class="td-m" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.purpose || ''}</div></td>
-    <td class="td-m">${l.type === 'lab' ? 'AICTE Lab' : 'Product'}</td>
+    <td class="td-m">${l.type === 'lab' ? 'Education' : 'Product'}</td>
     <td class="td-m">${fmtD(l.created_at)}</td>
     <td><div class="ar">
       <button class="ab" onclick="viewLead(${l.id})" title="View"><i class="fas fa-eye"></i></button>
