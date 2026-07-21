@@ -1073,6 +1073,136 @@
         </div>
     </section>
 
+    <!-- ══════════════════════════════════════════════
+     COLLEGE / INSTITUTION PARTNERS
+══════════════════════════════════════════════ -->
+    <section class="section" style="background:var(--surface-2);">
+        <div class="section-inner">
+            <div class="sr">
+
+                <div class="cap-header sr" style="margin-bottom:40px;">
+                    <div>
+                        <div class="section-label">Our Partners</div>
+                        <div class="section-title">
+                            Colleges &amp; Institutions <br>
+                            with <span class="highlight">Labs Installed</span>
+                        </div>
+                    </div>
+
+                    <div class="cap-right-text" style="color:var(--text-secondary); border-color:var(--accent);">
+                        Innovation Labs set up and running at institutions across the region, empowering
+                        students with hands-on access to industry-grade equipment.
+                    </div>
+                </div>
+
+                <div class="partner-grid">
+
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <div class="partner-name">College / Institution Name</div>
+                    </div>
+
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <div class="partner-name">College / Institution Name</div>
+                    </div>
+
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <div class="partner-name">College / Institution Name</div>
+                    </div>
+
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <div class="partner-name">College / Institution Name</div>
+                    </div>
+
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <div class="partner-name">College / Institution Name</div>
+                    </div>
+
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <div class="partner-name">College / Institution Name</div>
+                    </div>
+
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <div class="partner-name">College / Institution Name</div>
+                    </div>
+
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <div class="partner-name">College / Institution Name</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+     PATENTS
+══════════════════════════════════════════════ -->
+    <section class="section" style="background:var(--surface);">
+        <div class="section-inner">
+            <div class="sr">
+
+                <div class="cap-header sr" style="margin-bottom:40px;">
+                    <div>
+                        <div class="section-label">Our IP</div>
+                        <div class="section-title">
+                            Patents <br>
+                            <span class="highlight">Registered by Zeekers</span>
+                        </div>
+                    </div>
+
+                    <div class="cap-right-text" style="color:var(--text-secondary); border-color:var(--accent);">
+                        Original engineering, protected — a growing portfolio of patents filed for our
+                        in-house research and product innovation.
+                    </div>
+                </div>
+
+                <div class="patent-grid">
+
+                    <div class="patent-card">
+                        <div class="patent-status">Filed</div>
+                        <div class="patent-icon"><i class="fas fa-scroll"></i></div>
+                        <h3>Patent Title Goes Here</h3>
+                        <div class="patent-meta">
+                            Application No.: <span>XXXXXXXXXX</span><br>
+                            Filed: <span>Month, Year</span>
+                        </div>
+                    </div>
+
+                    <div class="patent-card">
+                        <div class="patent-status">Filed</div>
+                        <div class="patent-icon"><i class="fas fa-scroll"></i></div>
+                        <h3>Patent Title Goes Here</h3>
+                        <div class="patent-meta">
+                            Application No.: <span>XXXXXXXXXX</span><br>
+                            Filed: <span>Month, Year</span>
+                        </div>
+                    </div>
+
+                    <div class="patent-card">
+                        <div class="patent-status">Filed</div>
+                        <div class="patent-icon"><i class="fas fa-scroll"></i></div>
+                        <h3>Patent Title Goes Here</h3>
+                        <div class="patent-meta">
+                            Application No.: <span>XXXXXXXXXX</span><br>
+                            Filed: <span>Month, Year</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
     <!-- ══ CTA ════════════════════════════════════════ -->
     <section style="margin-bottom: 80px; margin-top: 80px;">
         <div class="cta-section">
@@ -1389,12 +1519,16 @@
             const whyObs = staggerObserve('.why-card');
             const svcObs = staggerObserve('.svc-card');
             const labProdObs = staggerObserve('.lab-product-card');
+            const partnerObs = staggerObserve('.partner-card');
+            const patentObs = staggerObserve('.patent-card');
             const suppObs = staggerObserve('.support-card');
             const fBulObs = staggerObserve('.f-bullet');
 
             document.querySelector('.why-grid') && whyObs.observe(document.querySelector('.why-grid'));
             document.querySelector('.services-grid') && svcObs.observe(document.querySelector('.services-grid'));
             document.querySelectorAll('.lab-product-grid').forEach(el => labProdObs.observe(el));
+            document.querySelector('.partner-grid') && partnerObs.observe(document.querySelector('.partner-grid'));
+            document.querySelector('.patent-grid') && patentObs.observe(document.querySelector('.patent-grid'));
             document.querySelector('.support-right') && suppObs.observe(document.querySelector('.support-right'));
             document.querySelector('.feature-bullets') && fBulObs.observe(document.querySelector('.feature-bullets'));
 
