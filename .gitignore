@@ -5,3 +5,4 @@ build
 .vite
 api/config.local.php
 api/uploads/
+*.pdf
