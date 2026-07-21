@@ -69,14 +69,11 @@ if ($method === 'POST') {
     // ── Return brochure file path ────────────────────────────────
     $brochureMap = [
         'ZwelDAQ'          => 'brochures/ZwelDAQ.pdf',
-        'ZweldMET'         => 'brochures/ZweldMET.pdf',
         'Zeekers IoT Kit'  => 'brochures/Zeekers-IoT-Kit.pdf',
         'ZeekWeigh'        => 'brochures/ZeekWeigh.pdf',
         'Zeevior'          => 'brochures/Zeevior.pdf',
-        'ASSET TRACKING'   => 'brochures/Asset-Tracking.pdf',
-        'ZEEBOT'           => 'brochures/ZEEBOT.pdf',
+        'Zeeclean'         => 'brochures/Zeeclean.pdf',
         'AICTE IDEA Lab'   => 'brochures/AICTE-LAB.pdf',
-        'AISECURITY'       => 'brochures/AI-Industrial-Security.pdf',
     ];
 
     $file = $brochureMap[$product] ?? null;
