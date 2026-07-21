@@ -3745,6 +3745,51 @@
    }
  }
 
+ .lab-product-grid.cols-3 {
+   grid-template-columns: 1fr 1fr 1fr;
+ }
+
+ @media (max-width: 1024px) {
+   .lab-product-grid.cols-3 {
+     grid-template-columns: 1fr 1fr;
+   }
+ }
+
+ @media (max-width: 640px) {
+   .lab-product-grid.cols-3 {
+     grid-template-columns: 1fr;
+   }
+ }
+
+ .lab-product-card .lp-icon-box {
+   width: 100%;
+   aspect-ratio: 16/9;
+   border-radius: var(--radius);
+   background: linear-gradient(135deg, var(--surface-3), var(--accent-light));
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin-bottom: 22px;
+   overflow: hidden;
+   position: relative;
+ }
+
+ .lab-product-card .lp-icon-box i {
+   font-size: 44px;
+   color: var(--accent);
+   opacity: .6;
+ }
+
+ .lab-product-card:hover .lp-icon-box i {
+   opacity: .9;
+   transform: scale(1.1) rotate(-4deg);
+   transition: all .35s;
+ }
+
+ .lab-product-card .lp-call-btn {
+   text-decoration: none;
+ }
+
  /* ═══════════════════════════════════════════
        STATS BAND
     ═══════════════════════════════════════════ */
