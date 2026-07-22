@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helpdesk Login — Zeekers Technology Solutions</title>
-    <link
-        rel="stylesheet">
+    <link rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <!-- Favicon -->
@@ -495,7 +494,12 @@
                             <button type="button" class="eye-btn" onclick="toggleEye('loginPass',this)"><i
                                     class="fas fa-eye"></i></button>
                         </div>
-                        <div class="forgot"><a href="#">Forgot password?</a></div>
+                        <div class="forgot">
+                            <a href="https://wa.me/918098141600?text=Hello%20Zeekers%20Support,%20I%20need%20help%20resetting%20my%20password."
+                                target="_blank">
+                                Forgot password?
+                            </a>
+                        </div>
                     </div>
                     <div class="error-msg" id="loginError"><i class="fas fa-exclamation-circle"></i><span></span></div>
                     <button class="btn-login" id="loginBtn" onclick="doLogin()">
@@ -568,7 +572,7 @@
         </div>
     </div>
 
-    <script src="/assets/js/api.js?v=4"></script>
+    <script defer src="/assets/js/api.js?v=4"></script>
     <script>
         /* ── MySQL-backed auth via helpdesk_users table ── */
 

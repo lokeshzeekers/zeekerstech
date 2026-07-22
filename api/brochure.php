@@ -86,11 +86,9 @@ if ($method === 'POST') {
     //    outside the public web root — see brochure-download.php) ──────
     $brochureMap = [
         'ZwelDAQ'          => 'ZwelDAQ.pdf',
-        'Zeekers IoT Kit'  => 'Zeekers-IoT-Kit.pdf',
-        'ZeekWeigh'        => 'ZeekWeigh.pdf',
         'Zeevior'          => 'Zeevior.pdf',
         'Zeeclean'         => 'Zeeclean.pdf',
-        'AICTE IDEA Lab'   => 'AICTE-LAB.pdf',
+        'AICTE IDEA Lab'   => 'Innovation-Lab.pdf',
     ];
 
     $file = $brochureMap[$product] ?? null;

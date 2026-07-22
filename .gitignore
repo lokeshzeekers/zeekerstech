@@ -4,4 +4,5 @@ dist
 build
 .vite
 api/config.local.php
-api/uploads/resumes/
+api/uploads/
+*.pdf
