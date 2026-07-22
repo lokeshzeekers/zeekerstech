@@ -1,6 +1,7 @@
-# Files here are only ever served through resume.php (which validates
-# the filename and streams it with the correct headers). Block all
-# direct access and never execute anything in here as a script.
+# Files here are only ever served through resume.php or
+# brochure-download.php (which validate the filename/token and stream
+# it with the correct headers). Block all direct access and never
+# execute anything in here as a script.
 Options -Indexes -ExecCGI
 AddHandler cgi-script .php .php3 .php4 .php5 .phtml .pl .py .cgi .asp .aspx .sh
 RemoveHandler .php .php3 .php4 .php5 .phtml
