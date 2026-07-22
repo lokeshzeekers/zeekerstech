@@ -1368,9 +1368,9 @@
             try {
                 const res = await BrochureAPI.submit({ name, mobile, email, product, purpose, type: 'lab' });
 
-                // Open the brochure PDF
-                if (res.file) {
-                    window.open(res.file, "_blank");
+                // Open the brochure PDF via the secure, time-limited download link
+                if (res.download_url) {
+                    window.open(res.download_url, "_blank");
                 } else {
                     alert("Brochure file not available yet. Our team will email it to you shortly.");
                 }

@@ -6,7 +6,7 @@
 //    POST /api/brochure.php   → capture a brochure-download lead
 //        Body: { name, mobile, email, product, purpose, type }
 //        type: 'product' → products page brochure
-//        type: 'lab'     → AICTE-IDEA Lab brochure
+//        type: 'lab'     → Education (Innovation Lab) brochure
 //
 //  ADMIN (requires Bearer token):
 //    GET    /api/brochure.php        → all leads
@@ -16,6 +16,12 @@
 //  "Brochure Leads" tab (no email notification — that turned out to be
 //  unreliable on this host, so the admin panel is now the source of
 //  truth instead).
+//
+//  SECURITY: brochure PDFs are no longer served from a public, guessable
+//  URL. A successful POST here issues a short-lived, single-use-window
+//  download token (see brochure-download.php) instead of returning a
+//  direct file path, so the PDF can only be fetched after the form is
+//  filled in.
 // ─────────────────────────────────────────────────────────────
 require_once __DIR__ . '/config.php';
 setHeaders();
@@ -24,8 +30,8 @@ $db     = getDB();
 $method = $_SERVER['REQUEST_METHOD'];
 $id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
-$db->exec("
-    CREATE TABLE IF NOT EXISTS brochure_leads (
+$db->exec(
+    "CREATE TABLE IF NOT EXISTS brochure_leads (
         id         INT AUTO_INCREMENT PRIMARY KEY,
         name       VARCHAR(255)  NOT NULL,
         mobile     VARCHAR(20)   NOT NULL,
@@ -34,8 +40,18 @@ $db->exec("
         purpose    TEXT,
         type       VARCHAR(20)   DEFAULT 'product',
         created_at TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
-    )
-");
+    )"
+);
+
+$db->exec(
+    "CREATE TABLE IF NOT EXISTS brochure_downloads (
+        id         INT AUTO_INCREMENT PRIMARY KEY,
+        token      VARCHAR(64)   NOT NULL UNIQUE,
+        file       VARCHAR(255)  NOT NULL,
+        expires_at DATETIME      NOT NULL,
+        created_at TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
+    )"
+);
 
 // ── GET (admin) ───────────────────────────────────────────────
 if ($method === 'GET') {
@@ -66,22 +82,35 @@ if ($method === 'POST') {
     );
     $stmt->execute([$name, $mobile, $email, $product, $purpose, $type]);
 
-    // ── Return brochure file path ────────────────────────────────
+    // ── Brochure filename lookup (files live in /api/uploads/brochures/,
+    //    outside the public web root — see brochure-download.php) ──────
     $brochureMap = [
-        'ZwelDAQ'          => 'brochures/ZwelDAQ.pdf',
-        'Zeekers IoT Kit'  => 'brochures/Zeekers-IoT-Kit.pdf',
-        'ZeekWeigh'        => 'brochures/ZeekWeigh.pdf',
-        'Zeevior'          => 'brochures/Zeevior.pdf',
-        'Zeeclean'         => 'brochures/Zeeclean.pdf',
-        'AICTE IDEA Lab'   => 'brochures/AICTE-LAB.pdf',
+        'ZwelDAQ'          => 'ZwelDAQ.pdf',
+        'Zeekers IoT Kit'  => 'Zeekers-IoT-Kit.pdf',
+        'ZeekWeigh'        => 'ZeekWeigh.pdf',
+        'Zeevior'          => 'Zeevior.pdf',
+        'Zeeclean'         => 'Zeeclean.pdf',
+        'AICTE IDEA Lab'   => 'AICTE-LAB.pdf',
     ];
 
     $file = $brochureMap[$product] ?? null;
 
+    $downloadUrl = null;
+    if ($file) {
+        $token = bin2hex(random_bytes(24));
+        $stmt  = $db->prepare(
+            'INSERT INTO brochure_downloads (token, file, expires_at)
+             VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 30 MINUTE))'
+        );
+        $stmt->execute([$token, $file]);
+
+        $downloadUrl = '/api/brochure-download.php?token=' . $token;
+    }
+
     respond([
-        'success'  => true,
-        'message'  => 'Lead captured',
-        'file'     => $file,
+        'success'      => true,
+        'message'      => 'Lead captured',
+        'download_url' => $downloadUrl,
     ], 201);
 }
 
