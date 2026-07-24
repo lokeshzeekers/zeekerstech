@@ -1437,8 +1437,17 @@
    }
 
    .footer-grid {
-     grid-template-columns: 1fr 1fr;
+     grid-template-columns: 1fr;
      gap: 32px;
+     text-align: center;
+   }
+
+   .contact-info p {
+     justify-content: center;
+   }
+
+   .footer-social {
+     justify-content: center;
    }
 
    .container-align {
@@ -4270,7 +4279,7 @@
    }
 
    .footer-grid {
-     grid-template-columns: 1fr 1fr;
+     grid-template-columns: 1fr;
      gap: 32px;
      text-align: center;
    }
