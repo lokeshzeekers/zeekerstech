@@ -1489,7 +1489,7 @@
 ═══════════════════════════════════════ */
  @media (max-width: 570px) {
    .footer-grid {
-     grid-template-columns: 1fr;
+     grid-template-columns: 1fr !important;
      text-align: center;
    }
 
