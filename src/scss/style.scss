@@ -1564,7 +1564,7 @@
    LAPTOP FOOTER OPTIMIZATION
 ═══════════════════════════════════════ */
 
- @media (min-width: 992px) and (max-width: 1366px) {
+ @media (min-width: 1025px) and (max-width: 1366px) {
 
    .footer-grid {
      display: grid;
@@ -4266,6 +4266,11 @@
    .cta-inner {
      padding: 40px 32px;
      flex-direction: column;
+   }
+
+   .footer-grid {
+     grid-template-columns: 1fr 1fr;
+     gap: 32px;
    }
 
    .section {
