@@ -138,7 +138,7 @@ const AdminsAPI = {
     delete: (id)           => apiFetch(`admins.php?id=${id}`, { method: 'DELETE', tokenScope: 'admin' }),
 };
 
-// ─── Lab Products Catalog (AICTE lab + industrial equipment) ──
+// ─── Lab Products Catalog (Education page + industrial equipment) ──
 const ProductsAPI = {
     getAll: ()             => apiFetch('products.php'),
     create: (data)         => apiFetch('products.php', { method: 'POST', tokenScope: 'admin', body: JSON.stringify(data) }),

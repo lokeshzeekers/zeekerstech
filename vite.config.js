@@ -11,7 +11,7 @@ export default defineConfig({
         blog: resolve(__dirname, 'blog.html'),
         career: resolve(__dirname, 'career.html'),
         contact: resolve(__dirname, 'contact.html'),
-        lab: resolve(__dirname, 'lab.html'),
+        education: resolve(__dirname, 'education.html'),
         admin: resolve(__dirname, 'admin.html'),
         helpdesk_login: resolve(__dirname, 'helpdesk-login.html'),
         helpdesk_dashboard: resolve(__dirname, 'helpdesk-dashboard.html')

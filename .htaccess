@@ -7,6 +7,10 @@ DirectoryIndex index.html index.php
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # ── Redirect old /lab URL to the new /education URL ──────
+    RewriteRule ^lab/?$ /education [R=301,L]
+    RewriteRule ^lab\.html$ /education [R=301,L]
+
     # ── Serve existing files/dirs as-is ──────────────────────
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
@@ -14,6 +18,9 @@ DirectoryIndex index.html index.php
 
     # ── API requests pass through ────────────────────────────
     RewriteRule ^api/ - [L]
+
+    # ── Clean URL: /education → education.html ───────────────
+    RewriteRule ^education/?$ education.html [L]
 </IfModule>
 
 # ── Compression ──────────────────────────────────────────────
