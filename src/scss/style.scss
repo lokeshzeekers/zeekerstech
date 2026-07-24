@@ -1482,7 +1482,12 @@
      width: 100%;
      justify-content: center;
    }
+ }
 
+ /* ═══════════════════════════════════════
+   FOOTER — single column below 570px
+═══════════════════════════════════════ */
+ @media (max-width: 570px) {
    .footer-grid {
      grid-template-columns: 1fr;
      text-align: center;
