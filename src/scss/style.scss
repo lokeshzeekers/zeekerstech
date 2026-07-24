@@ -4266,11 +4266,21 @@
    .cta-inner {
      padding: 40px 32px;
      flex-direction: column;
+     text-align: center;
    }
 
    .footer-grid {
      grid-template-columns: 1fr 1fr;
      gap: 32px;
+     text-align: center;
+   }
+
+   .contact-info p {
+     justify-content: center;
+   }
+
+   .footer-social {
+     justify-content: center;
    }
 
    .section {
