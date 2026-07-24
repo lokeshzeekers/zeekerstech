@@ -61,6 +61,7 @@
                     rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a><a
                     href="https://youtube.com/@i-lesa?si=AV7XRxZmoQKqbl74" target="_blank" rel="noopener noreferrer"><i
                         class="fab fa-youtube"></i></a>
+
             </div>
         </div>
     </div>
@@ -168,6 +169,10 @@
                     <button class="share-btn" onclick="share('facebook')">
                         <i class="fab fa-facebook-f"></i>
                     </button>
+
+                    <button class="share-btn" onclick="share('whatsapp')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -215,7 +220,7 @@
                     </div>
 
                     <div class="blog-hero-stat">
-                        <div class="blog-hero-stat-n">ZTS<span>.</span></div>
+                        <div class="blog-hero-stat-n">ZeekersTech<span>.</span></div>
                         <div class="blog-hero-stat-l">R&D Team Authors</div>
                     </div>
 
@@ -368,13 +373,13 @@
 
             <div class="nl-right">
 
-                <a href="https://wa.me/919042886590" target="_blank" class="wa-btn">
+                <a href="https://chat.whatsapp.com/ENFurJdgqo6CBAekeEeB1m" target="_blank" class="wa-btn">
                     <i class="fab fa-whatsapp"></i>
                     Join WhatsApp
                 </a>
 
                 <div class="qr-box">
-                    <img src="/assets/images/whatsapp-qr.png" alt="WhatsApp QR">
+                    <img src="/public/assets/images/whatsapp-qr.svg" alt="WhatsApp QR">
                 </div>
 
             </div>
@@ -393,7 +398,7 @@
                             Have a Story or Research to Share?
                         </h2>
                         <p style="color:rgba(255,255,255,0.85);">
-                            Contribute to the ZTS Blog by sharing your innovation story,
+                            Contribute to the Zeekers Technology Blog by sharing your innovation story,
                             research paper, case study, or industry insights.
                         </p>
                     </div>
@@ -560,9 +565,9 @@
             }
 
             const message = encodeURIComponent(
-                `Hello ZTS Team,
+                `Hello Zeekers Technology Team,
 
-I would like to contribute an article to the ZTS Blog.
+I would like to contribute an article to the Zeekers Technology Blog.
 
 Name: ${name}
 Mobile: ${mobile}
@@ -590,7 +595,10 @@ ${topic}`
         <div class="container-align">
             <div class="footer-grid">
                 <div class="footer-logo">
-                    <h3>Zeekers<span style="color:#ff6b2b;">Tech</span></h3>
+                    <div class="logo">
+                        <img src="/public/assets/images/footer-logo-01.png" alt="Zeekers Logo"
+                            style="margin-bottom: 14px;">
+                    </div>
                     <p>AI-driven Safety & Industrial IoT solutions. R&D, Embedded, and next-gen automation for
                         mission critical environments.</p>
                     <div class="footer-social"><a
@@ -788,6 +796,7 @@ ${topic}`
             //share button for blog post
             function share(platform) {
                 const url = encodeURIComponent(window.location.href);
+                const title = encodeURIComponent(document.title);
 
                 let shareUrl = '';
 
@@ -802,6 +811,10 @@ ${topic}`
 
                     case 'facebook':
                         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                        break;
+
+                    case 'whatsapp':
+                        shareUrl = `https://wa.me/?text=${title}%20${url}`;
                         break;
                 }
 
