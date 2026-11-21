@@ -1972,7 +1972,9 @@
               Product</button>
           </div>
           <div class="tc">
-            <div class="toolbar"><select class="fs" id="pr-cat" onchange="renderProds()">
+            <div class="toolbar">
+              <div class="sw"><i class="fas fa-search"></i><input class="si" id="pr-q" placeholder="Search lab products…" oninput="renderProds()"></div>
+              <select class="fs" id="pr-cat" onchange="renderProds()">
                 <option value="all">All Categories</option>
                 <option value="electrical">AICTE — Electrical</option>
                 <option value="mandatory">AICTE — Mandatory</option>
@@ -2968,7 +2970,9 @@
     function renderProds() {
       const prods = _db.products || [];
       const cf = document.getElementById('pr-cat')?.value || 'all';
+      const q = (document.getElementById('pr-q')?.value || '').trim().toLowerCase();
       let list = cf === 'all' ? prods : prods.filter(p => p.category === cf);
+      if (q) list = list.filter(p => (p.name || '').toLowerCase().includes(q) || (p.sub || '').toLowerCase().includes(q));
       const tbl = document.getElementById('pr-tbl');
       const catMap = { electrical: 'AICTE — Electrical', mandatory: 'AICTE — Mandatory', optional: 'AICTE — Optional', industrial: 'Industrial' };
       if (!list.length) { tbl.innerHTML = '<tr><td colspan="4" class="empty"><i class="fas fa-boxes"></i>No products</td></tr>'; return; }

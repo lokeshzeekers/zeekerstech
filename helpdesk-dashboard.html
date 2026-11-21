@@ -1999,7 +1999,7 @@
             <div class="sb-foot">
                 <div class="sb-help">
                     <i class="fas fa-life-ring"></i>
-                    <div class="sb-help-t"><strong>Need help?</strong><br>support@zeekerstechnology.com</div>
+                    <div class="sb-help-t"><strong>Need help?</strong><br>helpdesk@zeekerstech.com</div>
                 </div>
             </div>
         </aside>
@@ -2098,6 +2098,13 @@
 
                         <!-- STEP 2 -->
                         <div id="createStep2" style="display:none">
+                            <div id="selectedProdsBar" style="display:none;background:var(--accent-pale);border:1.5px solid rgba(255,107,43,.25);border-radius:var(--r);padding:10px 12px;margin-bottom:14px">
+                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                                    <span style="font-size:12px;font-weight:600;color:var(--accent-dark)"><i class="fas fa-check-circle" style="margin-right:5px"></i>Selected Products (<span id="selectedProdsCount">0</span>)</span>
+                                    <button type="button" onclick="clearSelectedProds()" style="background:none;border:none;color:var(--txt2);font-size:12px;font-weight:500;cursor:pointer;text-decoration:underline">Clear all</button>
+                                </div>
+                                <div id="selectedProdsTags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+                            </div>
                             <!-- AICTE sub -->
                             <div id="aicteSection">
                                 <div style="font-size:13px;font-weight:500;color:var(--txt2);margin-bottom:10px">Select
@@ -2110,12 +2117,20 @@
                                     <button class="sub-tab" onclick="setAicteSub(this,'optional')">Optional &amp;
                                         Consumables</button>
                                 </div>
+                                <div style="position:relative;margin-bottom:10px">
+                                    <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:12px;pointer-events:none"></i>
+                                    <input class="fi" id="aicteProdSearch" type="search" placeholder="Search AICTE-IDEA Lab products..." oninput="renderAicteProds(currentSub)" style="padding-left:34px">
+                                </div>
                                 <div class="product-list" id="aicteProductList"></div>
                             </div>
                             <!-- Industrial -->
                             <div id="industrialSection" style="display:none">
                                 <div style="font-size:13px;font-weight:500;color:var(--txt2);margin-bottom:10px">Select
                                     product(s) — multiple allowed</div>
+                                <div style="position:relative;margin-bottom:10px">
+                                    <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:12px;pointer-events:none"></i>
+                                    <input class="fi" id="industrialProdSearch" type="search" placeholder="Search industrial products..." oninput="renderIndustrialProds()" style="padding-left:34px">
+                                </div>
                                 <div class="product-list" id="industrialProductList"></div>
                             </div>
                             <div style="display:flex;justify-content:space-between;margin-top:14px">
@@ -2413,8 +2428,11 @@
         function selectCat(cat) {
             currentCat = cat;
             selectedProds = [];
+            ['aicteProdSearch', 'industrialProdSearch'].forEach(id => { const s = document.getElementById(id); if (s) s.value = ''; });
             document.getElementById('catAICTE').classList.toggle('selected', cat === 'aicte');
             document.getElementById('catIndustrial').classList.toggle('selected', cat === 'industrial');
+            renderSelectedProds();
+            checkStep2();
             const btn = document.getElementById('step1Next');
             btn.disabled = false;
         }
@@ -2434,6 +2452,8 @@
                 await loadProducts();
                 document.getElementById('aicteSection').style.display = currentCat === 'aicte' ? 'block' : 'none';
                 document.getElementById('industrialSection').style.display = currentCat === 'industrial' ? 'block' : 'none';
+                renderSelectedProds();
+                checkStep2();
                 if (currentCat === 'aicte') renderAicteProds(currentSub);
                 else renderIndustrialProds();
             }
@@ -2441,7 +2461,8 @@
 
         function setAicteSub(btn, sub) {
             currentSub = sub;
-            selectedProds = [];
+            const sEl = document.getElementById('aicteProdSearch');
+            if (sEl) sEl.value = '';
             document.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             renderAicteProds(sub);
@@ -2450,27 +2471,70 @@
 
         function renderAicteProds(sub) {
             const el = document.getElementById('aicteProductList');
-            const list = (PRODUCTS.aicte && PRODUCTS.aicte[sub]) || [];
+            const q = (document.getElementById('aicteProdSearch')?.value || '').trim().toLowerCase();
+            const raw = (PRODUCTS.aicte && PRODUCTS.aicte[sub]) || [];
+            const list = q ? raw.filter(p => (p.name || '').toLowerCase().includes(q) || (p.sub || '').toLowerCase().includes(q)) : raw;
             el.innerHTML = '';
-            if (!list.length) { el.innerHTML = '<div class="prod-empty">No products in this category yet.</div>'; return; }
+            if (!list.length) { el.innerHTML = `<div class="prod-empty">${q ? 'No matching products found.' : 'No products in this category yet.'}</div>`; return; }
             list.forEach(p => el.appendChild(makeProdItem(p)));
         }
 
         function renderIndustrialProds() {
             const el = document.getElementById('industrialProductList');
-            const list = PRODUCTS.industrial || [];
+            const q = (document.getElementById('industrialProdSearch')?.value || '').trim().toLowerCase();
+            const raw = PRODUCTS.industrial || [];
+            const list = q ? raw.filter(p => (p.name || '').toLowerCase().includes(q) || (p.sub || '').toLowerCase().includes(q)) : raw;
             el.innerHTML = '';
-            if (!list.length) { el.innerHTML = '<div class="prod-empty">No products in this category yet.</div>'; return; }
+            if (!list.length) { el.innerHTML = `<div class="prod-empty">${q ? 'No matching products found.' : 'No products in this category yet.'}</div>`; return; }
             list.forEach(p => el.appendChild(makeProdItem(p)));
         }
 
         function makeProdItem(p) {
             const div = document.createElement('div');
-            div.className = 'prod-item';
+            const isChecked = selectedProds.some(x => x.id === p.id);
+            div.className = 'prod-item' + (isChecked ? ' checked' : '');
             div.id = 'pi_' + p.id;
             div.innerHTML = `<div class="prod-cb" id="cb_${p.id}"><i class="fas fa-check" style="font-size:9px"></i></div><div><div class="prod-name">${p.name}</div><div class="prod-sub">${p.sub || ''}</div></div>`;
             div.onclick = () => toggleProd(p);
             return div;
+        }
+
+        function renderSelectedProds() {
+            const bar = document.getElementById('selectedProdsBar');
+            const tags = document.getElementById('selectedProdsTags');
+            const count = document.getElementById('selectedProdsCount');
+            if (!bar || !tags || !count) return;
+            if (!selectedProds.length) {
+                bar.style.display = 'none';
+                tags.innerHTML = '';
+                count.textContent = '0';
+                return;
+            }
+            bar.style.display = 'block';
+            count.textContent = selectedProds.length;
+            tags.innerHTML = '';
+            selectedProds.forEach(p => {
+                const chip = document.createElement('span');
+                chip.style.cssText = 'display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid rgba(255,107,43,.35);color:var(--ink);font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;box-shadow:0 1px 3px rgba(0,0,0,.04)';
+                const lbl = document.createElement('span');
+                lbl.textContent = p.name;
+                const rm = document.createElement('button');
+                rm.type = 'button';
+                rm.innerHTML = '&times;';
+                rm.title = 'Remove';
+                rm.style.cssText = 'background:none;border:none;color:var(--accent-dark);font-size:14px;line-height:1;cursor:pointer;padding:0 2px;font-weight:700';
+                rm.onclick = (e) => { e.stopPropagation(); toggleProd(p); };
+                chip.appendChild(lbl);
+                chip.appendChild(rm);
+                tags.appendChild(chip);
+            });
+        }
+
+        function clearSelectedProds() {
+            selectedProds = [];
+            document.querySelectorAll('.prod-item.checked').forEach(el => el.classList.remove('checked'));
+            renderSelectedProds();
+            checkStep2();
         }
 
         function toggleProd(p) {
@@ -2479,6 +2543,7 @@
             else selectedProds.splice(idx, 1);
             const el = document.getElementById('pi_' + p.id);
             if (el) el.classList.toggle('checked', selectedProds.some(x => x.id === p.id));
+            renderSelectedProds();
             checkStep2();
         }
 
@@ -2617,7 +2682,7 @@
         }
 
         function resetForm() {
-            currentCat = ''; selectedProds = []; currentSev = 'Low'; attachedFile = null; attachedDataUrl = null;
+            currentCat = ''; selectedProds = []; currentSev = 'Low'; renderSelectedProds(); attachedFile = null; attachedDataUrl = null;
             document.getElementById('catAICTE').classList.remove('selected');
             document.getElementById('catIndustrial').classList.remove('selected');
             document.getElementById('issueSubject').value = '';
